@@ -4,7 +4,7 @@
   background-color: white;
   border-bottom: 5px solid #2fc477;
   margin: auto;
-  padding: 0.5rem;
+  padding: 10px;
   /* height: 50px; */
   font-family: avenir-black;
 }
@@ -12,7 +12,7 @@
 /* Style for the title in the header */
 .App-Title {
   color: #2fc477;
-  font-size: 2rem;
+  font-size: 32px;
 }
 
 /* Style for the link strip in the header. */
@@ -20,7 +20,7 @@
   font-family: avenir-medium;
   color: #293B59;
   text-align: center;
-  font-size: .9rem;
+  font-size: 14px;
 }
 
 /* Style for the footer. */

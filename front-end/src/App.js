@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Home from './components/Home.js';
-import Navbar from './components/Navbar.js';
-import Footer from './components/Footer.js';
-import Login from './components/Login.js';
+import Home from './containers/Home.js';
+import Navbar from './containers/Navbar.js';
+import Footer from './containers/Footer.js';
+import Login from './containers/Login.js';
+import NotFound from './containers/NotFound.js';
 import './App.css';
 
 class App extends Component {
@@ -36,6 +37,10 @@ class App extends Component {
               </Route>
               <Route exact path="/login">
                 <Login />
+              </Route>
+              {/* Catch all route for an invalid url: */}
+              <Route>
+                <NotFound />
               </Route>
           </Switch>
         </Router>

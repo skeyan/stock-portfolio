@@ -1,4 +1,5 @@
 // Actions go below
+// Setup the initial state of the store
 const initState = () => ({
     stocks: []
 })

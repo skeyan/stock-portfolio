@@ -1,0 +1,23 @@
+@media all and (min-width: 480px) {
+    
+    .Login {
+        font-family: avenir-black;
+        padding: 60px 0;
+        display: flex;
+        color: #293B59;
+    }
+
+    .Login form {
+        color: #293B59;
+        margin: 0 auto;
+        max-width: 320px;
+        font-family: avenir-black;
+    }
+
+    .form-input {
+        width: 300px;
+        height: 20px;
+        font-size: 14px;
+        font-family: avenir-light;
+    }
+}
