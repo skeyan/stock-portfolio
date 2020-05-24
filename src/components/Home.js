@@ -14,7 +14,6 @@ class Home extends Component {
     }
 
     render() {
-        // console.log(this.state.money);
         return (
             <div>
                 <center><h1>Home Test</h1></center>
