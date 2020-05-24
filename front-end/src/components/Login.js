@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
 
-class Home extends Component {
+class Login extends Component {
     constructor()
     {
         super();
@@ -16,10 +15,10 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <center><h1>Home Test</h1></center>
+                <center><p>Login Test</p></center>
             </div>
         );
     }
 }
 
-export default Home;
+export default Login;

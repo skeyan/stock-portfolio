@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/Home.js';
+import Navbar from './components/Navbar.js';
+import Footer from './components/Footer.js';
+import Login from './components/Login.js';
 import './App.css';
 
 class App extends Component {
@@ -24,17 +27,20 @@ class App extends Component {
         * Uses a Router to switch between pages.
         * Currently, it only routes to a homepage.
       */
-      <Router>
-        <Switch>
-            {/* <header className="App-header">
-              <img src={logo} className="App-logo" alt="logo" />
-            </header> */}
-            <Route className="App" exact path="/">
-              <Home />
-            </Route>
-        </Switch>
-        
-      </Router>
+     <div>
+        <Router>
+        <Navbar />
+          <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route exact path="/login">
+                <Login />
+              </Route>
+          </Switch>
+        </Router>
+        <Footer />
+      </div>
     );
   }
 }
