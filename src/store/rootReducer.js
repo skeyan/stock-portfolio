@@ -1,8 +1,14 @@
-const initState = {
+// Actions go below
+const initState = () => ({
     stocks: []
-}
+})
 
-const rootReducer = (state = initState, action) => {
+/*
+    * The rootReducer is responsible for taking actions sent to it
+    * and changing the state accordingly (the store uses the rootReducer).
+    * Because this app is small, there will only be one reducer.
+*/
+function rootReducer(state = initState, action = {}) {
     return state;
 }
 
