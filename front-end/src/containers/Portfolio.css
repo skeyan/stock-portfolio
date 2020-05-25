@@ -6,4 +6,20 @@ h3#portfolio-header {
 .portfolio-container {
     padding-left: 50px;
     font-family: avenir-medium;
+} 
+
+form .purchase-form-container {
+    font-family: avenir-black;
+}
+
+form .purchase-form-field {
+    width: 350px;
+    font-family: avenir-light;
+}
+
+p#help {
+    margin-top: 5px;
+    font-size: 13px;
+    color: gray;
+    font-family: helvetica;
 }

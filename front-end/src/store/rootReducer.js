@@ -2,17 +2,23 @@ import axios from 'axios';
 
 // Constants will be used to define cases in the rootReducer
 const SET_CASH = "SET_CASH";
+const SET_STOCK = "SET_STOCK";
+const SET_ERROR = "SET_ERROR";
 const GET_STOCK_PRICES = "GET_STOCK_PRICES";
 
 // Initialize the initial state of the store with default values
-const initState = () => ({
-    stocks: {},
-    cash: 5000
-})
+const initState = {
+    // Stocks is a set containing all the user's purchased stocks (no repeats)
+    // Cash is the float user's current cash, defaulted to $5000 (decreases when buying stocks, cannot go under 0)
+    // Error is the string error message containing any error messages from API calls
+    stocks: new Set(), // possibly split and reference each other?
+    cash: 5000,
+    error: ""
+}
 
-// Thunks go below
+// Actions ----------------------------------------------------------------------------
 /*
-    * The function setCash(cash) sets the cash amount in the store
+    * The action setCash(cash) sets the cash amount in the store
     * to equal whatever number value is passed in.
 */
 export function setCash(cash = 0) {
@@ -23,11 +29,38 @@ export function setCash(cash = 0) {
 }
 
 /*
-    * The function getStockPrices(symbol, quantity) makes an axios call to Alpha Vantage
+    * The action setStock(stock) adds/updates a singular stock in the store
+    * to whatever stock object was passed in
+*/
+export function setStock(stockSet = {}) {
+    return {
+        type: SET_STOCK,
+        stock: stockSet
+    }
+}
+
+/*
+    * The action setCash(cash) sets the cash amount in the store
+    * to equal whatever number value is passed in.
+*/
+export function setError(error = "") {
+    return {
+        type: SET_ERROR,
+        error: error
+    }
+}
+
+// Thunks -----------------------------------------------------------------------------
+/*
+    * The thunk getStockPrices(symbol, quantity) makes an axios call to Alpha Vantage
     * to get the global quote for the symbol passed in.
     * If successful, the axios call will return an object 
     * (more functionality later)
 */
+var Stock = function(name, currentPrice) {
+    this.name = name;
+    this.currentPrice = currentPrice;
+};
 export const getStockPrices = (symbol, quantity) => {
     return async (dispatch, getState) => {
         // Form the URL with which to make the call
@@ -37,21 +70,41 @@ export const getStockPrices = (symbol, quantity) => {
         const response = await axios.get(url);
         // console.log(response);
 
-        // If the response from the call is not an error message, then log a warning to the user and don't do anything else
+        // If the response from the call is not an error message, 
+        // then log a warning to the user and don't do anything else.
         // This likely means that the symbol entered by the user was invalid.
+        if(!response.data["Global Quote"]) {
+            console.log("ERROR: ", response);
+            const currentError = response.data["Error Message"];
+            dispatch(setError(currentError));
+        }
 
         // Otherwise, if the response was successful, change the stock price
-        let currentPriceOfSymbol = response.data["Global Quote"]["05. price"];
-        let recalculatedCash = getState().cash - currentPriceOfSymbol * quantity;
-        console.log(currentPriceOfSymbol);
-        dispatch(setCash(recalculatedCash));
-        dispatch({
-            type: GET_STOCK_PRICES,
-            stocks: response
-        });
+        // according to quantity and real-time current price of the stock.
+        // Also, recalculate the cash the user has on-hand.
+        else {
+            let currentPriceOfSymbol = response.data["Global Quote"]["05. price"];
+            let recalculatedCash = getState().cash - currentPriceOfSymbol * quantity;
+
+            // Handle cash calculation
+            console.log("CURRENT PRICE OF ", symbol, ": ", currentPriceOfSymbol);
+            dispatch(setCash(recalculatedCash));
+
+            // Add to the set of stocks
+            let stockToBeAdded = new Stock(symbol, currentPriceOfSymbol);
+            let expandedSet = getState().stocks;
+            console.log(getState().stocks)
+            expandedSet.add(stockToBeAdded);
+            dispatch(setStock(expandedSet));
+            // dispatch({
+            //     type: GET_STOCK_PRICES,
+            //     stocks: response
+            // });
+        }
     }
 }
 
+// Reducer ---------------------------------------------------------------------------
 /*
     * The rootReducer is responsible for taking actions sent to it
     * and changing the state accordingly (the store uses the rootReducer).
@@ -60,16 +113,27 @@ export const getStockPrices = (symbol, quantity) => {
 function rootReducer(state = initState, action = {}) {
     switch (action.type) 
     {
-        // More action cases go here
+        // Action cases go here
+        // Change the Store's state according to the action received
         case SET_CASH:
             return Object.assign({}, state, {
                 cash: action.cash
             });
 
-        case GET_STOCK_PRICES:
+        case SET_STOCK:
             return Object.assign({}, state, {
-                stocks: action.stocks
+                stocks: action.stock
             });
+
+        case SET_ERROR:
+            return Object.assign({}, state, {
+                error: action.error
+            });
+
+        // case GET_STOCK_PRICES:
+        //     return Object.assign({}, state, {
+        //         stocks: action.stocks
+        //     });
 
         default:
             return state;

@@ -6,8 +6,6 @@ class Home extends Component {
     constructor()
     {
         super();
-
-        // Default state values go below
     }
 
     render() {
