@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 import "./Login.css";
 
 export default function Login() {
@@ -30,6 +31,7 @@ export default function Login() {
             className="form-input"
           />
         </FormGroup>
+        <br />
         <FormGroup controlId="password" bsSize="large">
           <ControlLabel>Password</ControlLabel>
           <br />
@@ -43,8 +45,9 @@ export default function Login() {
         <Button block bsSize="large" disabled={!validateForm()} type="submit">
           Login
         </Button>
+        <p id="no-account">Don't have an account? Register here.</p>
       </form>
-
+     
       
     </div>
   );

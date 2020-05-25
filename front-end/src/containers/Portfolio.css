@@ -1,0 +1,9 @@
+h3#portfolio-header {
+    font-family: avenir-black;
+    font-size: 22px;
+}
+
+.portfolio-container {
+    padding-left: 50px;
+    font-family: avenir-medium;
+}

@@ -8,9 +8,15 @@ function Navbar() {
             <div className="App-Title">
                 <img src="/bank.png" alt="bank symbol" width="50px"/>
                 <br />
-                Stock Portfolio
+                Stockfolio
             </div>
-            <div className="App-Header-Links"><Link to="/">Home</Link> | Portfolio | Transactions | <Link to="/login">Login</Link> | Register</div>
+            <ul className="App-Header-Links">
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/portfolio">Portfolio</Link></li>
+                <li>Transactions</li>
+                <li><Link to="/login">Login</Link></li>
+                <li>Register</li>
+            </ul>
         </div>
     );
 }

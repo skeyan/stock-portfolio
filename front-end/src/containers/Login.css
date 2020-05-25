@@ -20,4 +20,8 @@
         font-size: 14px;
         font-family: avenir-light;
     }
+
+    #no-account {
+        font-family: avenir-medium;
+    }
 }

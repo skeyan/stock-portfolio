@@ -8,18 +8,14 @@ class Home extends Component {
         super();
 
         // Default state values go below
-        // this.state = {
-        //     // Default values, currently hardcoded
-        //     money: 5000
-        // }
     }
 
     render() {
         return (
             <div className="homepage-message">
-                <h2>Welcome to Stock Portfolio,</h2>
-                <p>where you can create an account, buy stocks, and view your transactions! </p>
-                <p>To begin, <Link to="/login">login</Link> or signup.</p>
+                <h2>Welcome to Stockfolio,</h2>
+                <p>where you can create an account, buy stocks, and audit your transactions! </p>
+                <p>To begin, <Link to="/login">login</Link> or register.</p>
             </div>
         );
     }

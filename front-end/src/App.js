@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './containers/Home.js';
 import Navbar from './containers/Navbar.js';
 import Footer from './containers/Footer.js';
+import Portfolio from './containers/Portfolio.js';
 import Login from './containers/Login.js';
 import NotFound from './containers/NotFound.js';
 import './App.css';
@@ -37,6 +38,9 @@ class App extends Component {
               </Route>
               <Route exact path="/login">
                 <Login />
+              </Route>
+              <Route exact path="/portfolio">
+                <Portfolio />
               </Route>
               {/* Catch all route for an invalid url: */}
               <Route>

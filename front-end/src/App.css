@@ -21,6 +21,17 @@
   color: #293B59;
   text-align: center;
   font-size: 14px;
+  list-style-type: none;
+}
+
+.App-Header-Links li {
+  display: inline;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.App-Header-Links li:not(:last-child) { 
+  border-right: 1px solid #e3e3e3;
 }
 
 /* Style for the footer. */
