@@ -5,6 +5,7 @@ import Navbar from './containers/Navbar.js';
 import Footer from './containers/Footer.js';
 import Portfolio from './containers/Portfolio.js';
 import Login from './containers/Login.js';
+import Register from './containers/Register.js';
 import NotFound from './containers/NotFound.js';
 import './styles/App.css';
 
@@ -30,6 +31,9 @@ class App extends Component {
               </Route>
               <Route exact path="/login">
                 <Login />
+              </Route>
+              <Route exact path="/register">
+                <Register />
               </Route>
               <Route exact path="/portfolio">
                 <Portfolio />
