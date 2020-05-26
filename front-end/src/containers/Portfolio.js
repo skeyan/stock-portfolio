@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Portfolio.css';
+import '../styles/Portfolio.css';
 import PurchaseView from '../views/PurchaseView';
 import AlertDimissable from '../views/AlertView';
 import { connect } from "react-redux";

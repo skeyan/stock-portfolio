@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import '../containers/Portfolio.css';
+import '../styles/Portfolio.css';
 import { connect } from "react-redux";
 import { getStockPrices } from '../store/rootReducer';
 

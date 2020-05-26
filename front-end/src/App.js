@@ -6,7 +6,7 @@ import Footer from './containers/Footer.js';
 import Portfolio from './containers/Portfolio.js';
 import Login from './containers/Login.js';
 import NotFound from './containers/NotFound.js';
-import './App.css';
+import './styles/App.css';
 
 class App extends Component {
 

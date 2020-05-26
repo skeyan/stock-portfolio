@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Alert } from "react-bootstrap";
 import { connect } from "react-redux";
 import { setError } from '../store/rootReducer';
-import '../containers/Portfolio.css';
+import '../styles/Portfolio.css';
 
 class AlertDismissable extends Component {
     constructor(props, context) {
