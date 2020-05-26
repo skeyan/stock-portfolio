@@ -15,7 +15,7 @@ function Navbar() {
                 <li><Link to="/portfolio">Portfolio</Link></li>
                 <li>Transactions</li>
                 <li><Link to="/login">Login</Link></li>
-                <li>Register</li>
+                <li><Link to="/register">Register</Link></li>
             </ul>
         </div>
     );

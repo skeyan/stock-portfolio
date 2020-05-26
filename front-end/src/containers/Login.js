@@ -9,7 +9,7 @@ export default function Login() {
 
   function validateForm() 
   {
-    return email.length > 0 && password.length > 4;
+    return email.length > 0 && password.length > 0;
   }
 
   function handleSubmit(event) 
