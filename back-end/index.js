@@ -1,6 +1,12 @@
 const express = require('express')
 const app = express()
 const port = 5000
+const user = require('./routes/UserRoute.js')
+
+// bodyParser
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded()); // read the url parameters properly
+app.use(bodyParser.json()); // converts json into js objects
 
 // connect to mongoose
 const mongoose = require("mongoose")
@@ -16,6 +22,8 @@ db.once('open', function() {
   // we're connected!
   console.log("successfully connected to mongo database");
 });
+
+app.use('/user', user);
 
 // This app starts a server and listens on port 5000 for connections.
 // The app responds with “Hello World!” for requests to the root URL (/) or route. 
