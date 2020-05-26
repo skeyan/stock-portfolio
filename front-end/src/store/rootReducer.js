@@ -3,18 +3,23 @@ import axios from 'axios';
 // Constants will be used to define cases in the rootReducer
 const SET_CASH = "SET_CASH";
 const SET_STOCK = "SET_STOCK";
+const SET_STOCK_QUANTITY_MAP = "SET_STOCK_QUANTITY_MAP";
 const SET_ERROR = "SET_ERROR";
 const GET_STOCK_PRICES = "GET_STOCK_PRICES";
 
 // Initialize the initial state of the store with default values
 const initState = {
-    // Stocks is a set containing all the user's purchased stocks (should have no repeats)
+    // stocks is a set containing all the user's purchased stocks as strings (should have no repeats)
     stocks: new Set(), 
 
-    // Cash is the float user's current cash, defaulted to $5000 (decreases when buying stocks, cannot go under 0)
+    // stockQuantityMap is a map containing all the user's purchased stocks
+    // in a name (string): total quantity purchased (integer) pair
+    stockQuantityMap: new Map(),
+
+    // cash is the float user's current cash, defaulted to $5000 (decreases when buying stocks, cannot go under 0)
     cash: 5000,
 
-    // Error is the string error message containing any error messages from API calls
+    // error is the string error message containing any error messages from API calls
     error: ""
 }
 
@@ -31,13 +36,24 @@ export function setCash(cash = 0) {
 }
 
 /*
-    * The action setStock(stock) adds/updates a the set of stocks in the store
+    * The action setStock(stockSet) adds/updates the set of stocks in the store
     * to a new, updated set.
 */
 export function setStock(stockSet = {}) {
     return {
         type: SET_STOCK,
         stock: stockSet
+    }
+}
+
+/*
+    * The action setStockQuantityMap(stockMap) adds/updates the map of stocks:quantity
+    * to a new, updated map.
+*/
+export function setStockQuantityMap(stockQuantityMap = {}) {
+    return {
+        type: SET_STOCK_QUANTITY_MAP,
+        stockQuantityMap: stockQuantityMap
     }
 }
 
@@ -59,7 +75,7 @@ export function setError(error = "") {
     * Its purpose is to retrieve prices and make the transaction, if possible,
     * or otherwise create a relevant alert.
 */
-var Stock = function(name, currentPrice) {
+var Stock = function(name, currentPrice) { // Stock object, testing structure
     this.name = name;
     this.currentPrice = currentPrice;
 };
@@ -68,7 +84,7 @@ export const getStockPrices = (symbol, quantity) => {
         // Form the URL with which to make the call
         let url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + symbol + "&apikey=" + process.env.ALPHA_VANTAGE_KEY;
 
-        // Make the asynchronous axios call to Alpha Vantage to get the current price of the stock in question
+        // Make the asynchronous axios call to get the current price of the stock in question
         const response = await axios.get(url);
         // console.log(response);
 
@@ -91,23 +107,33 @@ export const getStockPrices = (symbol, quantity) => {
 
             // Handle cash calculation
             console.log("CURRENT PRICE OF ", symbol, ": ", currentPriceOfSymbol);
-            if (recalculatedCash >= 0) {
+            if (recalculatedCash >= 0) { // Add to the set of stocks only if the user has enough money to purchase them
                 dispatch(setCash(recalculatedCash));
-                // Add to the set of stocks only if the user has enough money to purchase them
-                let stockToBeAdded = new Stock(symbol, currentPriceOfSymbol);
+
+                // Update stockSet and stockQuantityMap
+                // let stockToBeAdded = new Stock(symbol, currentPriceOfSymbol);
                 let expandedSet = getState().stocks;
                 console.log(getState().stocks)
-                expandedSet.add(stockToBeAdded);
+                expandedSet.add(symbol);
+
+                let updatedQuantityMap = getState().stockQuantityMap;
+                console.log(getState().stockQuantityMap);
+                if (updatedQuantityMap.has(symbol)) {
+                    let updatedQuantity = updatedQuantityMap.get(symbol);
+                    updatedQuantity += parseInt(quantity);
+                    updatedQuantityMap.set(symbol, updatedQuantity);
+                }
+                else {
+                    updatedQuantityMap.set(symbol, parseInt(quantity));
+                }
+
+                dispatch(setStockQuantityMap(updatedQuantityMap));
                 dispatch(setStock(expandedSet));
-                dispatch(setError("success"));
+                dispatch(setError("success")); // Alert the user of the success
             }
-            else {
+            else { // Otherwise, there's not enough cash so don't let the purchase go through and alert the user
                 dispatch(setError("Not enough cash for purchase."));
             }
-            // dispatch({
-            //     type: GET_STOCK_PRICES,
-            //     stocks: response
-            // });
         }
     }
 }
@@ -131,6 +157,11 @@ function rootReducer(state = initState, action = {}) {
         case SET_STOCK:
             return Object.assign({}, state, {
                 stocks: action.stock
+            });
+
+        case SET_STOCK_QUANTITY_MAP:
+            return Object.assign({}, state, {
+                stockQuantityMap: action.stockQuantityMap
             });
 
         case SET_ERROR:
