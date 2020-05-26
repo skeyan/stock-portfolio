@@ -1,0 +1,39 @@
+h3#portfolio-header {
+    font-family: avenir-black;
+    font-size: 22px;
+}
+
+.portfolio-container {
+    padding-left: 50px;
+    font-family: avenir-medium;
+} 
+
+/* Purchase Form Styling --------------------------------------- */
+/* Styling for the entire form */
+form.purchase-form {
+    width: 350px;
+}
+
+/* Styling for the form title */
+form .purchase-form-titles {
+    font-family: avenir-black;
+}
+
+form .purchase-form-field {
+    width: 350px;
+    font-family: avenir-light;
+}
+
+p#help {
+    margin-top: 5px;
+    font-size: 13px;
+    color: gray;
+    font-family: helvetica;
+}
+
+/* Alert Message Styling --------------------------------------- */
+.alert-container {
+    width: 340px;
+}
+
+

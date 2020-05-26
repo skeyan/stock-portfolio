@@ -1,0 +1,24 @@
+@media all and (min-width: 480px) {
+    .Login {
+        font-family: avenir-black;
+        padding: 60px 0;
+        display: flex;
+        color: #293B59;
+    }
+
+    .Login form {
+        color: #293B59;
+        margin: 0 auto;
+        max-width: 400px;
+        font-family: avenir-black;
+    }
+
+    .form-input {
+        font-family: avenir-light;
+        width: 400px;
+    }
+
+    #no-account {
+        font-family: avenir-medium;
+    }
+}

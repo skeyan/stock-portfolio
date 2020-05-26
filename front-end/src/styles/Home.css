@@ -1,0 +1,19 @@
+.homepage-message {
+    font-family: avenir-medium;
+    margin-left: 1rem;
+    text-align: center;
+    color: #293B59;
+}
+
+.homepage-message h2 {
+    margin-top: 30px;
+    font-size: 30px;
+}
+
+a {
+    color: #2fc477;
+}
+
+a:visited {
+    color: #2fc477;
+}
