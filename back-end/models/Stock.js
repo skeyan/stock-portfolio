@@ -5,3 +5,12 @@
     * - email (user) who bought the stock
     * - quantity that the user bought
 */
+var mongoose = require('mongoose');
+
+var stockSchema = new mongoose.Schema({
+    tickerSymbol: String,
+    email: String,
+    quantity: Number
+});
+
+module.exports = mongoose.model('Stock', stockSchema);
