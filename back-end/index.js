@@ -1,12 +1,16 @@
 const express = require('express')
 const app = express()
-const port = 5000
+const cors = require('cors')
 const user = require('./routes/UserRoute.js')
+const port = 5000
 
 // bodyParser
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded()); // read the url parameters properly
 app.use(bodyParser.json()); // converts json into js objects
+
+// cors for cross-origin-requests (hitting endpoint from a browser)
+app.use(cors());
 
 // connect to mongoose
 const mongoose = require("mongoose")
@@ -23,6 +27,7 @@ db.once('open', function() {
   console.log("successfully connected to mongo database");
 });
 
+// routing
 app.use('/user', user);
 
 // This app starts a server and listens on port 5000 for connections.
