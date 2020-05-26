@@ -91,15 +91,19 @@ export const getStockPrices = (symbol, quantity) => {
 
             // Handle cash calculation
             console.log("CURRENT PRICE OF ", symbol, ": ", currentPriceOfSymbol);
-            dispatch(setCash(recalculatedCash));
-
-            // Add to the set of stocks
-            let stockToBeAdded = new Stock(symbol, currentPriceOfSymbol);
-            let expandedSet = getState().stocks;
-            console.log(getState().stocks)
-            expandedSet.add(stockToBeAdded);
-            dispatch(setStock(expandedSet));
-            dispatch(setError("success"));
+            if (recalculatedCash >= 0) {
+                dispatch(setCash(recalculatedCash));
+                // Add to the set of stocks only if the user has enough money to purchase them
+                let stockToBeAdded = new Stock(symbol, currentPriceOfSymbol);
+                let expandedSet = getState().stocks;
+                console.log(getState().stocks)
+                expandedSet.add(stockToBeAdded);
+                dispatch(setStock(expandedSet));
+                dispatch(setError("success"));
+            }
+            else {
+                dispatch(setError("Not enough cash for purchase."));
+            }
             // dispatch({
             //     type: GET_STOCK_PRICES,
             //     stocks: response
