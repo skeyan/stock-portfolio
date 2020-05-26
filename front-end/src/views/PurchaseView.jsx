@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Button, FormGroup, FormControl, ControlLabel, HelpBlock } from "react-bootstrap";
 import '../containers/Portfolio.css';
+import { connect } from "react-redux";
+import { getStockPrices } from '../store/rootReducer';
 
 
 class PurchaseView extends Component {
@@ -10,58 +12,118 @@ class PurchaseView extends Component {
 
         this.state = {
             symbol: "",
-            quantity: 0
+            quantity: 0        
         }
     }
 
     // This function stores the value of the input field.
-    handleChange = (e) => {
-        // console.log(e.target.value);
-        this.setState({
-            symbol: e.target.symbol,
-            quantity: e.t
-        })
+    handleChange = (type, e) => {
+        // Store the symbol/ticker input
+        if (type === "symbol") {
+            this.setState({
+                symbol: e.target.value
+            })
+        }
+        // Store the quantity input
+        else if (type === "quantity") {
+            this.setState({
+                quantity: e.target.value
+            })
+        }   
+    }
+
+    // This function validates the quantity of stocks purchased.
+    // It doesn't check if the user can purchase the stock,
+    // only that it's a valid 'quantity' that might be
+    // purchaseable. 
+    validateQuantity = () => {
+        // Double-check the type-checking with code
+        // Quantities must be whole-numbers greater than 0
+        const enteredQuantity = this.state.quantity;
+        // Non-whole number check
+        if (enteredQuantity % 1 !== 0) return "error";
+        // Negative quantity check
+        else if (enteredQuantity <= 0) return "error";
+        else return "success";
+    }
+
+    validateTicker = () => {
+        // Simple validation for if ticker length is >= 1
+        const tickerSymbol = this.state.symbol;
+        if (tickerSymbol.length >= 1) return "success";
+        else return "error";
+    }
+
+    // This function takes the submitted content and sends it off to 
+    // the reducer as an action after a preliminary check that the
+    // values are at least ready to be submitted for a deeper check.
+    // The reducer then checks to see if the stock
+    // can indeed be purchased at the quantity entered, and either
+    // processes the submitted stock and changes the cash amount,
+    // or stores an alert to tell the user went wrong.
+    handleSubmit = (e) => {
+        e.preventDefault();
+        if (this.validateTicker() === "success" && this.validateQuantity() === "success") {
+            console.log("Dispatching on success");
+            this.props.getStockPrices(this.state.symbol, this.state.quantity);
+        }  
     }
 
     render() {
         return (
             <div>
-                <br />
-                Debug: PurchaseView
-                <h3 id="portfolio-header">Cash:</h3> 
-                <p>${this.props.cash}</p>
-                <form>
-                    <FormGroup controlId="formBasicText">
-                        <ControlLabel className="purchase-form-container">Ticker</ControlLabel>
+                <h3 id="portfolio-header">Cash: ${this.props.cash}</h3> 
+                <form className="purchase-form" onSubmit={this.handleSubmit}>
+                    <FormGroup controlId="formBasicText" validationState={this.validateTicker()}>
+                        <ControlLabel className="purchase-form-titles">Ticker</ControlLabel>
                         <br></br>
                         <FormControl
                             type="text"
                             value={this.state.value}
                             placeholder="Enter ticker"
-                            onChange={this.handleChange}
+                            onChange={(e) => this.handleChange("symbol", e)}
                             className="purchase-form-field"
                         />
                         <FormControl.Feedback />
                         <p id="help">Enter a valid stock symbol (ex: IBM, AAPL).</p>
                     </FormGroup>
-                    <FormGroup controlId="formBasicText">
-                        <ControlLabel className="purchase-form-container">Quantity</ControlLabel>
+                    <FormGroup controlId="formBasicText" validationState={this.validateQuantity()}>
+                        <ControlLabel className="purchase-form-titles">Quantity</ControlLabel>
                         <br></br>
                         <FormControl
-                            type="text"
+                            type="number"
+                            min="1" 
+                            step="1"
                             value={this.state.value}
                             placeholder="Enter quantity"
-                            onChange={this.handleChange}
+                            onChange={(e) => this.handleChange("quantity", e)}
                             className="purchase-form-field"
                         />
                         <FormControl.Feedback />
-                        <p id="help">Enter a whole number quantity (ex: 1, 40).</p>
+                        <HelpBlock>Enter a whole number quantity (ex: 1, 40).</HelpBlock>
                     </FormGroup>
-                    <Button bsStyle="success">Buy</Button>
+                    <Button bsStyle="success" type="submit">Buy</Button>
                 </form>
             </div>
         );
     }
 }
 
-export default PurchaseView;
+// Match state variables to props of this component
+// prop_var_name: state.var_name_in_state
+function mapStateToProps(state) {
+    return {
+
+    }
+  }
+
+// Map dispatch functions to props of this component
+// action: (variable) => dispatch (action(variable))
+const mapDispatchToProps = dispatch => {
+    return {
+        getStockPrices: (symbol, quantity) => dispatch(getStockPrices(symbol, quantity)),
+    }
+  };
+
+// Connect this component to the store
+export default connect(mapStateToProps, mapDispatchToProps)(PurchaseView);

@@ -30,7 +30,7 @@ export function setCash(cash = 0) {
 
 /*
     * The action setStock(stock) adds/updates a singular stock in the store
-    * to whatever stock object was passed in
+    * to a new, updated set.
 */
 export function setStock(stockSet = {}) {
     return {
@@ -54,8 +54,8 @@ export function setError(error = "") {
 /*
     * The thunk getStockPrices(symbol, quantity) makes an axios call to Alpha Vantage
     * to get the global quote for the symbol passed in.
-    * If successful, the axios call will return an object 
-    * (more functionality later)
+    * Its purpose is to retrieve prices and make the transaction, if possible,
+    * or otherwise create a relevant alert.
 */
 var Stock = function(name, currentPrice) {
     this.name = name;
@@ -83,8 +83,8 @@ export const getStockPrices = (symbol, quantity) => {
         // according to quantity and real-time current price of the stock.
         // Also, recalculate the cash the user has on-hand.
         else {
-            let currentPriceOfSymbol = response.data["Global Quote"]["05. price"];
-            let recalculatedCash = getState().cash - currentPriceOfSymbol * quantity;
+            let currentPriceOfSymbol = parseFloat(response.data["Global Quote"]["05. price"]);
+            let recalculatedCash = parseFloat(getState().cash - currentPriceOfSymbol * quantity).toFixed(2);
 
             // Handle cash calculation
             console.log("CURRENT PRICE OF ", symbol, ": ", currentPriceOfSymbol);

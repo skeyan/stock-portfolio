@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import './Portfolio.css';
 import PurchaseView from '../views/PurchaseView';
 import { connect } from "react-redux";
@@ -27,7 +26,7 @@ class Portfolio extends Component {
 
     render() {
         let windowVar;
-        if (this.props.errorMessage != null && this.props.errorMessage != "")
+        if (this.props.errorMessage !== null && this.props.errorMessage !== "")
         {
             windowVar = window.alert(this.props.errorMessage);
             this.props.setError("");
@@ -36,8 +35,7 @@ class Portfolio extends Component {
         return ( 
             <div className="portfolio-container">
                 { windowVar }
-                Debug: Portfolio
-                <h3 id="portfolio-header">$USER's Portfolio ($$AMOUNT_WITH_STOCKS)</h3>
+                <h3 id="portfolio-header">$USER's Portfolio ($AMOUNT_WITH_STOCKS)</h3>
 
                 {/* PurchaseView is the component where the user can purchase stocks. */}
                 <PurchaseView cash={this.props.cash} />

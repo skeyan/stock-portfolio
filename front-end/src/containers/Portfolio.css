@@ -8,7 +8,13 @@ h3#portfolio-header {
     font-family: avenir-medium;
 } 
 
-form .purchase-form-container {
+/* Styling for the entire form */
+form.purchase-form {
+    width: 350px;
+}
+
+/* Styling for the form title */
+form .purchase-form-titles {
     font-family: avenir-black;
 }
 

@@ -1,6 +1,6 @@
+import 'bootstrap/dist/css/bootstrap.css'; // required to use Bootstrap stylesheets
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'bootstrap/dist/css/bootstrap.css'; // required to use Bootstrap stylesheets
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { applyMiddleware, createStore } from 'redux';
