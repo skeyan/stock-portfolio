@@ -3,7 +3,7 @@ import './Portfolio.css';
 import PurchaseView from '../views/PurchaseView';
 import AlertDimissable from '../views/AlertView';
 import { connect } from "react-redux";
-import { setCash, setError, setStock, getStockPrices } from '../store/rootReducer';
+import { setCash, setError, getStockPrices } from '../store/rootReducer';
 
 class Portfolio extends Component {
     constructor()
@@ -65,7 +65,6 @@ const mapDispatchToProps = dispatch => {
     return {
       // Set the props function "setCash" dispatch the Store function "setCash" 
       setCash: (cash) => dispatch(setCash(cash)),
-      setStock: (stockSet) => dispatch(setStock(stockSet)),
       getStockPrices: (symbol, quantity) => dispatch(getStockPrices(symbol, quantity)),
       setError: (error) => dispatch(setError(error))
     }

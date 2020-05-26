@@ -2,16 +2,12 @@ import axios from 'axios';
 
 // Constants will be used to define cases in the rootReducer
 const SET_CASH = "SET_CASH";
-const SET_STOCK = "SET_STOCK";
 const SET_STOCK_QUANTITY_MAP = "SET_STOCK_QUANTITY_MAP";
 const SET_ERROR = "SET_ERROR";
 const GET_STOCK_PRICES = "GET_STOCK_PRICES";
 
 // Initialize the initial state of the store with default values
 const initState = {
-    // stocks is a set containing all the user's purchased stocks as strings (should have no repeats)
-    stocks: new Set(), 
-
     // stockQuantityMap is a map containing all the user's purchased stocks
     // in a name (string): total quantity purchased (integer) pair
     stockQuantityMap: new Map(),
@@ -32,17 +28,6 @@ export function setCash(cash = 0) {
     return {
         type: SET_CASH,
         cash: cash
-    }
-}
-
-/*
-    * The action setStock(stockSet) adds/updates the set of stocks in the store
-    * to a new, updated set.
-*/
-export function setStock(stockSet = {}) {
-    return {
-        type: SET_STOCK,
-        stock: stockSet
     }
 }
 
@@ -110,12 +95,8 @@ export const getStockPrices = (symbol, quantity) => {
             if (recalculatedCash >= 0) { // Add to the set of stocks only if the user has enough money to purchase them
                 dispatch(setCash(recalculatedCash));
 
-                // Update stockSet and stockQuantityMap
+                // Update stockQuantityMap, will be replaced by backend
                 // let stockToBeAdded = new Stock(symbol, currentPriceOfSymbol);
-                let expandedSet = getState().stocks;
-                console.log(getState().stocks)
-                expandedSet.add(symbol);
-
                 let updatedQuantityMap = getState().stockQuantityMap;
                 console.log(getState().stockQuantityMap);
                 if (updatedQuantityMap.has(symbol)) {
@@ -128,7 +109,6 @@ export const getStockPrices = (symbol, quantity) => {
                 }
 
                 dispatch(setStockQuantityMap(updatedQuantityMap));
-                dispatch(setStock(expandedSet));
                 dispatch(setError("success")); // Alert the user of the success
             }
             else { // Otherwise, there's not enough cash so don't let the purchase go through and alert the user
@@ -152,11 +132,6 @@ function rootReducer(state = initState, action = {}) {
         case SET_CASH:
             return Object.assign({}, state, {
                 cash: action.cash
-            });
-
-        case SET_STOCK:
-            return Object.assign({}, state, {
-                stocks: action.stock
             });
 
         case SET_STOCK_QUANTITY_MAP:
