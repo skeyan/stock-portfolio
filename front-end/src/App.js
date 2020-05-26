@@ -12,22 +12,14 @@ class App extends Component {
 
   constructor() {
     super();
-
-    this.state = {
-        // Default state values
-    }
   }
 
   // Functions go here
 
   render () {
-
-    // const HomeComponent = () => (<Home />);
-
     return (
       /*
         * Uses a Router to switch between pages.
-        * Currently, it only routes to a homepage.
       */
      <div>
         <Router>
