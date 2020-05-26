@@ -8,6 +8,7 @@ h3#portfolio-header {
     font-family: avenir-medium;
 } 
 
+/* Purchase Form Styling --------------------------------------- */
 /* Styling for the entire form */
 form.purchase-form {
     width: 350px;
@@ -29,3 +30,10 @@ p#help {
     color: gray;
     font-family: helvetica;
 }
+
+/* Alert Message Styling --------------------------------------- */
+.alert-container {
+    width: 340px;
+}
+
+

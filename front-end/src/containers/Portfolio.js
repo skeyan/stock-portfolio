@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Portfolio.css';
 import PurchaseView from '../views/PurchaseView';
+import AlertDimissable from '../views/AlertView';
 import { connect } from "react-redux";
 import { setCash, setError, setStock, getStockPrices } from '../store/rootReducer';
 
@@ -28,15 +29,19 @@ class Portfolio extends Component {
         let windowVar;
         if (this.props.errorMessage !== null && this.props.errorMessage !== "")
         {
-            windowVar = window.alert(this.props.errorMessage);
-            this.props.setError("");
+            // windowVar = window.alert(this.props.errorMessage);
+            if (this.props.errorMessage === "success") {
+                windowVar = <AlertDimissable validity="true"/>
+            }
+            else {
+                windowVar = <AlertDimissable validity="false"/>
+            }
         }
 
         return ( 
             <div className="portfolio-container">
-                { windowVar }
                 <h3 id="portfolio-header">$USER's Portfolio ($AMOUNT_WITH_STOCKS)</h3>
-
+                { windowVar }
                 {/* PurchaseView is the component where the user can purchase stocks. */}
                 <PurchaseView cash={this.props.cash} />
             </div>

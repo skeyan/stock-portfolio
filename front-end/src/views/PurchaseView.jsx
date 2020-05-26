@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, ControlLabel, HelpBlock } from "react-bootstrap";
+import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import '../containers/Portfolio.css';
 import { connect } from "react-redux";
 import { getStockPrices } from '../store/rootReducer';
@@ -85,7 +85,7 @@ class PurchaseView extends Component {
                             className="purchase-form-field"
                         />
                         <FormControl.Feedback />
-                        <p id="help">Enter a valid stock symbol (ex: IBM, AAPL).</p>
+                        <p id="help">Enter a stock symbol (ex: IBM, AAPL).</p>
                     </FormGroup>
                     <FormGroup controlId="formBasicText" validationState={this.validateQuantity()}>
                         <ControlLabel className="purchase-form-titles">Quantity</ControlLabel>
@@ -100,7 +100,7 @@ class PurchaseView extends Component {
                             className="purchase-form-field"
                         />
                         <FormControl.Feedback />
-                        <HelpBlock>Enter a whole number quantity (ex: 1, 40).</HelpBlock>
+                        <p id="help">Enter a whole number quantity greater than 0 (ex: 1, 40).</p>
                     </FormGroup>
                     <Button bsStyle="success" type="submit">Buy</Button>
                 </form>

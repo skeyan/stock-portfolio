@@ -8,11 +8,13 @@ const GET_STOCK_PRICES = "GET_STOCK_PRICES";
 
 // Initialize the initial state of the store with default values
 const initState = {
-    // Stocks is a set containing all the user's purchased stocks (no repeats)
+    // Stocks is a set containing all the user's purchased stocks (should have no repeats)
+    stocks: new Set(), 
+
     // Cash is the float user's current cash, defaulted to $5000 (decreases when buying stocks, cannot go under 0)
-    // Error is the string error message containing any error messages from API calls
-    stocks: new Set(), // possibly split and reference each other?
     cash: 5000,
+
+    // Error is the string error message containing any error messages from API calls
     error: ""
 }
 
@@ -29,7 +31,7 @@ export function setCash(cash = 0) {
 }
 
 /*
-    * The action setStock(stock) adds/updates a singular stock in the store
+    * The action setStock(stock) adds/updates a the set of stocks in the store
     * to a new, updated set.
 */
 export function setStock(stockSet = {}) {
@@ -40,8 +42,8 @@ export function setStock(stockSet = {}) {
 }
 
 /*
-    * The action setCash(cash) sets the cash amount in the store
-    * to equal whatever number value is passed in.
+    * The action setError(error) sets the current error message
+    * that will be shown to the user to whatever string is passed in.
 */
 export function setError(error = "") {
     return {
@@ -74,8 +76,9 @@ export const getStockPrices = (symbol, quantity) => {
         // then log a warning to the user and don't do anything else.
         // This likely means that the symbol entered by the user was invalid.
         if(!response.data["Global Quote"]) {
-            console.log("ERROR: ", response);
-            const currentError = response.data["Error Message"];
+            // console.log("ERROR: ", response);
+            // const currentError = response.data["Error Message"];
+            const currentError = "Invalid ticker symbol entered."
             dispatch(setError(currentError));
         }
 
@@ -96,6 +99,7 @@ export const getStockPrices = (symbol, quantity) => {
             console.log(getState().stocks)
             expandedSet.add(stockToBeAdded);
             dispatch(setStock(expandedSet));
+            dispatch(setError("success"));
             // dispatch({
             //     type: GET_STOCK_PRICES,
             //     stocks: response
