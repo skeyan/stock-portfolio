@@ -71,8 +71,7 @@ export const getStockPrices = (symbol, quantity) => {
 
         // Make the asynchronous axios call to get the current price of the stock in question
         const response = await axios.get(url);
-        // console.log(response);
-
+        
         // If the response from the call is not an error message, 
         // then log a warning to the user and don't do anything else.
         // This likely means that the symbol entered by the user was invalid.
