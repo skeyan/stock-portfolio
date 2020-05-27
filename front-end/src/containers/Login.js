@@ -35,7 +35,7 @@ const Login = (props) => {
           alertClass="flexible-container"
         />);
         props.setLoggedIn(true);
-        // history.push("/"); // Redirect to homepage
+        history.push("/"); // Redirect to homepage
       }
       else { // Unsuccessful login
         setLoginAlert(<AlertDimissable 

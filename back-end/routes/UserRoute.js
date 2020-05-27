@@ -16,7 +16,6 @@ router.get("/login/:email/password/:password", function (req, res) {
     // Go through all the users in the User table to see if it exists
     User.findOne({ email: req.params.email }, (err, user) => {
         if (err) { // find error --> cannot login
-            console.log("HERE")
             res.send({
                 success: false,
                 message: err // send the error object
@@ -74,7 +73,7 @@ router.post("/register", function (req, res) {
             // Hash their password asynchronously, create user, and store in database.
             bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
                 // Create an instance (document) of a user model 
-                let user = new User({
+                const user = new User({
                     name: req.body.name,
                     email: req.body.email,
                     password: hash,
@@ -83,13 +82,20 @@ router.post("/register", function (req, res) {
 
                 // Save the new user into the database
                 user.save(err => { 
-                    if (err) console.log(err);
-                })
-
-                // Send a object message to alert the front-end of what happened here
-                res.send({
-                    success: true,
-                    message: "Successful registration, new user created."
+                    if (err) {
+                        console.log(err);
+                        res.send({
+                            success: false,
+                            message: err
+                        })
+                    }
+                    else {
+                        // Send a object message to alert the front-end of what happened here
+                        res.send({
+                            success: true,
+                            message: "Successful registration, new user created."
+                        })
+                    }
                 })
             });
         }
