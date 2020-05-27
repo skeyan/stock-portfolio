@@ -34,6 +34,15 @@
   border-right: 1px solid #e3e3e3;
 }
 
+li#logoutNav {
+  cursor: pointer;
+  color: #2fc477;
+}
+
+li#logoutNav:hover {
+  text-decoration: underline;
+}
+
 .test {
   display: flex;
   flex-direction: column;

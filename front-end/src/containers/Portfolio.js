@@ -55,14 +55,14 @@ class Portfolio extends Component {
 
         return ( 
             <div className="portfolio-container">
-                <h3 id="portfolio-header">Portfolio ($AMOUNT_WITH_STOCKS)</h3>
+                <h3 id="portfolio-header">| Portfolio ($CASH_W_STOCKS)</h3>
+                <div className="column">
+                    <h2>Live Stocks Go Here</h2>
+                </div>
                 <div className="column">
                     { windowVar }
                     {/* PurchaseView is the component where the user can purchase stocks. */}
                     <PurchaseView cash={this.props.cash} />
-                </div>
-                <div className="column">
-                    <h2>Live Stocks Go Here</h2>
                 </div>
             </div>
         );

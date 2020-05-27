@@ -16,6 +16,7 @@ router.get("/login/:email/password/:password", function (req, res) {
     // Go through all the users in the User table to see if it exists
     User.findOne({ email: req.params.email }, (err, user) => {
         if (err) { // find error --> cannot login
+            console.log("HERE")
             res.send({
                 success: false,
                 message: err // send the error object

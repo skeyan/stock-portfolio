@@ -3,25 +3,28 @@ import axios from 'axios';
 import LoginView from '../views/LoginView';
 import AlertDimissable from '../views/AlertView';
 import '../styles/Login.css';
+import { connect } from "react-redux";
+import { setLoggedIn } from '../store/rootReducer';
+import { useHistory } from "react-router-dom";
 
-export default function Login() {
+const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginAlert, setLoginAlert] = useState(null);
+  const history = useHistory();
 
   function validateForm() 
   {
     return email.length > 0 && password.length > 0;
   }
 
-  function handleSubmit(event) 
+  function handleSubmit(event)
   {
     event.preventDefault();
-
     // Make an axios call to the backend to attempt to login the user
     axios.get("http://localhost:5000/user/login/" + email + "/password/" + password).then(res => {
-      // console.log("LOGIN RESPONSE:", res.data.message);
       if (res.data.success === true) { // Successful login
+        // Change loggedIn backend State variable
         setLoginAlert(<AlertDimissable 
           setLoginAlert={setLoginAlert} 
           setRegistrationAlert="n/a"
@@ -31,6 +34,8 @@ export default function Login() {
           message2="Hooray! Now you can view and buy stocks."
           alertClass="flexible-container"
         />);
+        props.setLoggedIn(true);
+        // history.push("/"); // Redirect to homepage
       }
       else { // Unsuccessful login
         setLoginAlert(<AlertDimissable 
@@ -73,3 +78,21 @@ export default function Login() {
     </div>
   );
 }
+
+// Match state variables to props of this component
+// prop_var_name: state.var_name_in_state
+function mapStateToProps(state) {
+  return {
+    loggedIn: state.loggedIn
+  }
+}
+
+// Map dispatch functions to props of this component
+// action: (variable) => dispatch (action(variable))
+const mapDispatchToProps = dispatch => {
+  return {
+    setLoggedIn: (loggedIn) => dispatch(setLoggedIn(loggedIn))
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -4,24 +4,21 @@ import axios from 'axios';
 const SET_CASH = "SET_CASH";
 const SET_STOCKS_ARRAY = "SET_STOCKS_ARRAY";
 const SET_ERROR = "SET_ERROR";
+const SET_LOGGED_IN = "SET_LOGGED_IN";
 
 // Initialize the initial state of the store with default values
 const initState = {
-    // an array containing all the user's purchased stocks' ticker/symbol
-    stocksArray: [],
 
-    // cash is the float user's current cash, defaulted to $5000 (decreases when buying stocks, cannot go under 0)
-    cash: 5000,
-
-    // error is the string error message containing any error messages from API calls
-    error: ""
+    stocksArray: [], // an array containing all the user's purchased stocks' ticker/symbol
+    cash: 5000, // user's current cash they can use to buy stuff with
+    error: "", // error message containing any error messages from API calls
+    loggedIn: false
 }
 
 // Actions ----------------------------------------------------------------------------
-/*
-    * The action setCash(cash) sets the cash amount in the store
-    * to equal whatever number value is passed in.
-*/
+
+// The action sets the cash amount in the store
+// to equal whatever number value is passed in.
 export function setCash(cash = 0) {
     return {
         type: SET_CASH,
@@ -29,9 +26,7 @@ export function setCash(cash = 0) {
     }
 }
 
-/*
-    * The action adds to the 
-*/
+// The action updates the stocks array
 export function setStocksArray(stocksArray = {}) {
     return {
         type: SET_STOCKS_ARRAY,
@@ -39,10 +34,16 @@ export function setStocksArray(stocksArray = {}) {
     }
 }
 
-/*
-    * The action setError(error) sets the current error message
-    * that will be shown to the user to whatever string is passed in.
-*/
+// The action sets the logged in status true or false
+export function setLoggedIn(loggedIn) {
+    return {
+        type: SET_LOGGED_IN,
+        loggedIn: loggedIn
+    }
+}
+
+// The action sets the current error message
+// that will be shown to the user to whatever string is passed in.
 export function setError(error = "") {
     return {
         type: SET_ERROR,
@@ -57,10 +58,6 @@ export function setError(error = "") {
     * Its purpose is to retrieve prices and make the transaction, if possible,
     * or otherwise create a relevant alert.
 */
-var Stock = function(name, currentPrice) { // Stock object, testing structure
-    this.name = name;
-    this.currentPrice = currentPrice;
-};
 export const getStockPrices = (symbol, quantity) => {
     return async (dispatch, getState) => {
         // Form the URL with which to make the call
@@ -86,7 +83,8 @@ export const getStockPrices = (symbol, quantity) => {
 
             // Handle cash calculation
             if (recalculatedCash >= 0) { // Add to the set of stocks only if the user has enough money to purchase them
-                dispatch(setCash(recalculatedCash)); // front-end variable only right now
+                dispatch(setCash(recalculatedCash)); // Update the user's cash balance in the front-end
+                // also update cash in backend TBA HERE
 
                 let myStocks = getState().stocksArray;
                 if (myStocks.includes(symbol)) { // user already has the stock
@@ -97,11 +95,11 @@ export const getStockPrices = (symbol, quantity) => {
                     // also update backend with that stock TBA HERE
                 }
                 
-                dispatch(setStocksArray(myStocks));
+                dispatch(setStocksArray(myStocks)); // Update the list of stocks in the frontend
                 dispatch(setError("success")); // Alert the user of the success
             }
             else { // Otherwise, there's not enough cash so don't let the purchase go through and alert the user
-                dispatch(setError("Not enough cash for purchase."));
+                dispatch(setError("Not enough cash for purchase.")); // Alert the user of the failure
             }
         }
     }
@@ -127,6 +125,11 @@ function rootReducer(state = initState, action = {}) {
             return Object.assign({}, state, {
                 stocksArray: action.stocksArray
             });
+
+        case SET_LOGGED_IN:
+            return Object.assign({}, state, {
+                loggedIn: action.loggedIn
+            })
 
         case SET_ERROR:
             return Object.assign({}, state, {
