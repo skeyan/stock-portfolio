@@ -24,7 +24,7 @@ form .purchase-form-field {
     font-family: avenir-light;
 }
 
-p#help {
+p.help {
     margin-top: 5px;
     font-size: 13px;
     color: gray;
@@ -33,7 +33,8 @@ p#help {
 
 /* Alert Message Styling --------------------------------------- */
 .alert-container {
-    width: 340px;
+    width: 45rem;
+    font-family: avenir-medium;
 }
 
 

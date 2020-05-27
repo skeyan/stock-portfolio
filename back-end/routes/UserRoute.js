@@ -14,12 +14,14 @@ router.post("/register", function (req, res) {
         if (err) {
             console.log(err);
             res.send({
+                success: false,
                 message: err // send the error object
             })
         }
         if (emails.length > 0) { // emails exist
             console.log("EMAIL ALREADY EXISTS, SHOULD NOT REGISTER NEW USER");
             res.send({
+                success: false,
                 message: "Unsuccessful registration, email already exists."
             })
         } 
@@ -38,6 +40,7 @@ router.post("/register", function (req, res) {
                 if (err) console.log(err);
             })
             res.send({
+                success: true,
                 message: "Successful registration, new user created."
             })
         }

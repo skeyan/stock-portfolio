@@ -85,7 +85,7 @@ class PurchaseView extends Component {
                             className="purchase-form-field"
                         />
                         <FormControl.Feedback />
-                        <p id="help">Enter a stock symbol (ex: IBM, AAPL).</p>
+                        <p className="help">Enter a stock symbol (ex: IBM, AAPL).</p>
                     </FormGroup>
                     <FormGroup controlId="formBasicText" validationState={this.validateQuantity()}>
                         <ControlLabel className="purchase-form-titles">Quantity</ControlLabel>
@@ -100,7 +100,7 @@ class PurchaseView extends Component {
                             className="purchase-form-field"
                         />
                         <FormControl.Feedback />
-                        <p id="help">Enter a whole number quantity greater than 0 (ex: 1, 40).</p>
+                        <p className="help">Enter a whole number quantity greater than 0 (ex: 1, 40).</p>
                     </FormGroup>
                     <Button bsStyle="success" type="submit">Buy</Button>
                 </form>

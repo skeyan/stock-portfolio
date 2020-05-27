@@ -29,12 +29,20 @@ class Portfolio extends Component {
         let windowVar;
         if (this.props.errorMessage !== null && this.props.errorMessage !== "")
         {
-            // windowVar = window.alert(this.props.errorMessage);
-            if (this.props.errorMessage === "success") {
-                windowVar = <AlertDimissable validity="true"/>
+            // windowVar = window.alert(this.props.errorMessage); // debug
+            // Alert the user of the status of their transaction/purchase.
+            if (this.props.errorMessage === "success") { // Successful purchase
+                windowVar = <AlertDimissable 
+                                    setRegistrationAlert="n/a"
+                                    validity="true" 
+                                    message="Successful purchase!" 
+                                    message2="Go to Transactions to audit your stocks."/>
             }
-            else {
-                windowVar = <AlertDimissable validity="false"/>
+            else { // Unsuccessul purchase
+                windowVar = <AlertDimissable 
+                                    setRegistrationAlert="n/a"
+                                    validity="false" 
+                                    message="Oh snap! The purchase didn't go through."/>
             }
         }
 

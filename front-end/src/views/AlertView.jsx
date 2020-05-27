@@ -20,6 +20,7 @@ class AlertDismissable extends Component {
     handleDismiss() {
       this.setState({ show: false });
       this.props.setError("");
+      if(this.props.setRegistrationAlert !== "n/a") this.props.setRegistrationAlert(null); // reset registrationAlert if applicable to show again
     }
   
     // Shows (renders) the alert component through conditional rendering
@@ -34,35 +35,32 @@ class AlertDismissable extends Component {
             return (
                 <div className="alert-container">
                     <Alert bsStyle="danger" onDismiss={this.handleDismiss}>
-                        <h4>Oh snap! The purchase didn't go through.</h4>
-                        <p>
-                        { this.props.error }
-                        </p>
-                        <p>
-                        <Button onClick={this.handleDismiss}>Close</Button>
-                        </p>
+                        <h4>{this.props.message}</h4>
+                        <p>{this.props.error}</p>
+                        <p><Button onClick={this.handleDismiss}>Close</Button></p>
                     </Alert>
               </div>
             );
         }
         else // Show a successful alert if the purchase was a success
         {
+
             return (
                 <div className="alert-container">
                     <Alert bsStyle="success" onDismiss={this.handleDismiss}>
-                        <h4>Successful purchase!</h4>
-                        <p>
-                            Go to Transactions to audit your stocks.
-                        </p>
-                        <p>
-                        <Button onClick={this.handleDismiss}>Close</Button>
-                        </p>
+                        <h4>{this.props.message}</h4>
+                        <p>{this.props.message2}</p>
+                        <p><Button onClick={this.handleDismiss}>Close</Button></p>
                     </Alert>
               </div>
             );
         }
       }
-      return null; // Show nothing if closed/dismissed
+      else {
+        console.log("not showing")
+        return null; // Show nothing if closed/dismissed
+      }
+      
     }
   }
 

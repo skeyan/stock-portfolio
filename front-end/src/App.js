@@ -10,11 +10,6 @@ import NotFound from './containers/NotFound.js';
 import './styles/App.css';
 
 class App extends Component {
-
-  constructor() {
-    super();
-  }
-
   // Functions go here
 
   render () {
@@ -23,27 +18,29 @@ class App extends Component {
         * Uses a Router to switch between pages.
       */
      <div>
+       <div className="test">
         <Router>
-        <Navbar />
-          <Switch>
-              <Route exact path="/">
-                <Home />
-              </Route>
-              <Route exact path="/login">
-                <Login />
-              </Route>
-              <Route exact path="/register">
-                <Register />
-              </Route>
-              <Route exact path="/portfolio">
-                <Portfolio />
-              </Route>
-              {/* Catch all route for an invalid url: */}
-              <Route>
-                <NotFound />
-              </Route>
-          </Switch>
+          <Navbar />
+            <Switch>
+                <Route exact path="/">
+                  <Home />
+                </Route>
+                <Route exact path="/login">
+                  <Login />
+                </Route>
+                <Route exact path="/register">
+                  <Register />
+                </Route>
+                <Route exact path="/portfolio">
+                  <Portfolio />
+                </Route>
+                {/* Catch all route for an invalid url, happens if none of the above routes are matched: */}
+                <Route>
+                  <NotFound />
+                </Route>
+            </Switch>
         </Router>
+        </div>
         <Footer />
       </div>
     );
