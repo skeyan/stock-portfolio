@@ -30,7 +30,6 @@ class AlertDismissable extends Component {
     }
   
     render() {
-      console.log(this.props.errorMessage)
       if (this.state.show) { // Show something only if it should
         if (this.props.validity !== "true") // Show a failure alert if the purchase wasn't successful
         {

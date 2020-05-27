@@ -2,15 +2,13 @@ import axios from 'axios';
 
 // Constants will be used to define cases in the rootReducer
 const SET_CASH = "SET_CASH";
-const SET_STOCK_QUANTITY_MAP = "SET_STOCK_QUANTITY_MAP";
+const SET_STOCKS_ARRAY = "SET_STOCKS_ARRAY";
 const SET_ERROR = "SET_ERROR";
-const GET_STOCK_PRICES = "GET_STOCK_PRICES";
 
 // Initialize the initial state of the store with default values
 const initState = {
-    // stockQuantityMap is a map containing all the user's purchased stocks
-    // in a name (string): total quantity purchased (integer) pair
-    stockQuantityMap: new Map(),
+    // an array containing all the user's purchased stocks' ticker/symbol
+    stocksArray: [],
 
     // cash is the float user's current cash, defaulted to $5000 (decreases when buying stocks, cannot go under 0)
     cash: 5000,
@@ -32,13 +30,12 @@ export function setCash(cash = 0) {
 }
 
 /*
-    * The action setStockQuantityMap(stockMap) adds/updates the map of stocks:quantity
-    * to a new, updated map.
+    * The action adds to the 
 */
-export function setStockQuantityMap(stockQuantityMap = {}) {
+export function setStocksArray(stocksArray = {}) {
     return {
-        type: SET_STOCK_QUANTITY_MAP,
-        stockQuantityMap: stockQuantityMap
+        type: SET_STOCKS_ARRAY,
+        stocksArray: stocksArray
     }
 }
 
@@ -76,38 +73,31 @@ export const getStockPrices = (symbol, quantity) => {
         // then log a warning to the user and don't do anything else.
         // This likely means that the symbol entered by the user was invalid.
         if(!response.data["Global Quote"]) {
-            // console.log("ERROR: ", response);
-            // const currentError = response.data["Error Message"];
             const currentError = "Invalid ticker symbol entered."
             dispatch(setError(currentError));
         }
 
         // Otherwise, if the response was successful, change the stock price
         // according to quantity and real-time current price of the stock.
-        // Also, recalculate the cash the user has on-hand.
+        // Also, recalculate the cash the user has on-hand and add the stock to the user's stocks.
         else {
             let currentPriceOfSymbol = parseFloat(response.data["Global Quote"]["05. price"]);
             let recalculatedCash = parseFloat(getState().cash - currentPriceOfSymbol * quantity).toFixed(2);
 
             // Handle cash calculation
-            console.log("CURRENT PRICE OF ", symbol, ": ", currentPriceOfSymbol);
             if (recalculatedCash >= 0) { // Add to the set of stocks only if the user has enough money to purchase them
-                dispatch(setCash(recalculatedCash));
+                dispatch(setCash(recalculatedCash)); // front-end variable only right now
 
-                // Update stockQuantityMap, will be replaced by backend
-                // let stockToBeAdded = new Stock(symbol, currentPriceOfSymbol);
-                let updatedQuantityMap = getState().stockQuantityMap;
-                console.log(getState().stockQuantityMap);
-                if (updatedQuantityMap.has(symbol)) {
-                    let updatedQuantity = updatedQuantityMap.get(symbol);
-                    updatedQuantity += parseInt(quantity);
-                    updatedQuantityMap.set(symbol, updatedQuantity);
+                let myStocks = getState().stocksArray;
+                if (myStocks.includes(symbol)) { // user already has the stock
+                    // update quantity of that stock in backend TBA HERE
                 }
-                else {
-                    updatedQuantityMap.set(symbol, parseInt(quantity));
+                else { // user doesn't have the stock yet
+                    myStocks.push(symbol);
+                    // also update backend with that stock TBA HERE
                 }
-
-                dispatch(setStockQuantityMap(updatedQuantityMap));
+                
+                dispatch(setStocksArray(myStocks));
                 dispatch(setError("success")); // Alert the user of the success
             }
             else { // Otherwise, there's not enough cash so don't let the purchase go through and alert the user
@@ -133,20 +123,15 @@ function rootReducer(state = initState, action = {}) {
                 cash: action.cash
             });
 
-        case SET_STOCK_QUANTITY_MAP:
+        case SET_STOCKS_ARRAY:
             return Object.assign({}, state, {
-                stockQuantityMap: action.stockQuantityMap
+                stocksArray: action.stocksArray
             });
 
         case SET_ERROR:
             return Object.assign({}, state, {
                 error: action.error
             });
-
-        // case GET_STOCK_PRICES:
-        //     return Object.assign({}, state, {
-        //         stocks: action.stocks
-        //     });
 
         default:
             return state;

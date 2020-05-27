@@ -46,17 +46,24 @@ class Portfolio extends Component {
                                     setRegistrationAlert="n/a"
                                     setLoginAlert="n/a"
                                     validity="false" 
-                                    message="Oh snap! The purchase didn't go through."/>
+                                    message="Oh snap! The purchase didn't go through."
+                                    errorMessage={this.props.errorMessage}/>
+                                    
                                     
             }
         }
 
         return ( 
             <div className="portfolio-container">
-                <h3 id="portfolio-header">$USER's Portfolio ($AMOUNT_WITH_STOCKS)</h3>
-                { windowVar }
-                {/* PurchaseView is the component where the user can purchase stocks. */}
-                <PurchaseView cash={this.props.cash} />
+                <h3 id="portfolio-header">Portfolio ($AMOUNT_WITH_STOCKS)</h3>
+                <div className="column">
+                    { windowVar }
+                    {/* PurchaseView is the component where the user can purchase stocks. */}
+                    <PurchaseView cash={this.props.cash} />
+                </div>
+                <div className="column">
+                    <h2>Live Stocks Go Here</h2>
+                </div>
             </div>
         );
     }

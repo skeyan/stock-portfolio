@@ -17,11 +17,6 @@ export default function Login() {
   function handleSubmit(event) 
   {
     event.preventDefault();
-    // let loginInfo = {
-    //   email: email,
-    //   password: password
-    // }
-    // console.log(loginInfo)
 
     // Make an axios call to the backend to attempt to login the user
     axios.get("http://localhost:5000/user/login/" + email + "/password/" + password).then(res => {

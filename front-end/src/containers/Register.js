@@ -28,7 +28,7 @@ export default function Register() {
         // Make an axios call to the backend to attempt to register the user
         axios.post("http://localhost:5000/user/register", data).then(res => {  
             // Successful POST request
-            console.log("REGISTRATION RESPONSE:", res);
+            // console.log("REGISTRATION RESPONSE:", res);
             if (res.data.success === true) // Successful registration
             {
                 setRegistrationAlert(<AlertDimissable 
@@ -62,7 +62,6 @@ export default function Register() {
                                         errorMessage="Bad endpoint."
                                         alertClass="flexible-container"
                                 />);
-            console.log("ERROR:", err);
         });
     }
     

@@ -6,7 +6,19 @@ h3#portfolio-header {
 .portfolio-container {
     padding-left: 50px;
     font-family: avenir-medium;
+    display: inline;
 } 
+
+.portfolio-container:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.column {
+    float:left;
+    width: 50%;
+}
 
 /* Purchase Form Styling --------------------------------------- */
 /* Styling for the entire form */
