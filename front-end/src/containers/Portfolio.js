@@ -47,6 +47,7 @@ class Portfolio extends Component {
                                     setLoginAlert="n/a"
                                     validity="false" 
                                     message="Oh snap! The purchase didn't go through."/>
+                                    
             }
         }
 

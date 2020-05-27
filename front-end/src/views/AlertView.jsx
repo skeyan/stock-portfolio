@@ -30,6 +30,7 @@ class AlertDismissable extends Component {
     }
   
     render() {
+      console.log(this.props.errorMessage)
       if (this.state.show) { // Show something only if it should
         if (this.props.validity !== "true") // Show a failure alert if the purchase wasn't successful
         {
@@ -37,7 +38,7 @@ class AlertDismissable extends Component {
                 <div className={this.props.alertClass}>
                     <Alert bsStyle="danger" onDismiss={this.handleDismiss}>
                         <h4>{this.props.message}</h4>
-                        <p>{this.props.error}</p>
+                        <p>{this.props.errorMessage}</p>
                         <p><Button onClick={this.handleDismiss}>Close</Button></p>
                     </Alert>
               </div>
@@ -45,7 +46,6 @@ class AlertDismissable extends Component {
         }
         else // Show a successful alert if the purchase was a success
         {
-
             return (
                 <div className={this.props.alertClass}>
                     <Alert bsStyle="success" onDismiss={this.handleDismiss}>

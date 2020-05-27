@@ -25,7 +25,7 @@ export default function Login() {
 
     // Make an axios call to the backend to attempt to login the user
     axios.get("http://localhost:5000/user/login/" + email + "/password/" + password).then(res => {
-      // console.log("LOGIN RESPONSE:", res);
+      // console.log("LOGIN RESPONSE:", res.data.message);
       if (res.data.success === true) { // Successful login
         setLoginAlert(<AlertDimissable 
           setLoginAlert={setLoginAlert} 
@@ -44,7 +44,7 @@ export default function Login() {
           setRegistrationAlert="n/a"
           validity="false" 
           message="Unable to login."
-          error={res.data.message}
+          errorMessage={res.data.message}
           alertClass="flexible-container"
         />);
       }
@@ -56,7 +56,7 @@ export default function Login() {
         setRegistrationAlert="n/a" 
         validity="false" 
         message="Unable to login."
-        error="Bad endpoint."
+        errorMessage="Bad endpoint."
         alertClass="flexible-container"
       />);
     })

@@ -47,7 +47,7 @@ export default function Register() {
                                         setLoginAlert="n/a"
                                         validity="false" 
                                         message={res.data.message} 
-                                        error="Try a different email."
+                                        errorMessage="Try a different email."
                                         alertClass="flexible-container"
                                     />);
             }
@@ -59,7 +59,7 @@ export default function Register() {
                                         setLoginAlert="n/a"
                                         validity="false" 
                                         message="Unable to register." 
-                                        error="Bad endpoint."
+                                        errorMessage="Bad endpoint."
                                         alertClass="flexible-container"
                                 />);
             console.log("ERROR:", err);
