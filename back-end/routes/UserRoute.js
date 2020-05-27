@@ -11,11 +11,10 @@ const saltRounds = 10;
 // Used to login a user
     // Check if user's email exists in database
     // If so, use bcrypt to compare passwords
-router.get("/login", function (req, res) {
+router.get("/login/:email/password/:password", function (req, res) {
     // Check if the user (email) already exists in the database
     // Go through all the users in the User table to see if it exists
-    User.findOne({ email: req.body.email }, (err, user) => {
-        console.log("email:", user);
+    User.findOne({ email: req.params.email }, (err, user) => {
         if (err) { // find error --> cannot login
             res.send({
                 success: false,
@@ -29,7 +28,8 @@ router.get("/login", function (req, res) {
             })
         }
         else { // user (email) exists in database, so move onto compare passwords now
-            bcrypt.compare(req.body.password, user.password, function(bErr, bRes) {
+            // Compare the passwords asychronously with bcrypt
+            bcrypt.compare(req.params.password, user.password, function(bErr, bRes) {
                 if(bRes) { // Passwords match -> tell frontend to login the user.
                     res.send({
                         success: true,

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import RegisterView from '../views/RegisterView';
-import AlertDimissable from '../views/AlertView';
+import AlertDimissable from '../views/AlertView'; 
 import axios from "axios";
 
 export default function Register() {
@@ -27,34 +27,40 @@ export default function Register() {
 
         // Make an axios call to the backend to attempt to register the user
         axios.post("http://localhost:5000/user/register", data).then(res => {  
-            // Successful post request
-            console.log("RESPONSE:", res);
+            // Successful POST request
+            console.log("REGISTRATION RESPONSE:", res);
             if (res.data.success === true) // Successful registration
             {
                 setRegistrationAlert(<AlertDimissable 
                                         setRegistrationAlert={setRegistrationAlert} 
+                                        setLoginAlert="n/a"
                                         validity="true" 
                                         message={res.data.message} 
                                         message2=""
+                                        alertClass="flexible-container"
                                     />);
             }   
             else // Unsuccessful registration
             {
                 setRegistrationAlert(<AlertDimissable 
                                         setRegistrationAlert={setRegistrationAlert} 
+                                        setLoginAlert="n/a"
                                         validity="false" 
                                         message={res.data.message} 
                                         error="Try a different email."
+                                        alertClass="flexible-container"
                                     />);
             }
 
         }).catch(err => {
-            // Unsuccessful post request
+            // Unsuccessful POST request
             setRegistrationAlert(<AlertDimissable 
                                         setRegistrationAlert={setRegistrationAlert} 
+                                        setLoginAlert="n/a"
                                         validity="false" 
                                         message="Unable to register." 
                                         error="Bad endpoint."
+                                        alertClass="flexible-container"
                                 />);
             console.log("ERROR:", err);
         });
@@ -68,7 +74,7 @@ export default function Register() {
                             validateForm={validateForm} 
                             setName={setName} setEmail={setEmail} setPassword={setPassword}
                             name={name} email={email} password={password}
-                            registrationAlert={registrationAlert} setRegistrationAlert={setRegistrationAlert}
+                            registrationAlert={registrationAlert}
                 />
             </div>
         </div>

@@ -21,6 +21,7 @@ class AlertDismissable extends Component {
       this.setState({ show: false });
       this.props.setError("");
       if(this.props.setRegistrationAlert !== "n/a") this.props.setRegistrationAlert(null); // reset registrationAlert if applicable to show again
+      if(this.props.setLoginAlert !== "n/a") this.props.setLoginAlert(null); // reset login
     }
   
     // Shows (renders) the alert component through conditional rendering
@@ -33,7 +34,7 @@ class AlertDismissable extends Component {
         if (this.props.validity !== "true") // Show a failure alert if the purchase wasn't successful
         {
             return (
-                <div className="alert-container">
+                <div className={this.props.alertClass}>
                     <Alert bsStyle="danger" onDismiss={this.handleDismiss}>
                         <h4>{this.props.message}</h4>
                         <p>{this.props.error}</p>
@@ -46,7 +47,7 @@ class AlertDismissable extends Component {
         {
 
             return (
-                <div className="alert-container">
+                <div className={this.props.alertClass}>
                     <Alert bsStyle="success" onDismiss={this.handleDismiss}>
                         <h4>{this.props.message}</h4>
                         <p>{this.props.message2}</p>

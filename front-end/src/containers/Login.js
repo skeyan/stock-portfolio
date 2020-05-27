@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import LoginView from '../views/LoginView';
+import AlertDimissable from '../views/AlertView';
 import '../styles/Login.css';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginAlert, setLoginAlert] = useState(null);
 
   function validateForm() 
   {
@@ -15,6 +17,49 @@ export default function Login() {
   function handleSubmit(event) 
   {
     event.preventDefault();
+    // let loginInfo = {
+    //   email: email,
+    //   password: password
+    // }
+    // console.log(loginInfo)
+
+    // Make an axios call to the backend to attempt to login the user
+    axios.get("http://localhost:5000/user/login/" + email + "/password/" + password).then(res => {
+      // console.log("LOGIN RESPONSE:", res);
+      if (res.data.success === true) { // Successful login
+        setLoginAlert(<AlertDimissable 
+          setLoginAlert={setLoginAlert} 
+          setRegistrationAlert="n/a"
+          className="login-alert"
+          validity="true" 
+          message={res.data.message} 
+          message2="Hooray! Now you can view and buy stocks."
+          alertClass="flexible-container"
+        />);
+      }
+      else { // Unsuccessful login
+        setLoginAlert(<AlertDimissable 
+          setLoginAlert={setLoginAlert} 
+          className="login-alert"
+          setRegistrationAlert="n/a"
+          validity="false" 
+          message="Unable to login."
+          error={res.data.message}
+          alertClass="flexible-container"
+        />);
+      }
+    }).catch(err => {
+      // Unsuccessful GET request
+      setLoginAlert(<AlertDimissable 
+        className="login-alert"
+        setLoginAlert={setLoginAlert}
+        setRegistrationAlert="n/a" 
+        validity="false" 
+        message="Unable to login."
+        error="Bad endpoint."
+        alertClass="flexible-container"
+      />);
+    })
   }
 
   return (
@@ -27,6 +72,7 @@ export default function Login() {
             email={email} password={password}
             validateForm={validateForm}
             handleSubmit={handleSubmit}
+            loginAlert={loginAlert}
         />
       </div>
     </div>

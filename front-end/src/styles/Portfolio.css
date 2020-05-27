@@ -32,9 +32,16 @@ p.help {
 }
 
 /* Alert Message Styling --------------------------------------- */
-.alert-container {
-    width: 45rem;
+/* Alert on the Portfolio page */
+.alert-container { 
+    width: 350px;
     font-family: avenir-medium;
+}
+
+/* Alert on Login and Registration pages */
+.flexible-container {
+    font-family: avenir-medium;
+    text-align: left;
 }
 
 

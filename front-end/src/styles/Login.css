@@ -22,14 +22,15 @@
         font-family: avenir-medium;
     }
 
+    
+
     .login-parent {
         text-align: center;
     }
 
     .login-container {
-        width: 400px;      
+        /* width: 400px;       */
         display: inline-block;
-    
     }
 
     .login-container h2 {
@@ -39,4 +40,10 @@
         text-align: left;
         padding-top: 30px;
     }
+
+
+}
+
+.login-alert {
+    text-align: left;
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import "../styles/Login.css";
+import '../styles/Portfolio.css';
 import { Link } from 'react-router-dom';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 
