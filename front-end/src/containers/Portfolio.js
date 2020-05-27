@@ -29,21 +29,41 @@ class Portfolio extends Component {
         let windowVar;
         if (this.props.errorMessage !== null && this.props.errorMessage !== "")
         {
-            // windowVar = window.alert(this.props.errorMessage);
-            if (this.props.errorMessage === "success") {
-                windowVar = <AlertDimissable validity="true"/>
+            // windowVar = window.alert(this.props.errorMessage); // debug
+            // Alert the user of the status of their transaction/purchase.
+            if (this.props.errorMessage === "success") { // Successful purchase
+                windowVar = <AlertDimissable 
+                                    setRegistrationAlert="n/a"
+                                    alertClass="alert-container"
+                                    setLoginAlert="n/a"
+                                    validity="true" 
+                                    message="Successful purchase!" 
+                                    message2="Go to Transactions to audit your stocks."/>
             }
-            else {
-                windowVar = <AlertDimissable validity="false"/>
+            else { // Unsuccessul purchase
+                windowVar = <AlertDimissable 
+                                    alertClass="alert-container"
+                                    setRegistrationAlert="n/a"
+                                    setLoginAlert="n/a"
+                                    validity="false" 
+                                    message="Oh snap! The purchase didn't go through."
+                                    errorMessage={this.props.errorMessage}/>
+                                    
+                                    
             }
         }
 
         return ( 
             <div className="portfolio-container">
-                <h3 id="portfolio-header">$USER's Portfolio ($AMOUNT_WITH_STOCKS)</h3>
-                { windowVar }
-                {/* PurchaseView is the component where the user can purchase stocks. */}
-                <PurchaseView cash={this.props.cash} />
+                <h3 id="portfolio-header">| Portfolio ($CASH_W_STOCKS)</h3>
+                <div className="column">
+                    <h2>Live Stocks Go Here</h2>
+                </div>
+                <div className="column">
+                    { windowVar }
+                    {/* PurchaseView is the component where the user can purchase stocks. */}
+                    <PurchaseView cash={this.props.cash} />
+                </div>
             </div>
         );
     }

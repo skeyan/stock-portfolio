@@ -1,7 +1,7 @@
 @media all and (min-width: 480px) {
     .Login {
         font-family: avenir-black;
-        padding: 60px 0;
+        /* padding: 60px 0; */
         display: flex;
         color: #293B59;
     }
@@ -18,7 +18,32 @@
         width: 400px;
     }
 
-    #no-account {
+    .no-account {
         font-family: avenir-medium;
     }
+
+    
+
+    .login-parent {
+        text-align: center;
+    }
+
+    .login-container {
+        /* width: 400px;       */
+        display: inline-block;
+    }
+
+    .login-container h2 {
+        font-family: avenir-black;
+        color: #2fc477;
+        font-size: 30px;
+        text-align: left;
+        padding-top: 30px;
+    }
+
+
+}
+
+.login-alert {
+    text-align: left;
 }

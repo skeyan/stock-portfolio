@@ -1,12 +1,25 @@
 h3#portfolio-header {
     font-family: avenir-black;
-    font-size: 22px;
+    font-size: 30px;
+    color: #2fc477;
 }
 
 .portfolio-container {
     padding-left: 50px;
     font-family: avenir-medium;
+    display: inline;
 } 
+
+.portfolio-container:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.column {
+    float:left;
+    width: 50%;
+}
 
 /* Purchase Form Styling --------------------------------------- */
 /* Styling for the entire form */
@@ -24,7 +37,7 @@ form .purchase-form-field {
     font-family: avenir-light;
 }
 
-p#help {
+p.help {
     margin-top: 5px;
     font-size: 13px;
     color: gray;
@@ -32,8 +45,16 @@ p#help {
 }
 
 /* Alert Message Styling --------------------------------------- */
-.alert-container {
-    width: 340px;
+/* Alert on the Portfolio page */
+.alert-container { 
+    width: 350px;
+    font-family: avenir-medium;
+}
+
+/* Alert on Login and Registration pages */
+.flexible-container {
+    font-family: avenir-medium;
+    text-align: left;
 }
 
 

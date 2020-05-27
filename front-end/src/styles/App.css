@@ -3,7 +3,7 @@
   text-align: center;
   background-color: white;
   border-bottom: 5px solid #2fc477;
-  margin: auto;
+  margin: 0px;
   padding: 10px;
   /* height: 50px; */
   font-family: avenir-black;
@@ -34,6 +34,21 @@
   border-right: 1px solid #e3e3e3;
 }
 
+li#logoutNav {
+  cursor: pointer;
+  color: #2fc477;
+}
+
+li#logoutNav:hover {
+  text-decoration: underline;
+}
+
+.test {
+  display: flex;
+  flex-direction: column;
+  min-height: 90vh;
+}
+
 /* Style for the footer. */
 .footer {
   background-color: white;
@@ -43,8 +58,10 @@
   border-top: 3px solid #e6e6e6;
   font-size: 12px;
   letter-spacing: 1px;
-  flex-shrink: 0;
-  position: fixed;
+  /* flex-shrink: 0; */
+  flex: 0 0 50px;
+  margin-top: auto;
+  /* position: static; */
   left: 0;
   bottom: 0;
   width: 100%;
@@ -58,3 +75,4 @@
 .footer a:visited {
   color: #2fc477;
 }
+

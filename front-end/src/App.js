@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Link, useHistory } from "react-router-dom";
+import { Redirect } from 'react-router';
 import Home from './containers/Home.js';
 import Navbar from './containers/Navbar.js';
 import Footer from './containers/Footer.js';
@@ -7,30 +9,34 @@ import Portfolio from './containers/Portfolio.js';
 import Login from './containers/Login.js';
 import Register from './containers/Register.js';
 import NotFound from './containers/NotFound.js';
+import { connect } from "react-redux";
+import { setLoggedIn } from './store/rootReducer';
 import './styles/App.css';
 
-class App extends Component {
+const App = (props) => {
+  // const history = useHistory();
 
-  constructor() {
-    super();
-  }
+  // async function handleLogout() {    
+  //   // May need more auth action here?
+    
+  //   this.props.setLoggedIn(false);
+  //   history.push("/login");
+  // }
 
-  // Functions go here
-
-  render () {
-    return (
-      /*
-        * Uses a Router to switch between pages.
-      */
-     <div>
-        <Router>
-        <Navbar />
+  return (
+    /*
+      * Uses a Router to switch between pages.
+    */
+    <div>
+      <div className="test">
+      <Router>
+        <Navbar loggedIn={props.loggedIn} setLoggedIn={props.setLoggedIn} />
           <Switch>
               <Route exact path="/">
                 <Home />
               </Route>
               <Route exact path="/login">
-                <Login />
+                { props.loggedIn ? <Redirect to="/" /> : <Login /> }
               </Route>
               <Route exact path="/register">
                 <Register />
@@ -38,16 +44,32 @@ class App extends Component {
               <Route exact path="/portfolio">
                 <Portfolio />
               </Route>
-              {/* Catch all route for an invalid url: */}
+              {/* Catch all route for an invalid url, happens if none of the above routes are matched: */}
               <Route>
                 <NotFound />
               </Route>
           </Switch>
-        </Router>
-        <Footer />
+      </Router>
       </div>
-    );
+      <Footer />
+    </div>
+  );
+}
+
+// Match state variables to props of this component
+// prop_var_name: state.var_name_in_state
+function mapStateToProps(state) {
+  return {
+    loggedIn: state.loggedIn
   }
 }
 
-export default App;
+// Map dispatch functions to props of this component
+// action: (variable) => dispatch (action(variable))
+const mapDispatchToProps = dispatch => {
+  return {
+    setLoggedIn: (loggedIn) => dispatch(setLoggedIn(loggedIn))
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
