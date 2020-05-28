@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import '../styles/Transactions.css';
 import { ListGroup, ListGroupItem, PageHeader} from "react-bootstrap";
+import Loading from './Loading.js';
 
 import "../styles/Transactions.css";
 
@@ -11,9 +12,11 @@ class TransactionsView extends Component {
         // 1. if logged in, and have transactions
         // 2. if logged in, with no transactions
         // 3. not logged in
+
         return (
             <div className="transactions-container">
                 <PageHeader>Transactions History</PageHeader>
+                <Loading />
                 <ListGroup>
                 { this.props.numTransactions > 0 ? (
                     this.props.transactionsArray.map((transaction, i) => (

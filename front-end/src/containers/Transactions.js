@@ -3,6 +3,7 @@ import TransactionsView from '../views/TransactionsView';
 import '../styles/Transactions.css';
 import { connect } from "react-redux";
 import axios from 'axios';
+import { trackPromise } from 'react-promise-tracker';
 
 class Transactions extends Component {
     constructor()
@@ -16,8 +17,9 @@ class Transactions extends Component {
 
     // Make a GET request to the backend's Transaction route
     // and retrieve all of the current user's transactions
-    getTransactions = () => {
+    getTransactions = () => {        
         // Axios call to backend
+        trackPromise(
         axios.get("http://localhost:5000/transaction/email/" + this.props.currentUser)
         .then((res => {
             let myTransactions = res.data.data;
@@ -29,7 +31,7 @@ class Transactions extends Component {
         })).catch((err) => { // failed call
             console.log(err)
         })
-    }
+        )}
 
     render() {
         // Retrieve transactions
