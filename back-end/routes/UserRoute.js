@@ -19,7 +19,7 @@ router.get("/login/:email/password/:password", function (req, res) {
         if (err) { // find error --> cannot login
             res.send({
                 success: false,
-                message: err // send the error object
+                message: "Error in user search."
             })
         }
         if (!user) { // user (email) doesn't exist in database, not yet registered
@@ -62,7 +62,7 @@ router.post("/register", function (req, res) {
         if (err) { // find error -> cannot register
             res.send({
                 success: false,
-                message: err // send the error object
+                message:  "Error in user search."
             })
         }
         if (emails.length > 0) { // email already exists -> cannot register
@@ -85,10 +85,9 @@ router.post("/register", function (req, res) {
                 // Save the new user into the database
                 user.save(err => { 
                     if (err) {
-                        console.log(err);
                         res.send({
                             success: false,
-                            message: err
+                            message: "Error saving user."
                         })
                     }
                     else {
@@ -103,5 +102,69 @@ router.post("/register", function (req, res) {
         }
     }) 
 }) 
+
+// @pre User is logged in
+// Get the user's current cash balance
+router.get("/email/:email/cash", function (req, res) {
+    // Find all stocks that belong to the user, if any
+    User.findOne({ email: req.params.email }, (err, user) => {
+        if (err) { // find error 
+            res.send({
+                success: false,
+                message: "User search unsuccessful."
+            })
+        }
+        if (user) { // User exists
+            res.send({
+                success: true,
+                data: user.cashBalance,
+                message: "Successfully retrieved cash balance."
+            })
+        }
+        else { // User doesn't exist
+            res.send({
+                success: false,
+                message: "User doesn't exist.",
+            })
+        }
+    })
+})
+
+// @pre User is logged in.
+// Needs email, new cash balance
+// Update user's cash balance
+router.post("/balance/update", function(req, res) {
+    User.findOne({ email: req.body.email }, (err, user) => {
+        if (err) {
+            res.send({
+                success: false,
+                message: "Error finding user."
+            })
+        }
+        if (user) { // found the user
+            // update cash balance
+            let newBalance = Number(req.body.cashBalance);
+            User.updateOne({ "email": req.body.email }, 
+            {
+                $set: { cashBalance: newBalance }
+            }).then(
+                res.send({
+                    success: true,
+                    message: "Successfully updated user's cash balance."
+                })
+            ).catch = (err) => (
+                res.send({
+                    success: false,
+                    message: err
+                })
+            )
+        } else { // user not found
+            res.send({
+                success: false,
+                message: "User not found."
+            })
+        }
+    })
+})
 
 module.exports = router;

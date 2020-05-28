@@ -10,7 +10,7 @@ router.get("/email/:email/all", function (req, res) {
         if (err) { // find error 
             res.send({
                 success: false,
-                message: err // send the error object
+                message: "Stock find error."
             })
         }
         if (stocks.length < 0 || !stocks) { // user has no matching stocks, hasn't bought any yet
@@ -36,7 +36,7 @@ router.get("/email/:email/ticker/:tickerSymbol", function (req, res) {
         if (err) { // find error 
             res.send({
                 success: false,
-                message: err // send the error object
+                message: "Stock find error."
             })
         }
         if (stock) { // found the stock corresponding to the user
@@ -72,8 +72,6 @@ router.post("/update", function (req, res) {
             // console.log(stock, stock.quantity);
             // Update the info of the stock
             const newQuantity = stock.quantity + Number(req.body.quantity);
-            // const myEmail = toString(stock.email);
-            // const mySymbol = toString(stock.tickerSymbol);
             console.log(newQuantity);
             Stock.updateOne({ "email": req.body.email, "tickerSymbol": req.body.tickerSymbol }, 
             {
@@ -83,12 +81,12 @@ router.post("/update", function (req, res) {
                     success: true,
                     message: "Successfully updated stock quantity."
                 })
-            ).catch((updateError) => {
+            ).catch(
                 res.send({
                     success: false,
-                    message: updateError
+                    message: "Error updating stock quantity."
                 })
-            })
+            )
         }
         else { // User hasn't bought the stock before -> add a new stock with quantity
             const stock = new Stock({
@@ -103,7 +101,7 @@ router.post("/update", function (req, res) {
                     console.log(error);
                     res.send({
                         success: false,
-                        message: error
+                        message: "Error saving stock into database."
                     })
                 }
                 else {

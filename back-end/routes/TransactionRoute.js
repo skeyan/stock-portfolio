@@ -10,7 +10,7 @@ router.get("/email/:email", function (req, res) {
         if (err) {
             res.send({
                 success: false,
-                message: err
+                message: "Error searching for transactions."
             })
         }
         else {
@@ -26,13 +26,12 @@ router.get("/email/:email", function (req, res) {
 // @pre User is logged in and has just purchased a stock
 // Add a transaction to the database
 router.post("/new", function (req, res) {
-
     // Create an instance (document) of a new transaction model
     const transaction = new Transaction({
         email: req.body.email,
         tickerSymbol: req.body.tickerSymbol,
         quantity: req.body.quantity,
-        totalCost: req.body.cost
+        totalCost: req.body.totalCost
     });
 
     // Save the new transaction into the database
@@ -40,7 +39,7 @@ router.post("/new", function (req, res) {
         if (err) {
             res.send({
                 success: false,
-                message: err
+                message: "Error saving transaction."
             })
         }
         else {
