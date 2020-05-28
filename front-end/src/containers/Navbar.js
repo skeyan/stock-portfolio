@@ -13,8 +13,10 @@ const Navbar = (props) => {
 
     // Tell frontend we're logged out
     function logoutUser(){
+        // Reset frontend values 
         props.setCurrentUser("");
         props.setNumTransactions(-1);
+        props.setCash(5000);
         props.setLoggedIn(false); 
         history.push("/"); // Redirect to homepage wherever the user is
     }

@@ -73,12 +73,23 @@ export function setNumTransactions(numTransactions) {
 
 // Thunks -----------------------------------------------------------------------------
 
-// The thunk sets the number of transactions of current user
+// The thunk gets the number of transactions of current user with a backend axios call
 export const getNumTransactions = () => {
     return async (dispatch, getState) => {
         const response = await axios.get("http://localhost:5000/user/email/" + getState().currentUser + "/number");
-        if (response) {
+        if (response.data.success) {
             dispatch(setNumTransactions(response.data.data))
+        }
+    }
+}
+
+// The thunk gets the amount of cash the user has with a backend axios call
+export const getCash = () => {
+    return async (dispatch, getState) => {
+        const response = await axios.get("http://localhost:5000/user/email/" + getState().currentUser + "/cash");
+        console.log("RESPONSE GET CASH: ", response);
+        if (response.data.success) {
+            dispatch(setCash(response.data.data))
         }
     }
 }
