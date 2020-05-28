@@ -1,0 +1,19 @@
+.transactions-container {
+    padding-left: 50px;
+    width: 650px;
+}
+
+.transactions-container h1 {
+    font-family: avenir-black;
+    font-size: 25px;
+}
+
+.transactions-container h3 {
+    font-family: avenir-medium;
+    font-size: 18px;
+}
+
+.transactions-container li {
+    font-family: avenir-medium;
+    font-size: 16px;
+}
