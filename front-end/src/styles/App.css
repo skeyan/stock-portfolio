@@ -12,7 +12,7 @@
 /* Style for the title in the header */
 .App-Title {
   color: #2fc477;
-  font-size: 32px;
+  font-size: 36px;
 }
 
 /* Style for the link strip in the header. */
@@ -20,7 +20,7 @@
   font-family: avenir-medium;
   color: #293B59;
   text-align: center;
-  font-size: 14px;
+  font-size: 16px;
   list-style-type: none;
 }
 

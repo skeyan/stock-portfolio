@@ -34,7 +34,7 @@ const App = (props) => {
         <Navbar loggedIn={props.loggedIn} setLoggedIn={props.setLoggedIn} setCurrentUser={props.setCurrentUser} setNumTransactions={props.setNumTransactions}/>
           <Switch>
               <Route exact path="/">
-                <Home />
+                <Home loggedIn={props.loggedIn} />
               </Route>
               <Route exact path="/login">
                 { props.loggedIn ? <Redirect to="/" /> : <Login /> }
