@@ -17,7 +17,7 @@ var transactionSchema = new mongoose.Schema({
     totalCost: Number,
     time: {
         type: Date,
-        default: Date.getFullYear() + Date.getMonth() + Date.getDate() + "@" + Date.getHours() + ":" + Date.getMinutes() + ":" + Date.getSeconds()
+        default: Date.now
     }
 });
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Link, useHistory } from "react-router-dom";
 import { Redirect } from 'react-router';
@@ -8,9 +8,10 @@ import Footer from './containers/Footer.js';
 import Portfolio from './containers/Portfolio.js';
 import Login from './containers/Login.js';
 import Register from './containers/Register.js';
+import Transactions from "./containers/Transactions.js";
 import NotFound from './containers/NotFound.js';
 import { connect } from "react-redux";
-import { setLoggedIn } from './store/rootReducer';
+import { setLoggedIn, setCurrentUser, setNumTransactions } from './store/rootReducer';
 import './styles/App.css';
 
 const App = (props) => {
@@ -30,10 +31,10 @@ const App = (props) => {
     <div>
       <div className="test">
       <Router>
-        <Navbar loggedIn={props.loggedIn} setLoggedIn={props.setLoggedIn} />
+        <Navbar loggedIn={props.loggedIn} setLoggedIn={props.setLoggedIn} setCurrentUser={props.setCurrentUser} setNumTransactions={props.setNumTransactions}/>
           <Switch>
               <Route exact path="/">
-                <Home />
+                <Home loggedIn={props.loggedIn} />
               </Route>
               <Route exact path="/login">
                 { props.loggedIn ? <Redirect to="/" /> : <Login /> }
@@ -43,6 +44,9 @@ const App = (props) => {
               </Route>
               <Route exact path="/portfolio">
                 <Portfolio />
+              </Route>
+              <Route exact path="/transactions">
+                <Transactions />
               </Route>
               {/* Catch all route for an invalid url, happens if none of the above routes are matched: */}
               <Route>
@@ -68,7 +72,9 @@ function mapStateToProps(state) {
 // action: (variable) => dispatch (action(variable))
 const mapDispatchToProps = dispatch => {
   return {
-    setLoggedIn: (loggedIn) => dispatch(setLoggedIn(loggedIn))
+    setLoggedIn: (loggedIn) => dispatch(setLoggedIn(loggedIn)),
+    setCurrentUser: (currentUser) => dispatch(setCurrentUser(currentUser)),
+    setNumTransactions: (numTransactions) => dispatch(setNumTransactions(numTransactions))
   }
 };
 

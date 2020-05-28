@@ -12,7 +12,8 @@ var userSchema = new mongoose.Schema({
     name: String,
     email: String,
     password: String,
-    cashBalance: Number
+    cashBalance: Number,
+    totalTransactions: Number
 });
 
 module.exports = mongoose.model('User', userSchema);

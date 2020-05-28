@@ -1,7 +1,6 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const user = require('./routes/UserRoute.js')
 const port = 5000
 
 // bodyParser
@@ -28,11 +27,17 @@ db.once('open', function() {
   console.log("successfully connected to mongo database");
 });
 
+const user = require('./routes/UserRoute.js');
+const transaction = require('./routes/TransactionRoute.js');
+const stock = require('./routes/StockRoute.js');
+
 // routing
+// organize endpoints
 app.use('/user', user);
+app.use('/transaction', transaction);
+app.use('/stock', stock);
 
 // This app starts a server and listens on port 5000 for connections.
 // The app responds with “Hello World!” for requests to the root URL (/) or route. 
 app.get('/', (req, res) => res.send('Hello World!'))
-
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`))

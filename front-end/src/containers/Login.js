@@ -4,7 +4,7 @@ import LoginView from '../views/LoginView';
 import AlertDimissable from '../views/AlertView';
 import '../styles/Login.css';
 import { connect } from "react-redux";
-import { setLoggedIn } from '../store/rootReducer';
+import { setLoggedIn, setCurrentUser, getNumTransactions } from '../store/rootReducer';
 import { useHistory } from "react-router-dom";
 
 const Login = (props) => {
@@ -18,6 +18,7 @@ const Login = (props) => {
     return email.length > 0 && password.length > 0;
   }
 
+  // Login form submission
   function handleSubmit(event)
   {
     event.preventDefault();
@@ -34,8 +35,10 @@ const Login = (props) => {
           message2="Hooray! Now you can view and buy stocks."
           alertClass="flexible-container"
         />);
-        props.setLoggedIn(true);
-        // history.push("/"); // Redirect to homepage
+        props.setLoggedIn(true); // set status on frontend
+        props.setCurrentUser(email); // set current user on frontend
+        props.getNumTransactions();
+        history.push("/"); // Redirect to homepage
       }
       else { // Unsuccessful login
         setLoginAlert(<AlertDimissable 
@@ -91,7 +94,9 @@ function mapStateToProps(state) {
 // action: (variable) => dispatch (action(variable))
 const mapDispatchToProps = dispatch => {
   return {
-    setLoggedIn: (loggedIn) => dispatch(setLoggedIn(loggedIn))
+    setLoggedIn: (loggedIn) => dispatch(setLoggedIn(loggedIn)),
+    setCurrentUser: (currentUser) => dispatch(setCurrentUser(currentUser)),
+    getNumTransactions: (numTransactions) => dispatch(getNumTransactions(numTransactions))
   }
 };
 
