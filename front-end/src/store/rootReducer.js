@@ -6,7 +6,6 @@ const SET_STOCKS_ARRAY = "SET_STOCKS_ARRAY";
 const SET_ERROR = "SET_ERROR";
 const SET_LOGGED_IN = "SET_LOGGED_IN";
 const SET_CURRENT_USER = "SET_CURRENT_USER";
-const GET_NUM_TRANSACTIONS = "GET_NUM_TRANSACTIONS";
 const SET_NUM_TRANSACTIONS = "SET_NUM_TRANSACTIONS";
 
 // Initialize the initial state of the store with default values
@@ -85,7 +84,7 @@ export const getNumTransactions = () => {
 }
 
 /*
-    * The thunk getStockPrices(symbol, quantity) makes an axios call to Alpha Vantage
+    * The thunk makes an axios call to Alpha Vantage
     * to get the global quote for the symbol passed in.
     * Its purpose is to retrieve prices and make the transaction, if possible,
     * or otherwise create a relevant alert.
@@ -115,22 +114,77 @@ export const getStockPrices = (symbol, quantity) => {
 
             // Handle cash calculation
             if (recalculatedCash >= 0) { // Add to the set of stocks only if the user has enough money to purchase them
+                // CASH UPDATING
                 dispatch(setCash(recalculatedCash)); // Update the user's cash balance in the front-end
-                // also update cash in backend TBA HERE
+                // also update cash in backend 
+                const cashUpdate = {
+                    email: getState().currentUser,
+                    cashBalance: recalculatedCash
+                }
+                await axios.post("http://localhost:5000/user/balance/update", cashUpdate).then(
+                    dispatch(setError("success"))
+                ).catch((err) => {
+                    dispatch(setError("Failed to update cash balance."))
+                 }
+                );
 
+                // STOCK UPDATING
+                const stockUpdate = {
+                    email: getState().currentUser,
+                    tickerSymbol: symbol,
+                    quantity: quantity
+                }
                 let myStocks = getState().stocksArray;
-                if (myStocks.includes(symbol)) { // user already has the stock
-                    // update quantity of that stock in backend TBA HERE
-                }
-                else { // user doesn't have the stock yet
+                if (!myStocks.includes(symbol)) { // user doesn't have the stock yet
                     myStocks.push(symbol);
-                    // also update backend with that stock TBA HERE
                 }
-                
-                dispatch(setStocksArray(myStocks)); // Update the list of stocks in the frontend
-                dispatch(setError("success")); // Alert the user of the success
+                // also update backend with the stock
+                await axios.post("http://localhost:5000/stock/update", stockUpdate).then(
+                    dispatch(setError("success"))
+                ).catch((err) => {
+                    dispatch(setError("Failed to update user's stocks."))
+                    }
+                );
+
+                // update frontend transactions
+                const response = await axios.get("http://localhost:5000/user/email/" + getState().currentUser + "/number");
+                let newNumTransactions = 1;
+                if(response.data.success) {
+                    console.log(response);
+                    newNumTransactions = response.data.data + 1;
+                }
+                else if(getState.currentNumTransactions) {
+                    newNumTransactions = getState().currentNumTransactions + 1;
+                } 
+                else {
+                    newNumTransactions = 1;
+                }
+                dispatch(setNumTransactions(newNumTransactions));
+                // update backend transactions
+                const transactionUpdate = {
+                    email: getState().currentUser,
+                    tickerSymbol: symbol,
+                    quantity: quantity,
+                    totalCost: currentPriceOfSymbol * quantity
+                }
+                await axios.post("http://localhost:5000/transaction/new", transactionUpdate).then(
+                    dispatch(setError("success"))
+                ).catch((err) => {
+                    dispatch(setError("Failed to update user's transactions."))
+                }
+                );
+                const numTransactionsUpdate = {
+                    email: getState().currentUser,
+                    totalTransactions: newNumTransactions
+                }
+                await axios.post("http://localhost:5000/user/transactions/update", numTransactionsUpdate).then(
+                    dispatch(setError("success"))
+                ).catch((err) => {
+                    dispatch(setError("Failed to update user's total number of transactions."))
+                })
             }
-            else { // Otherwise, there's not enough cash so don't let the purchase go through and alert the user
+            else { 
+                // Otherwise, there's not enough cash so don't let the purchase go through and alert the user
                 dispatch(setError("Not enough cash for purchase.")); // Alert the user of the failure
             }
         }

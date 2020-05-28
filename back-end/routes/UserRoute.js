@@ -131,6 +131,7 @@ router.get("/email/:email/cash", function (req, res) {
     })
 })
 
+// @pre user is logged in
 // Get user num transactions
 router.get("/email/:email/number", function (req, res) {
     // Find all stocks that belong to the user, if any
@@ -156,6 +157,44 @@ router.get("/email/:email/number", function (req, res) {
         }
     })
 })
+
+// @pre User is logged in.
+// need email, new transaction number
+// Update user transactions total number
+router.post("/transactions/update", function(req, res) {
+    User.findOne({ email: req.body.email }, (err, user) => {
+        if (err) {
+            res.send({
+                success: false,
+                message: "Error finding user."
+            })
+        }
+        if (user) { // found the user
+            // update total num transactions
+            let newNumTransactions = Number(req.body.totalTransactions);
+            User.updateOne({ "email": req.body.email }, 
+            {
+                $set: { totalTransactions: newNumTransactions }
+            }).then(
+                res.send({
+                    success: true,
+                    message: "Successfully updated user's total number of transactions."
+                })
+            ).catch = (err) => (
+                res.send({
+                    success: false,
+                    message: err
+                })
+            )
+        } else { // user not found
+            res.send({
+                success: false,
+                message: "User not found."
+            })
+        }
+    })
+})
+
 
 // @pre User is logged in.
 // Needs email, new cash balance

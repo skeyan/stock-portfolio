@@ -96,7 +96,7 @@ const mapDispatchToProps = dispatch => {
   return {
     setLoggedIn: (loggedIn) => dispatch(setLoggedIn(loggedIn)),
     setCurrentUser: (currentUser) => dispatch(setCurrentUser(currentUser)),
-    getNumTransactions: (numTransactions) => dispatch(getNumTransactions(numTransactions))
+    getNumTransactions: () => dispatch(getNumTransactions())
   }
 };
 

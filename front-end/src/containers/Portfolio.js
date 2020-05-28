@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../styles/Portfolio.css';
 import Purchase from '../components/Purchase';
+// import LiveStocksView from '../views/LiveStocksView';
 import AlertDimissable from '../views/AlertView';
 import { PageHeader} from "react-bootstrap";
 import { connect } from "react-redux";
@@ -14,7 +15,7 @@ class Portfolio extends Component {
         // Default state values go below
         this.state = {
             // Default values for the app
-            cash: 5000
+            cash: 5000 
         }
     }
 

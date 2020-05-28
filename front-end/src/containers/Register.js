@@ -22,7 +22,8 @@ export default function Register() {
             name:name, 
             email:email, 
             password:password,
-            cashBalance: 5000
+            cashBalance: 5000,
+            totalTransactions: 0
         }
 
         // Make an axios call to the backend to attempt to register the user

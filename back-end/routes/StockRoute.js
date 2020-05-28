@@ -81,11 +81,6 @@ router.post("/update", function (req, res) {
                     success: true,
                     message: "Successfully updated stock quantity."
                 })
-            ).catch(
-                res.send({
-                    success: false,
-                    message: "Error updating stock quantity."
-                })
             )
         }
         else { // User hasn't bought the stock before -> add a new stock with quantity
