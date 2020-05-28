@@ -79,7 +79,8 @@ router.post("/register", function (req, res) {
                     name: req.body.name,
                     email: req.body.email,
                     password: hash,
-                    cashBalance: req.body.cashBalance
+                    cashBalance: req.body.cashBalance,
+                    totalTransactions: req.body.totalTransactions
                 });
 
                 // Save the new user into the database
@@ -119,6 +120,32 @@ router.get("/email/:email/cash", function (req, res) {
                 success: true,
                 data: user.cashBalance,
                 message: "Successfully retrieved cash balance."
+            })
+        }
+        else { // User doesn't exist
+            res.send({
+                success: false,
+                message: "User doesn't exist.",
+            })
+        }
+    })
+})
+
+// Get user num transactions
+router.get("/email/:email/number", function (req, res) {
+    // Find all stocks that belong to the user, if any
+    User.findOne({ email: req.params.email }, (err, user) => {
+        if (err) { // find error 
+            res.send({
+                success: false,
+                message: "User search unsuccessful."
+            })
+        }
+        if (user) { // User exists
+            res.send({
+                success: true,
+                data: user.totalTransactions,
+                message: "Successfully retrieved number of transactions."
             })
         }
         else { // User doesn't exist

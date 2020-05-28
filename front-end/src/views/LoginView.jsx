@@ -41,5 +41,4 @@ class LoginView extends Component {
     }
 }
 
-// Connect this component to the store
 export default LoginView;

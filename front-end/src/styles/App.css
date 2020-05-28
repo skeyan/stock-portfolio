@@ -30,6 +30,10 @@
   padding-right: 10px;
 }
 
+/* .App-Header-Links li#active {
+  font-weight: 200;
+} */
+
 .App-Header-Links li:not(:last-child) { 
   border-right: 1px solid #e3e3e3;
 }

@@ -13,6 +13,8 @@ const Navbar = (props) => {
 
     // Tell frontend we're logged out
     function logoutUser(){
+        props.setCurrentUser("");
+        props.setNumTransactions(-1);
         props.setLoggedIn(false); 
         history.push("/"); // Redirect to homepage wherever the user is
     }
@@ -28,7 +30,7 @@ const Navbar = (props) => {
             <ul className="App-Header-Links">
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/portfolio">Portfolio</Link></li>
-                <li>Transactions</li>
+                <li><Link to="/transactions">Transactions</Link></li>
                 { logLink }
                 <li><Link to="/register">Register</Link></li>
             </ul>
