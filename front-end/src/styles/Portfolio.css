@@ -1,13 +1,19 @@
-h3#portfolio-header {
+/* h3#portfolio-header {
     font-family: avenir-black;
     font-size: 30px;
     color: #2fc477;
+} */
+
+.portfolio-container h1 {
+    font-family: avenir-black;
+    font-size: 25px;
 }
 
 .portfolio-container {
     padding-left: 50px;
     font-family: avenir-medium;
     display: inline;
+    padding-bottom: 20px;
 } 
 
 .portfolio-container:after {
@@ -16,9 +22,20 @@ h3#portfolio-header {
     clear: both;
 }
 
-.column {
+.column-big {
     float:left;
-    width: 50%;
+    width: 60%;
+}
+
+.column-big h2 {
+    font-size: 18px;
+}
+
+.column-small {
+    float:left;
+    padding-left: 30px;
+    width: 40%;
+    border-left: 1px solid lightgray;
 }
 
 /* Purchase Form Styling --------------------------------------- */

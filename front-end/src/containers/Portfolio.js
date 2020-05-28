@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import '../styles/Portfolio.css';
-import PurchaseView from '../views/PurchaseView';
+import Purchase from '../components/Purchase';
 import AlertDimissable from '../views/AlertView';
+import { PageHeader} from "react-bootstrap";
 import { connect } from "react-redux";
 import { setCash, setError, getStockPrices } from '../store/rootReducer';
 
@@ -55,14 +56,14 @@ class Portfolio extends Component {
 
         return ( 
             <div className="portfolio-container">
-                <h3 id="portfolio-header">| Portfolio ($CASH_W_STOCKS)</h3>
-                <div className="column">
+                <PageHeader>Portfolio</PageHeader>
+                <div className="column-big">
                     <h2>Live Stocks Go Here</h2>
                 </div>
-                <div className="column">
+                <div className="column-small">
                     { windowVar }
-                    {/* PurchaseView is the component where the user can purchase stocks. */}
-                    <PurchaseView cash={this.props.cash} />
+                    {/* Purchase is the component where the user can purchase stocks. */}
+                    <Purchase cash={this.props.cash} />
                 </div>
             </div>
         );

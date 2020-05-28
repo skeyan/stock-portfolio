@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { getStockPrices } from '../store/rootReducer';
 
 
-class PurchaseView extends Component {
+class Purchase extends Component {
     constructor()
     {
         super();
@@ -72,7 +72,7 @@ class PurchaseView extends Component {
     render() {
         return (
             <div>
-                <h3 id="portfolio-header">Cash: ${this.props.cash}</h3> 
+                <h3 id="portfolio-header">Cash: <b>${this.props.cash}</b></h3> 
                 <form className="purchase-form" onSubmit={this.handleSubmit}>
                     <FormGroup controlId="formBasicText" validationState={this.validateTicker()}>
                         <ControlLabel className="purchase-form-titles">Ticker</ControlLabel>
@@ -126,4 +126,4 @@ const mapDispatchToProps = dispatch => {
   };
 
 // Connect this component to the store
-export default connect(mapStateToProps, mapDispatchToProps)(PurchaseView);
+export default connect(mapStateToProps, mapDispatchToProps)(Purchase);

@@ -23,7 +23,7 @@ const Navbar = (props) => {
     return (
         <div className="App-Header">
             <div className="App-Title">
-                <img src="/bank.png" alt="bank symbol" width="50px"/>
+                <img src="/bank.svg" alt="bank symbol" width="50px"/>
                 <br />
                 Stockfolio
             </div>
