@@ -28,13 +28,13 @@ db.once('open', function() {
 });
 
 const user = require('./routes/UserRoute.js');
-// const transaction = require('./routes/TransactionRoute.js');
+const transaction = require('./routes/TransactionRoute.js');
 const stock = require('./routes/StockRoute.js');
 
 // routing
 // organize endpoints
 app.use('/user', user);
-// app.use('/transaction', transaction);
+app.use('/transaction', transaction);
 app.use('/stock', stock);
 
 // This app starts a server and listens on port 5000 for connections.

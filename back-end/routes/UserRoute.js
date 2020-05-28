@@ -6,6 +6,7 @@ var User = require ('../models/User.js');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+// @pre User has submitted the login form 
 // Handle GET requests from the front end with a payload to the /login path
 // Compares the user's password with bcrypt
 // Used to login a user
@@ -47,6 +48,7 @@ router.get("/login/:email/password/:password", function (req, res) {
     })
 })
 
+// @pre User has submitted the registration form
 // Handle POST requests from the front end with a payload to the /register path
 // Hashes the user's password with bcrypt
 // Used to register a user

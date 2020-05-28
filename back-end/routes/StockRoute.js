@@ -2,6 +2,7 @@ var express = require ('express');
 var router = express.Router();
 var Stock = require ('../models/Stock.js');
 
+// @pre User is logged in
 // Get all of the user's stocks
 router.get("/email/:email/all", function (req, res) {
     // Find all stocks that belong to the user, if any
@@ -21,16 +22,40 @@ router.get("/email/:email/all", function (req, res) {
         else { // user has stocks
             res.send({
                 success: true,
+                message: "Found the stocks successfully.",
                 data: stocks
             })
         }
     })
 })
 
+// @pre User is logged in
 // Get the quantity (shares) of one of the user's stocks
+router.get("/email/:email/ticker/:tickerSymbol", function (req, res) {
+    Stock.findOne({ email: req.params.email, tickerSymbol: req.params.tickerSymbol }, (err, stock) => {
+        if (err) { // find error 
+            res.send({
+                success: false,
+                message: err // send the error object
+            })
+        }
+        if (stock) { // found the stock corresponding to the user
+            res.send({
+                success: true,
+                message: "Successfully found the stock.",
+                data: stock.quantity
+            })
+        }
+        else { // didn't find the stock corresponding to the user
+            res.send({
+                success: true,
+                message: "User doesn't have the stock."
+            })
+        }
+    })
+})
 
-
-// @pre User is logged in and has passed in tickerSymbol, email, and quantity via req body
+// @pre User is logged in and has passed in tickerSymbol, email, and quantity via req body (just purchased a stock)
 // Update the quantity (shares) of one of the user's stocks,
 // or add a new stock with a certain quantity if they don't have it yet
 // Takes in a payload of the necessary data
