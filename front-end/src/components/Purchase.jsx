@@ -11,8 +11,8 @@ class Purchase extends Component {
         super();
 
         this.state = {
-            symbol: "",
-            quantity: 0        
+            symbol: null,
+            quantity: null        
         }
     }
 
@@ -40,17 +40,27 @@ class Purchase extends Component {
         // Double-check the type-checking with code
         // Quantities must be whole-numbers greater than 0
         const enteredQuantity = this.state.quantity;
+        // Page load -> neutral color 
+        if (enteredQuantity === null) return null; 
+
         // Non-whole number check
-        if (enteredQuantity % 1 !== 0) return "error";
+        else if (enteredQuantity % 1 !== 0) return "error";
+
         // Negative quantity check
         else if (enteredQuantity <= 0) return "error";
+
         else return "success";
     }
 
     validateTicker = () => {
         // Simple validation for if ticker length is >= 1
         const tickerSymbol = this.state.symbol;
-        if (tickerSymbol.length >= 1) return "success";
+        // Page load -> neutral color
+        if (tickerSymbol === null) return null;
+
+        // Check if the user entered something
+        else if (tickerSymbol.length >= 1) return "success";
+
         else return "error";
     }
 
