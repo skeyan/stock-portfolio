@@ -15,6 +15,17 @@ class Transactions extends Component {
         }
     }
 
+    // compare(a, b) {
+    //     if (a.time < b.time) {
+    //       return -1;
+    //     }
+    //     if (a.time > b.time) {
+    //       return 1;
+    //     }
+    //     // a must be equal to b
+    //     return 0;
+    //   }
+
     // Make a GET request to the backend's Transaction route
     // and retrieve all of the current user's transactions
     getTransactions = () => {        
@@ -23,6 +34,22 @@ class Transactions extends Component {
         axios.get("http://localhost:5000/transaction/email/" + this.props.currentUser)
         .then((res => {
             let myTransactions = res.data.data;
+            
+            // Sort transactions so they're displayed with most recent transactions on top/first
+            myTransactions.sort((a, b) => {
+                let aParsed = Date.parse(a.time);
+                let bParsed = Date.parse(b.time);
+                // console.log(aParsed, bParsed);
+                if (aParsed > bParsed) {
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
+            })
+
+            console.log(myTransactions);
+
             if (myTransactions.length > 0) {
                 this.setState({
                     transactionsArray: myTransactions

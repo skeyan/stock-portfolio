@@ -85,7 +85,7 @@ class Purchase extends Component {
                             className="purchase-form-field"
                         />
                         <FormControl.Feedback />
-                        <p className="help">Enter a stock symbol (ex: IBM, AAPL).</p>
+                        <p className="help">Enter a stock symbol (ex: SPOT, IBM, AAPL).</p>
                     </FormGroup>
                     <FormGroup controlId="formBasicText" validationState={this.validateQuantity()}>
                         <ControlLabel className="purchase-form-titles">Quantity</ControlLabel>

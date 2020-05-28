@@ -87,9 +87,18 @@ export const getNumTransactions = () => {
 export const getCash = () => {
     return async (dispatch, getState) => {
         const response = await axios.get("http://localhost:5000/user/email/" + getState().currentUser + "/cash");
-        console.log("RESPONSE GET CASH: ", response);
         if (response.data.success) {
             dispatch(setCash(response.data.data))
+        }
+    }
+}
+
+// The thunk gets the user's stocks with a backend axios call
+export const getStocks = () => {
+    return async (dispatch, getState) => {
+        const response = await axios.get("http://localhost:5000/stock/email/" + getState().currentUser + "/all");
+        if (response.data.success) {
+            dispatch(setStocksArray(response.data.data))
         }
     }
 }
@@ -145,6 +154,7 @@ export const getStockPrices = (symbol, quantity) => {
                     tickerSymbol: symbol,
                     quantity: quantity
                 }
+                // update frontend stocks
                 let myStocks = getState().stocksArray;
                 if (!myStocks.includes(symbol)) { // user doesn't have the stock yet
                     myStocks.push(symbol);
