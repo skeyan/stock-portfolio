@@ -18,7 +18,9 @@ const TransactionsView = props => {
             <ListGroup>
             { props.numTransactions > 0 ? (
                 props.transactionsArray.map((transaction, i) => (
-                    <ListGroupItem key={i}><b>{transaction.time.toString().substring(0, 10)}</b> - BUY ({transaction.tickerSymbol.toUpperCase()}) - {transaction.quantity} Shares @ ${transaction.totalCost}</ListGroupItem>
+                    <ListGroupItem key={i}>
+                        <b>{transaction.time.toString().substring(0, 10)}</b> - BUY ({transaction.tickerSymbol.toUpperCase()}) - {transaction.quantity} {transaction.quantity > 1 ? "Shares" : "Share"} @ ${transaction.totalCost}
+                    </ListGroupItem>
                 ))
             ) : props.loggedIn ? (
                 <h3>You have no transactions. Visit your <Link to="/portfolio">portfolio</Link> to buy stocks.
