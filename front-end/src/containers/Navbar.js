@@ -10,6 +10,10 @@ const Navbar = (props) => {
     if (props.loggedIn) {
         logLink = <li onClick={logoutUser} id="logoutNav">Logout</li>
     }
+    let regLink;
+    if (!props.loggedIn) {
+        regLink = <li><Link to="register">Register</Link></li>
+    }
 
     // Tell frontend we're logged out
     function logoutUser(){
@@ -38,7 +42,7 @@ const Navbar = (props) => {
                 <li><Link to="/portfolio">Portfolio</Link></li>
                 <li><Link to="/transactions">Transactions</Link></li>
                 { logLink }
-                <li><Link to="/register">Register</Link></li>
+                { regLink }
             </ul>
         </div>
     );
