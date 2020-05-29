@@ -4,9 +4,14 @@ import '../styles/Portfolio.css';
 
 class StockCard extends Component {
     render() {
+        let totalPrice = (parseFloat(this.props.price) * parseFloat(this.props.quantity)).toFixed(2);
         return (
-            <div>
-                <h2>Stock Card</h2>
+            <div className="stock-card">
+                <div className={this.props.colorClass}>
+                    <center><h3>{this.props.tickerSymbol}</h3></center>
+                    <p>Quantity: {this.props.quantity}</p>
+                    <p>Total Price: {totalPrice}</p>
+                </div>
             </div>
         );
     }

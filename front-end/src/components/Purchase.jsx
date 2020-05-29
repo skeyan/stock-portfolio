@@ -3,7 +3,7 @@ import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import '../styles/Portfolio.css';
 import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
-import { getStockPrices } from '../store/rootReducer';
+import { getStockPrices, setFinishedGettingPrices } from '../store/rootReducer';
 
 
 class Purchase extends Component {
@@ -76,6 +76,7 @@ class Purchase extends Component {
         e.preventDefault();
         if (this.validateTicker() === "success" && this.validateQuantity() === "success") {
             console.log("Dispatching on success");
+            this.props.setFinishedGettingPrices(false);
             this.props.getStockPrices(this.state.symbol, this.state.quantity);
         }  
     }
@@ -89,7 +90,7 @@ class Purchase extends Component {
                     </div>
                 ) : (
                 <div>
-                    <h3 id="portfolio-header">Cash: <b>${this.props.cash}</b></h3> 
+                    <h3 id="portfolio-header">Cash: <b>${parseFloat(this.props.cash).toFixed(2)}</b></h3> 
                     <form className="purchase-form" onSubmit={this.handleSubmit}>
                         <FormGroup controlId="formBasicText" validationState={this.validateTicker()}>
                             <ControlLabel className="purchase-form-titles">Ticker</ControlLabel>
@@ -141,6 +142,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = dispatch => {
     return {
         getStockPrices: (symbol, quantity) => dispatch(getStockPrices(symbol, quantity)),
+        setFinishedGettingPrices: (finishedGettingPrices) => dispatch(setFinishedGettingPrices(finishedGettingPrices))
     }
   };
 

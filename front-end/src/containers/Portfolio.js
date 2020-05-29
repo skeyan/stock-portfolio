@@ -6,6 +6,7 @@ import AlertDimissable from '../views/AlertView';
 import { PageHeader} from "react-bootstrap";
 import { connect } from "react-redux";
 import { setCash, setError, getStockPrices } from '../store/rootReducer';
+import Loader from 'react-loader-spinner';
 
 class Portfolio extends Component {
     constructor()
@@ -44,18 +45,28 @@ class Portfolio extends Component {
                                     errorMessage={this.props.errorMessage}/>                   
             }
         }
-
+        console.log(this.props.currentPrices)
         return ( 
             <div className="portfolio-container">
                 <PageHeader>Portfolio</PageHeader>
-                <div className="column-big">
+                <div className="column-big" >
                     {/* LiveStocksView is the view where the stock cards are displayed */}
-                    <LiveStocksView 
-                                loggedIn={this.props.loggedIn} 
-                                stocksArray={this.props.stocksArray} 
-                                currentPrices={this.props.currentPrices}
-                                currentChanges={this.props.currentChanges}
-                    />
+                    { this.props.finishedGettingPrices ? (
+                        <LiveStocksView 
+                        loggedIn={this.props.loggedIn} 
+                        stocksArray={this.props.stocksArray} 
+                        currentPrices={this.props.currentPrices}
+                        currentChanges={this.props.currentChanges}
+                        />
+                    ) : !this.props.loggedIn ? (
+                        <p>Log in please.</p>
+                    ) : (
+                        <center>      
+                            <Loader type="ThreeDots" color="#2fc477" height="100" width="150" />
+                        </center>
+                    )
+                    }
+                    
                 </div>
                 <div className="column-small">
                     { windowVar }
@@ -76,7 +87,8 @@ function mapStateToProps(state) {
       stocksArray: state.stocksArray,
       loggedIn: state.loggedIn,
       currentPrices: state.currentPrices,
-      currentChanges:state.currentChanges
+      currentChanges: state.currentChanges,
+      finishedGettingPrices: state.finishedGettingPrices
     }
   }
 

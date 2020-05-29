@@ -11,7 +11,7 @@ import Register from './containers/Register.js';
 import Transactions from "./containers/Transactions.js";
 import NotFound from './containers/NotFound.js';
 import { connect } from "react-redux";
-import { setLoggedIn, setCurrentUser, setNumTransactions, setCash, setStocksArray } from './store/rootReducer';
+import { setLoggedIn, setCurrentUser, setNumTransactions, setCash, setStocksArray, setPrices, setChanges, setFinishedGettingPrices} from './store/rootReducer';
 import './styles/App.css';
 
 const App = (props) => {
@@ -38,6 +38,9 @@ const App = (props) => {
                 setCurrentUser={props.setCurrentUser} 
                 setNumTransactions={props.setNumTransactions} 
                 setCash={props.setCash}
+                setPrices={props.setPrices}
+                setChanges={props.setChanges}
+                setFinishedGettingPrices={props.setFinishedGettingPrices}
         />
           <Switch>
               <Route exact path="/">
@@ -83,7 +86,10 @@ const mapDispatchToProps = dispatch => {
     setCurrentUser: (currentUser) => dispatch(setCurrentUser(currentUser)),
     setNumTransactions: (numTransactions) => dispatch(setNumTransactions(numTransactions)),
     setCash: (cash) => dispatch(setCash(cash)),
-    setStocksArray: (stocksArray) => dispatch(setStocksArray(stocksArray))
+    setStocksArray: (stocksArray) => dispatch(setStocksArray(stocksArray)),
+    setPrices: (currentPrices) => dispatch(setPrices(currentPrices)),
+    setChanges: (currentChanges) => dispatch(setChanges(currentChanges)),
+    setFinishedGettingPrices: (finishedGettingPrices) => dispatch(setFinishedGettingPrices(finishedGettingPrices))
   }
 };
 

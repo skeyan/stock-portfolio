@@ -18,6 +18,9 @@ const Navbar = (props) => {
         props.setNumTransactions(-1);
         props.setCash(5000);
         props.setStocksArray([]);
+        props.setChanges(new Map());
+        props.setPrices(new Map());
+        props.setFinishedGettingPrices(false);
         props.setLoggedIn(false); 
         history.push("/"); // Redirect to homepage wherever the user is
     }

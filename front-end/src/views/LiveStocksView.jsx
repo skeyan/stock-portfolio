@@ -76,10 +76,20 @@ class LiveStocksView extends Component {
                     <h4>Please <Link to="/login">log in</Link> to monitor your stocks.</h4>
                 ) : this.props.stocksArray.length > 0 ? ( // Have I bought stocks?
                     this.props.stocksArray.map((stock, i) => (
-                        <div>
-                            <li key={stock.tickerSymbol} className={this.props.currentChanges.get(stock.tickerSymbol)}>
-                                {stock.tickerSymbol.toUpperCase()} - {stock.quantity} Shares - ${this.props.currentPrices.get(stock.tickerSymbol)}
-                            </li>
+                        <div className="stock-card-container">
+                            { this.props.currentPrices.get(stock.tickerSymbol) ? (
+                                <StockCard 
+                                key={stock.tickerSymbol} 
+                                colorClass={this.props.currentChanges.get(stock.tickerSymbol)} 
+                                tickerSymbol={stock.tickerSymbol.toUpperCase()}
+                                quantity={stock.quantity}
+                                price={this.props.currentPrices.get(stock.tickerSymbol)}
+                            />
+                            ) : (
+                                <p>Loading stock card...</p>
+                            )
+                            }
+                            
                         </div>
                     ))
                 ) : !this.props.stocksArray.length > 0 ? ( 

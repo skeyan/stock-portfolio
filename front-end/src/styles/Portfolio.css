@@ -42,6 +42,20 @@
     padding-bottom: 30px;
 }
 
+.stock-card-container {
+    display: flex;
+    align-items: center;
+    float: left;
+}
+
+.stock-card {
+    margin: 15px;
+    padding: 5px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    width: 150px;
+}
+
 .red {
     color: red;
 }

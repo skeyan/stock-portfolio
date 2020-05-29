@@ -9,6 +9,7 @@ const SET_CURRENT_USER = "SET_CURRENT_USER";
 const SET_NUM_TRANSACTIONS = "SET_NUM_TRANSACTIONS";
 const SET_PRICES = "SET_PRICES";
 const SET_CHANGES = "SET_CHANGES";
+const SET_FINISHED_GETTING_PRICES = "SET_FINISHED_GETTING_PRICES";
 
 // Initialize the initial state of the store with default values
 const initState = {
@@ -19,7 +20,8 @@ const initState = {
     currentUser: "", // email of current user, empty if not logged in
     currentNumTransactions: -1, // num transactions of current user, -1 if not logged in
     currentPrices: new Map(),
-    currentChanges: new Map()
+    currentChanges: new Map(),
+    finishedGettingPrices: false
 }
 
 // Actions ----------------------------------------------------------------------------
@@ -91,6 +93,13 @@ export function setChanges(currentChanges) {
     }
 }
 
+export function setFinishedGettingPrices(finishedGettingPrices) {
+    return {
+        type: SET_FINISHED_GETTING_PRICES,
+        finishedGettingPrices: finishedGettingPrices
+    }
+}
+
 // Thunks -----------------------------------------------------------------------------
 
 // The thunk gets the number of transactions of current user with a backend axios call
@@ -115,9 +124,9 @@ export const getCash = () => {
 
 // The thunk gets the user's stocks with a backend axios call
 export const getStocks = () => {
-    console.log("GETTING STOCKKSKSSS")
     return async (dispatch, getState) => {
         const response = await axios.get("http://localhost:5000/stock/email/" + getState().currentUser + "/all");
+        console.log(response.data.data)
         if (response.data.success) {
             console.log(response.data.data)
             dispatch(setStocksArray(response.data.data));
@@ -134,9 +143,11 @@ export const getCurrentPrice = (symbolArr) => {
             let url = "https://cloud.iexapis.com/stable/stock/" + currentSymbol + "/quote?token=pk_1980e71d365b44aabc473f0f44812173";
             const response = await axios.get(url);
             if (response) {
-                let currentPriceOfSymbol = parseFloat(response.data.latestPrice);
-                let openPrice = parseFloat(response.data.open);
+                let currentPriceOfSymbol = parseFloat(parseFloat(response.data.latestPrice).toFixed(2)).toFixed(2);
+                let openPrice = parseFloat(parseFloat(response.data.open).toFixed(2)).toFixed(2);
                 let currentStatus = "grey";
+
+                console.log(currentPriceOfSymbol, openPrice)
 
                 if (openPrice - currentPriceOfSymbol < 0) { // less than
                     currentStatus = "red"
@@ -151,6 +162,8 @@ export const getCurrentPrice = (symbolArr) => {
                 let updatedMap = getState().currentPrices;
                 updatedMap.set(currentSymbol, currentPriceOfSymbol);
 
+                console.log("NEW MAP: ", updatedMap);
+
                 let updatedChanges = getState().currentChanges;
                 updatedChanges.set(currentSymbol, currentStatus);
 
@@ -158,6 +171,8 @@ export const getCurrentPrice = (symbolArr) => {
                 dispatch(setChanges(updatedChanges));
             }
         }
+        console.log("here")
+        dispatch(setFinishedGettingPrices(true))
     }
 }
 
@@ -224,11 +239,15 @@ export const getStockPrices = (symbol, quantity) => {
                         break;
                     }
                 }
+                
+
                 if (alreadyInArray === false) { // user doesn't have stock yet
                     myStocks.push(stockUpdate);
                 } else { // user has stock already
                     myStocks[index].quantity += parseFloat(quantity);
                 }
+                dispatch(setStocksArray(myStocks))
+                dispatch(getCurrentPrice(myStocks))
 
                 // also update backend with the stock
                 await axios.post("http://localhost:5000/stock/update", stockUpdate).then(
@@ -322,6 +341,11 @@ function rootReducer(state = initState, action = {}) {
         case SET_PRICES:
             return Object.assign({}, state, {
                 currentPrices: action.currentPrices
+            })
+
+        case SET_FINISHED_GETTING_PRICES:
+            return Object.assign({}, state, {
+                finishedGettingPrices: action.finishedGettingPrices
             })
 
         case SET_CHANGES:
