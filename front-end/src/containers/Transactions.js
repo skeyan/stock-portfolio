@@ -15,17 +15,6 @@ class Transactions extends Component {
         }
     }
 
-    // compare(a, b) {
-    //     if (a.time < b.time) {
-    //       return -1;
-    //     }
-    //     if (a.time > b.time) {
-    //       return 1;
-    //     }
-    //     // a must be equal to b
-    //     return 0;
-    //   }
-
     // Make a GET request to the backend's Transaction route
     // and retrieve all of the current user's transactions
     getTransactions = () => {        
@@ -48,7 +37,7 @@ class Transactions extends Component {
                 }
             })
 
-            console.log(myTransactions);
+            // console.log(myTransactions);
 
             if (myTransactions.length > 0) {
                 this.setState({
@@ -58,7 +47,8 @@ class Transactions extends Component {
         })).catch((err) => { // failed call
             console.log(err)
         })
-        )}
+        )
+    }
 
     render() {
         // Retrieve transactions

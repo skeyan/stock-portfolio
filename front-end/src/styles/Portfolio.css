@@ -13,7 +13,7 @@
     padding-left: 50px;
     font-family: avenir-medium;
     display: inline;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
 } 
 
 .portfolio-container:after {
@@ -24,18 +24,34 @@
 
 .column-big {
     float:left;
+    min-width: 60%;
     width: 60%;
 }
 
 .column-big h2 {
     font-size: 18px;
+    min-height: 200px;
 }
 
 .column-small {
     float:left;
     padding-left: 30px;
     width: 40%;
+    min-height: 200px;
     border-left: 1px solid lightgray;
+    padding-bottom: 30px;
+}
+
+.red {
+    color: red;
+}
+
+.grey {
+    color: grey;
+}
+
+.green {
+    color: green
 }
 
 /* Purchase Form Styling --------------------------------------- */

@@ -4,7 +4,7 @@ import LoginView from '../views/LoginView';
 import AlertDimissable from '../views/AlertView';
 import '../styles/Login.css';
 import { connect } from "react-redux";
-import { setLoggedIn, setCurrentUser, getNumTransactions, getCash, getStocks } from '../store/rootReducer';
+import { setLoggedIn, setCurrentUser, getNumTransactions, getCash, getStocks, getCurrentPrice } from '../store/rootReducer';
 import { useHistory } from "react-router-dom";
 
 const Login = (props) => {
@@ -100,7 +100,8 @@ const mapDispatchToProps = dispatch => {
     setCurrentUser: (currentUser) => dispatch(setCurrentUser(currentUser)),
     getNumTransactions: () => dispatch(getNumTransactions()),
     getCash: () => dispatch(getCash()),
-    getStocks: () => dispatch(getStocks())
+    getStocks: () => dispatch(getStocks()),
+    getCurrentPrice: (symbol) => dispatch(getCurrentPrice(symbol))
   }
 };
 

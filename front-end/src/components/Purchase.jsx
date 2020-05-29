@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import '../styles/Portfolio.css';
+import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
 import { getStockPrices } from '../store/rootReducer';
 
@@ -82,38 +83,46 @@ class Purchase extends Component {
     render() {
         return (
             <div>
-                <h3 id="portfolio-header">Cash: <b>${this.props.cash}</b></h3> 
-                <form className="purchase-form" onSubmit={this.handleSubmit}>
-                    <FormGroup controlId="formBasicText" validationState={this.validateTicker()}>
-                        <ControlLabel className="purchase-form-titles">Ticker</ControlLabel>
-                        <br></br>
-                        <FormControl
-                            type="text"
-                            value={this.state.value}
-                            placeholder="Enter ticker"
-                            onChange={(e) => this.handleChange("symbol", e)}
-                            className="purchase-form-field"
-                        />
-                        <FormControl.Feedback />
-                        <p className="help">Enter a stock symbol (ex: SPOT, IBM, AAPL).</p>
-                    </FormGroup>
-                    <FormGroup controlId="formBasicText" validationState={this.validateQuantity()}>
-                        <ControlLabel className="purchase-form-titles">Quantity</ControlLabel>
-                        <br></br>
-                        <FormControl
-                            type="number"
-                            min="1" 
-                            step="1"
-                            value={this.state.value}
-                            placeholder="Enter quantity"
-                            onChange={(e) => this.handleChange("quantity", e)}
-                            className="purchase-form-field"
-                        />
-                        <FormControl.Feedback />
-                        <p className="help">Enter a whole number quantity greater than 0 (ex: 1, 40).</p>
-                    </FormGroup>
-                    <Button bsStyle="success" type="submit">Buy</Button>
-                </form>
+                { !this.props.loggedIn ? (
+                    <div>
+                        <h4>Please <Link to="/login">log in</Link> to make a purchase.</h4>
+                    </div>
+                ) : (
+                <div>
+                    <h3 id="portfolio-header">Cash: <b>${this.props.cash}</b></h3> 
+                    <form className="purchase-form" onSubmit={this.handleSubmit}>
+                        <FormGroup controlId="formBasicText" validationState={this.validateTicker()}>
+                            <ControlLabel className="purchase-form-titles">Ticker</ControlLabel>
+                            <br></br>
+                            <FormControl
+                                type="text"
+                                value={this.state.value}
+                                placeholder="Enter ticker"
+                                onChange={(e) => this.handleChange("symbol", e)}
+                                className="purchase-form-field"
+                            />
+                            <FormControl.Feedback />
+                            <p className="help">Enter a stock symbol (ex: SPOT, IBM, AAPL).</p>
+                        </FormGroup>
+                        <FormGroup controlId="formBasicText" validationState={this.validateQuantity()}>
+                            <ControlLabel className="purchase-form-titles">Quantity</ControlLabel>
+                            <br></br>
+                            <FormControl
+                                type="number"
+                                min="1" 
+                                step="1"
+                                value={this.state.value}
+                                placeholder="Enter quantity"
+                                onChange={(e) => this.handleChange("quantity", e)}
+                                className="purchase-form-field"
+                            />
+                            <FormControl.Feedback />
+                            <p className="help">Enter a whole number quantity greater than 0 (ex: 1, 40).</p>
+                        </FormGroup>
+                        <Button bsStyle="success" type="submit">Buy</Button>
+                    </form>
+                </div>)
+                 }
             </div>
         );
     }

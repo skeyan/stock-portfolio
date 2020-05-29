@@ -17,6 +17,7 @@ const Navbar = (props) => {
         props.setCurrentUser("");
         props.setNumTransactions(-1);
         props.setCash(5000);
+        props.setStocksArray([]);
         props.setLoggedIn(false); 
         history.push("/"); // Redirect to homepage wherever the user is
     }

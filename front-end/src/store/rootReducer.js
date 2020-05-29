@@ -7,6 +7,8 @@ const SET_ERROR = "SET_ERROR";
 const SET_LOGGED_IN = "SET_LOGGED_IN";
 const SET_CURRENT_USER = "SET_CURRENT_USER";
 const SET_NUM_TRANSACTIONS = "SET_NUM_TRANSACTIONS";
+const SET_PRICES = "SET_PRICES";
+const SET_CHANGES = "SET_CHANGES";
 
 // Initialize the initial state of the store with default values
 const initState = {
@@ -15,7 +17,9 @@ const initState = {
     error: "", // error message containing any error messages from API calls
     loggedIn: false, // frontend logged-in status
     currentUser: "", // email of current user, empty if not logged in
-    currentNumTransactions: -1 // num transactions of current user, -1 if not logged in
+    currentNumTransactions: -1, // num transactions of current user, -1 if not logged in
+    currentPrices: new Map(),
+    currentChanges: new Map()
 }
 
 // Actions ----------------------------------------------------------------------------
@@ -71,6 +75,22 @@ export function setNumTransactions(numTransactions) {
     }
 }
 
+// The action updates the current stock prices
+export function setPrices(currentPrices) {
+    return {
+        type: SET_PRICES,
+        currentPrices: currentPrices
+    }
+}
+
+// The action updates the current stock change statuses
+export function setChanges(currentChanges) {
+    return {
+        type: SET_CHANGES,
+        currentChanges: currentChanges
+    }
+}
+
 // Thunks -----------------------------------------------------------------------------
 
 // The thunk gets the number of transactions of current user with a backend axios call
@@ -95,10 +115,48 @@ export const getCash = () => {
 
 // The thunk gets the user's stocks with a backend axios call
 export const getStocks = () => {
+    console.log("GETTING STOCKKSKSSS")
     return async (dispatch, getState) => {
         const response = await axios.get("http://localhost:5000/stock/email/" + getState().currentUser + "/all");
         if (response.data.success) {
-            dispatch(setStocksArray(response.data.data))
+            console.log(response.data.data)
+            dispatch(setStocksArray(response.data.data));
+            dispatch(getCurrentPrice(response.data.data))
+        }
+    }
+}
+
+// The thunk gets the current prices of the stocks passed in with an API call
+export const getCurrentPrice = (symbolArr) => {
+    return async (dispatch, getState) => {
+        for(let i = 0; i < symbolArr.length; i++) {
+            let currentSymbol = symbolArr[i].tickerSymbol;
+            let url = "https://cloud.iexapis.com/stable/stock/" + currentSymbol + "/quote?token=pk_1980e71d365b44aabc473f0f44812173";
+            const response = await axios.get(url);
+            if (response) {
+                let currentPriceOfSymbol = parseFloat(response.data.latestPrice);
+                let openPrice = parseFloat(response.data.open);
+                let currentStatus = "grey";
+
+                if (openPrice - currentPriceOfSymbol < 0) { // less than
+                    currentStatus = "red"
+                }
+                else if (openPrice - currentPriceOfSymbol > 0) {
+                    currentStatus = "green"
+                }
+                else {
+                    currentStatus = "grey"
+                }
+
+                let updatedMap = getState().currentPrices;
+                updatedMap.set(currentSymbol, currentPriceOfSymbol);
+
+                let updatedChanges = getState().currentChanges;
+                updatedChanges.set(currentSymbol, currentStatus);
+
+                dispatch(setPrices(updatedMap));
+                dispatch(setChanges(updatedChanges));
+            }
         }
     }
 }
@@ -156,9 +214,22 @@ export const getStockPrices = (symbol, quantity) => {
                 }
                 // update frontend stocks
                 let myStocks = getState().stocksArray;
-                if (!myStocks.includes(symbol)) { // user doesn't have the stock yet
-                    myStocks.push(symbol);
+                // console.log(symbol, myStocks)
+                let alreadyInArray = false;
+                let index = -1;
+                for(let i = 0; i < myStocks.length; i++) {
+                    if (myStocks[i].tickerSymbol === symbol) {
+                        alreadyInArray = true; // If the stock is in array, set to true
+                        index = i;
+                        break;
+                    }
                 }
+                if (alreadyInArray === false) { // user doesn't have stock yet
+                    myStocks.push(stockUpdate);
+                } else { // user has stock already
+                    myStocks[index].quantity += parseFloat(quantity);
+                }
+
                 // also update backend with the stock
                 await axios.post("http://localhost:5000/stock/update", stockUpdate).then(
                     dispatch(setError("success"))
@@ -246,6 +317,16 @@ function rootReducer(state = initState, action = {}) {
         case SET_NUM_TRANSACTIONS:
             return Object.assign({}, state, {
                 currentNumTransactions: action.numTransactions
+            })
+
+        case SET_PRICES:
+            return Object.assign({}, state, {
+                currentPrices: action.currentPrices
+            })
+
+        case SET_CHANGES:
+            return Object.assign({}, state, {
+                currentChanges: action.currentChanges
             })
 
         case SET_ERROR:
