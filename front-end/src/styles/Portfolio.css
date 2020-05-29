@@ -68,6 +68,11 @@
     color: green
 }
 
+a.attribution {
+    font-size: 10px;
+    color: lightgray;
+}
+
 /* Purchase Form Styling --------------------------------------- */
 /* Styling for the entire form */
 form.purchase-form {

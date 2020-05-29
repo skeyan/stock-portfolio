@@ -89,9 +89,10 @@ class LiveStocksView extends Component {
                                 <p>Loading stock card...</p>
                             )
                             }
-                            
+
                         </div>
-                    ))
+                    )
+                    ) 
                 ) : !this.props.stocksArray.length > 0 ? ( 
                     <h4>Purchase a stock to view its stats.</h4>
                 ) : (

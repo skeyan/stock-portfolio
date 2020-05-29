@@ -53,10 +53,10 @@ class Portfolio extends Component {
                     {/* LiveStocksView is the view where the stock cards are displayed */}
                     { this.props.finishedGettingPrices ? (
                         <LiveStocksView 
-                        loggedIn={this.props.loggedIn} 
-                        stocksArray={this.props.stocksArray} 
-                        currentPrices={this.props.currentPrices}
-                        currentChanges={this.props.currentChanges}
+                            loggedIn={this.props.loggedIn} 
+                            stocksArray={this.props.stocksArray} 
+                            currentPrices={this.props.currentPrices}
+                            currentChanges={this.props.currentChanges}
                         />
                     ) : !this.props.loggedIn ? (
                         <p>Log in please.</p>
@@ -66,7 +66,6 @@ class Portfolio extends Component {
                         </center>
                     )
                     }
-                    
                 </div>
                 <div className="column-small">
                     { windowVar }

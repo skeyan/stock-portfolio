@@ -10,7 +10,8 @@ class StockCard extends Component {
                 <div className={this.props.colorClass}>
                     <center><h3>{this.props.tickerSymbol}</h3></center>
                     <p>Quantity: {this.props.quantity}</p>
-                    <p>Total Price: {totalPrice}</p>
+                    <p>Total Price: ${totalPrice}</p>
+                    <a href="https://iexcloud.io" className="attribution" target="_blank">IEX Cloud</a>
                 </div>
             </div>
         );

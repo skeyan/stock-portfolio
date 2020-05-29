@@ -225,7 +225,7 @@ export const getStockPrices = (symbol, quantity) => {
                 const stockUpdate = {
                     email: getState().currentUser,
                     tickerSymbol: symbol,
-                    quantity: quantity
+                    quantity: parseFloat(quantity)
                 }
                 // update frontend stocks
                 let myStocks = getState().stocksArray;
