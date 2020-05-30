@@ -13,12 +13,6 @@ class Portfolio extends Component {
     constructor()
     {
         super();
-
-        // Default state values go below
-        this.state = {
-            // Default values for the app
-            cash: 5000 
-        }
     }
 
     render() {

@@ -15,12 +15,12 @@ class Transactions extends Component {
         }
     }
 
-    // Make a GET request to the backend's Transaction route
+    // Make a GET request to the backend's Transaction route,
     // and retrieve all of the current user's transactions
     getTransactions = () => {        
         // Axios call to backend
         trackPromise(
-        axios.get("http://localhost:5000/transaction/email/" + this.props.currentUser)
+        axios.get("https://stockfolio-back-end.herokuapp.com/transaction/email/" + this.props.currentUser)
         .then((res => {
             let myTransactions = res.data.data;
             

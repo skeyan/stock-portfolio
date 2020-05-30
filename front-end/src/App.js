@@ -15,15 +15,6 @@ import { setLoggedIn, setCurrentUser, setNumTransactions, setCash, setStocksArra
 import './styles/App.css';
 
 const App = (props) => {
-  // const history = useHistory();
-
-  // async function handleLogout() {    
-  //   // May need more auth action here?
-    
-  //   this.props.setLoggedIn(false);
-  //   history.push("/login");
-  // }
-
   return (
     /*
       * Uses a Router to switch between pages.
