@@ -4,7 +4,8 @@
   "description": "The backend server for stock-portfolio.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "cd client && npm install && npm start"
   },
   "author": "Eva Yan",
   "license": "ISC",
