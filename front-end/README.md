@@ -1,7 +1,7 @@
 # Stockfolio: Front-end
 
 The front-end of Stockfolio uses React.js and Redux.js.
-The front-end is deployed at: https://stockfolio-app-back.herokuapp.com/.
+The front-end is deployed at: https://stockfolio-io.herokuapp.com/.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
