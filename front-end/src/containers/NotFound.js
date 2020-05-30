@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/NotFound.css";
+import '../styles/Fonts.css';
 
 export default function NotFound() {
   return (

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/Portfolio.css';
+import '../styles/Fonts.css';
 import Purchase from '../components/Purchase';
 import LiveStocksView from '../views/LiveStocksView';
 import { Link } from 'react-router-dom';

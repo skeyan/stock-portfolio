@@ -2,6 +2,7 @@ import React from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import "../styles/Login.css";
+import '../styles/Fonts.css';
 import '../styles/Portfolio.css';
 
 const LoginView = props => {

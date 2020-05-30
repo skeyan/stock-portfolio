@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TransactionsView from '../views/TransactionsView';
 import '../styles/Transactions.css';
+import '../styles/Fonts.css';
 import { connect } from "react-redux";
 import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';

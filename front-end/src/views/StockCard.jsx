@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {  } from "react-bootstrap";
 import '../styles/Portfolio.css';
+import '../styles/Fonts.css';
 
 class StockCard extends Component {
     render() {

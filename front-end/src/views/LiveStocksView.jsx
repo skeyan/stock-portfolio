@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {  } from "react-bootstrap";
 import StockCard from './StockCard';
 import '../styles/Portfolio.css';
+import '../styles/Fonts.css';
 import Loading from '../components/Loading.js';
 
 class LiveStocksView extends Component {

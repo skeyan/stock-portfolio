@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import '../styles/Portfolio.css';
+import '../styles/Fonts.css';
 import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
 import { getStockPrices, setFinishedGettingPrices } from '../store/rootReducer';
-
 
 class Purchase extends Component {
     constructor()

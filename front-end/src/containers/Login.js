@@ -3,6 +3,7 @@ import axios from 'axios';
 import LoginView from '../views/LoginView';
 import AlertDimissable from '../views/AlertView';
 import '../styles/Login.css';
+import '../styles/Fonts.css';
 import { connect } from "react-redux";
 import { setLoggedIn, setCurrentUser, getNumTransactions, getCash, getStocks, getCurrentPrice } from '../store/rootReducer';
 import { useHistory } from "react-router-dom";

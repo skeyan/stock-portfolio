@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/Home.css';
+import '../styles/Fonts.css';
 import { Link } from 'react-router-dom';
 
 class Home extends Component {
