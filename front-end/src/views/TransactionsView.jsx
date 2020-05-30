@@ -13,7 +13,10 @@ const TransactionsView = props => {
 
     return (
         <div className="transactions-container">
-            <PageHeader>Transactions History</PageHeader>
+            <PageHeader>
+                Transactions History
+                <p className="description">Transactions listed from most recent (top) to oldest (bottom).</p>
+            </PageHeader>
             <Loading />
             <ListGroup>
             { props.numTransactions > 0 ? (

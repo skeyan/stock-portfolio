@@ -26,6 +26,7 @@ class LiveStocksView extends Component {
         clearTimeout(this.timerId);
     }
 
+    // This function loads in new prices from API.
     getData = () => {
         this.props.setFinishedGettingPrices(false);
         this.props.getCurrentPrice(this.props.stocksArray);
@@ -35,12 +36,12 @@ class LiveStocksView extends Component {
         return (
             <div>
                 <Loading />
-                { !this.props.loggedIn ? ( // Am I logged in?
+                { !this.props.loggedIn ? ( // Not logged in -> message to log in
                     <h4>Please <Link to="/login">log in</Link> to monitor your stocks.</h4>
-                ) : this.props.stocksArray.length > 0 ? ( // Have I bought stocks?
+                ) : this.props.stocksArray.length > 0 ? ( // Have stocks -> display them
                     this.props.stocksArray.map((stock, i) => (
                         <div className="stock-card-container">
-                            { this.props.currentPrices.get(stock.tickerSymbol) ? (
+                            { this.props.currentPrices.get(stock.tickerSymbol) ? ( // Have the stock price ready to go -> display card
                                 <StockCard 
                                 key={stock.tickerSymbol} 
                                 colorClass={this.props.currentChanges.get(stock.tickerSymbol)} 
@@ -48,7 +49,7 @@ class LiveStocksView extends Component {
                                 quantity={stock.quantity}
                                 price={this.props.currentPrices.get(stock.tickerSymbol)}
                             />
-                            ) : (
+                            ) : ( // Not ready -> Load
                                 <p>Loading stock card...</p>
                             )
                             }
@@ -56,7 +57,7 @@ class LiveStocksView extends Component {
                         </div>
                     )
                     ) 
-                ) : !this.props.stocksArray.length > 0 ? ( 
+                ) : !this.props.stocksArray.length > 0 ? (  // No stocks --> message to buy stocks
                     <h4>Purchase a stock to view its stats.</h4>
                 ) : (
                     <div></div>
