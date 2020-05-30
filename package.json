@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "heroku-postbuild": "cd front-end && npm install && npm run build"
+    "start": "node index.js"
   },
   "author": "Eva Yan",
   "license": "ISC",
