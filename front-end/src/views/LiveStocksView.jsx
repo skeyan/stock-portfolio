@@ -3,26 +3,35 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import {  } from "react-bootstrap";
 import StockCard from './StockCard';
-import axios from 'axios';
 import '../styles/Portfolio.css';
-import { trackPromise } from 'react-promise-tracker';
 import Loading from '../components/Loading.js';
 
 class LiveStocksView extends Component {
-    constructor()
+    constructor(props)
     {
-        super();
+        super(props);
+        this.timerId = 0;
+    }
+
+    componentDidMount() {
+        // Refresh stock values every 15 minutes (900,000 milliseconds)
+        this.timerId = setInterval(() => this.getData(), 900000);
+    }
+
+    componentWillUnmount() {
+        /*
+          stop getData() from continuing to run even
+          after unmounting this component (when we change a page). 
+        */
+        clearTimeout(this.timerId);
+    }
+
+    getData = () => {
+        this.props.setFinishedGettingPrices(false);
+        this.props.getCurrentPrice(this.props.stocksArray);
     }
 
     render() {
-        // Retrieve current stock prices
-        // console.log(this.state.stockPrices.size, this.props.stocksArray.length)
-        // if (this.props.loggedIn && (this.state.stockPrices.size <= 0 || this.state.stockPrices.size < this.props.stocksArray.length)) { 
-        //     for(let i = 0; i < this.props.stocksArray.length; i++)
-        //     {
-        //         this.getCurrentStockPrices(this.props.stocksArray[i].tickerSymbol);
-        //     }
-        // }
         return (
             <div>
                 <Loading />

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import AlertDimissable from '../views/AlertView';
 import { PageHeader} from "react-bootstrap";
 import { connect } from "react-redux";
-import { setCash, setError, getStockPrices } from '../store/rootReducer';
+import { setCash, setError, getStockPrices, getCurrentPrice, setFinishedGettingPrices } from '../store/rootReducer';
 import Loader from 'react-loader-spinner';
 
 class Portfolio extends Component {
@@ -48,7 +48,10 @@ class Portfolio extends Component {
         }
         return ( 
             <div className="portfolio-container">
-                <PageHeader>Portfolio</PageHeader>
+                <PageHeader>
+                    Portfolio
+                    <p className="data-update">Data updates every 15 minutes.</p>
+                </PageHeader>
                 <div className="column-big" >
                     {/* LiveStocksView is the view where the stock cards are displayed */}
                     { this.props.finishedGettingPrices ? (
@@ -57,6 +60,8 @@ class Portfolio extends Component {
                             stocksArray={this.props.stocksArray} 
                             currentPrices={this.props.currentPrices}
                             currentChanges={this.props.currentChanges}
+                            getCurrentPrice={this.props.getCurrentPrice}
+                            setFinishedGettingPrices={this.props.setFinishedGettingPrices}
                         />
                     ) : !this.props.loggedIn ? (
                         <h4>Please <Link to="/login">log in</Link> to view your stocks.</h4>
@@ -98,7 +103,9 @@ const mapDispatchToProps = dispatch => {
       // Set the props function "setCash" dispatch the Store function "setCash" 
       setCash: (cash) => dispatch(setCash(cash)),
       getStockPrices: (symbol, quantity) => dispatch(getStockPrices(symbol, quantity)),
-      setError: (error) => dispatch(setError(error))
+      setError: (error) => dispatch(setError(error)),
+      getCurrentPrice: (symbolArr) => dispatch(getCurrentPrice(symbolArr)),
+      setFinishedGettingPrices: (finishedGettingPrices) => dispatch(setFinishedGettingPrices(finishedGettingPrices))
     }
   };
 

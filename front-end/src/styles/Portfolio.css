@@ -4,6 +4,12 @@
     color: #2fc477;
 } */
 
+.data-update {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: gray;
+}
+
 .portfolio-container h1 {
     font-family: avenir-black;
     font-size: 25px;

@@ -10,7 +10,7 @@ const RegisterView = props => {
             { props.registrationAlert }
             <div className="Login">
                 <form onSubmit={props.handleSubmit}>
-                    <FormGroup controlId="email" bsSize="large">
+                    <FormGroup bsSize="large">
                         <ControlLabel>Full Name</ControlLabel>
                         <FormControl
                         autoFocus
@@ -23,7 +23,6 @@ const RegisterView = props => {
                     <FormGroup controlId="email" bsSize="large" >
                         <ControlLabel>Email</ControlLabel>
                         <FormControl
-                        autoFocus
                         type="email"
                         value={props.email}
                         onChange={e => props.setEmail(e.target.value)}
