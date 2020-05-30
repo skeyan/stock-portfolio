@@ -26,8 +26,7 @@ const initState = {
 
 // Actions ----------------------------------------------------------------------------
 
-// The action sets the cash amount in the store
-// to equal whatever number value is passed in.
+// The action sets the cash amount in the frontend
 export function setCash(cash = 0) {
     return {
         type: SET_CASH,
@@ -35,7 +34,8 @@ export function setCash(cash = 0) {
     }
 }
 
-// The action updates the stocks array
+// The action updates the stocks array in the frontend 
+// The stocks array contains the name of all stocks the user has
 export function setStocksArray(stocksArray = {}) {
     return {
         type: SET_STOCKS_ARRAY,
@@ -43,7 +43,7 @@ export function setStocksArray(stocksArray = {}) {
     }
 }
 
-// The action sets the logged in status true or false
+// The action sets the logged in status true or false in the frontend
 export function setLoggedIn(loggedIn) {
     return {
         type: SET_LOGGED_IN,
@@ -51,7 +51,7 @@ export function setLoggedIn(loggedIn) {
     }
 }
 
-// The action sets the current user 
+// The action sets the current user in the frontend
 export function setCurrentUser(currentUser) {
     return {
         type: SET_CURRENT_USER,
@@ -60,7 +60,7 @@ export function setCurrentUser(currentUser) {
 }
 
 // The action sets the current error message
-// that will be shown to the user to whatever string is passed in.
+// The error message will be shown to the user to whatever string is passed in.
 export function setError(error = "") {
     return {
         type: SET_ERROR,
@@ -68,8 +68,7 @@ export function setError(error = "") {
     }
 }
 
-
-// The action sets the number of transactions of current user
+// The action sets the number of transactions of current user in the frontend
 export function setNumTransactions(numTransactions) {
     return {
         type: SET_NUM_TRANSACTIONS,
@@ -77,7 +76,7 @@ export function setNumTransactions(numTransactions) {
     }
 }
 
-// The action updates the current stock prices
+// The action updates the current stock prices in the frontend
 export function setPrices(currentPrices) {
     return {
         type: SET_PRICES,
@@ -85,7 +84,8 @@ export function setPrices(currentPrices) {
     }
 }
 
-// The action updates the current stock change statuses
+// The action updates the current stock change statuses in the front end
+// This is used to show if stocks are green, red or grey
 export function setChanges(currentChanges) {
     return {
         type: SET_CHANGES,
@@ -93,6 +93,8 @@ export function setChanges(currentChanges) {
     }
 }
 
+// The action tells the front end that we've finished making the call to the API
+// so it is now safe to load the stock cards.
 export function setFinishedGettingPrices(finishedGettingPrices) {
     return {
         type: SET_FINISHED_GETTING_PRICES,
@@ -101,11 +103,10 @@ export function setFinishedGettingPrices(finishedGettingPrices) {
 }
 
 // Thunks -----------------------------------------------------------------------------
-
 // The thunk gets the number of transactions of current user with a backend axios call
 export const getNumTransactions = () => {
     return async (dispatch, getState) => {
-        const response = await axios.get("http://localhost:5000/user/email/" + getState().currentUser + "/number");
+        const response = await axios.get("https://stockfolio-app-back.herokuapp.com/user/email/" + getState().currentUser + "/number");
         if (response.data.success) {
             dispatch(setNumTransactions(response.data.data))
         }
@@ -115,7 +116,7 @@ export const getNumTransactions = () => {
 // The thunk gets the amount of cash the user has with a backend axios call
 export const getCash = () => {
     return async (dispatch, getState) => {
-        const response = await axios.get("http://localhost:5000/user/email/" + getState().currentUser + "/cash");
+        const response = await axios.get("https://stockfolio-app-back.herokuapp.com/user/email/" + getState().currentUser + "/cash");
         if (response.data.success) {
             dispatch(setCash(response.data.data))
         }
@@ -125,7 +126,7 @@ export const getCash = () => {
 // The thunk gets the user's stocks with a backend axios call
 export const getStocks = () => {
     return async (dispatch, getState) => {
-        const response = await axios.get("http://localhost:5000/stock/email/" + getState().currentUser + "/all");
+        const response = await axios.get("https://stockfolio-app-back.herokuapp.com/stock/email/" + getState().currentUser + "/all");
         if (response.data.success) {
             if (response.data.data.length <= 0) {
                 dispatch(setFinishedGettingPrices(true));
@@ -241,7 +242,7 @@ export const getStockPrices = (symbol, quantity) => {
                     cashBalance: recalculatedCash
                 }
                 // Update the user's cash balance in the backend
-                await axios.post("http://localhost:5000/user/balance/update", cashUpdate);
+                await axios.post("https://stockfolio-app-back.herokuapp.com/user/balance/update", cashUpdate);
 
                 // Updating Stocks: ------------------------------
                 const stockUpdate = {
@@ -268,11 +269,11 @@ export const getStockPrices = (symbol, quantity) => {
                 dispatch(getCurrentPrice(myStocks)); // Update the user's current stocks' prices in the frontend
 
                 // Update the relevant stock in the backend.
-                await axios.post("http://localhost:5000/stock/update", stockUpdate);
+                await axios.post("https://stockfolio-app-back.herokuapp.com/stock/update", stockUpdate);
 
                 // Updating Transactions: ------------------------------
                 // Retrieve the user's amount of transactions by 1
-                const response = await axios.get("http://localhost:5000/user/email/" + getState().currentUser + "/number");
+                const response = await axios.get("https://stockfolio-app-back.herokuapp.com/user/email/" + getState().currentUser + "/number");
                 let newNumTransactions = 1;
                 if(response.data.success) {
                     console.log(response);
@@ -294,14 +295,14 @@ export const getStockPrices = (symbol, quantity) => {
                     totalCost: currentPriceOfSymbol * quantity
                 }
                 // Add a new transaction in the backend.
-                await axios.post("http://localhost:5000/transaction/new", transactionUpdate);
+                await axios.post("https://stockfolio-app-back.herokuapp.com/transaction/new", transactionUpdate);
                 
                 const numTransactionsUpdate = {
                     email: getState().currentUser,
                     totalTransactions: newNumTransactions
                 }
                 // Update the user's number of transactions in the backend.
-                await axios.post("http://localhost:5000/user/transactions/update", numTransactionsUpdate);
+                await axios.post("https://stockfolio-app-back.herokuapp.com/user/transactions/update", numTransactionsUpdate);
             }
             else { 
                 // Otherwise, there's not enough cash so don't let the purchase go through and alert the user

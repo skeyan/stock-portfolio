@@ -1,6 +1,7 @@
 import React  from 'react';
 import "../styles/Login.css";
 import '../styles/Portfolio.css';
+import '../styles/Fonts.css';
 import { Link } from 'react-router-dom';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 
@@ -16,6 +17,7 @@ const RegisterView = props => {
                         autoFocus
                         type="text"
                         value={props.name}
+                        placeholder="Jane Doe"
                         onChange={e => props.setName(e.target.value)}
                         className="form-input"
                         />
@@ -26,6 +28,7 @@ const RegisterView = props => {
                         type="email"
                         value={props.email}
                         onChange={e => props.setEmail(e.target.value)}
+                        placeholder="jane.doe@gmail.com"
                         className="form-input"
                         />
                     </FormGroup>
@@ -33,6 +36,7 @@ const RegisterView = props => {
                         <ControlLabel>Password</ControlLabel>
                         <FormControl
                         value={props.password}
+                        placeholder="Enter a password"
                         onChange={e => props.setPassword(e.target.value)}
                         type="password"
                         className="form-input"

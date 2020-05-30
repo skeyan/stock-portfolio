@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/App.css';
+import '../styles/Fonts.css';
 import { useHistory } from "react-router-dom";
 
 const Navbar = (props) => {

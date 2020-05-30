@@ -3,6 +3,7 @@ import axios from 'axios';
 import LoginView from '../views/LoginView';
 import AlertDimissable from '../views/AlertView';
 import '../styles/Login.css';
+import '../styles/Fonts.css';
 import { connect } from "react-redux";
 import { setLoggedIn, setCurrentUser, getNumTransactions, getCash, getStocks, getCurrentPrice } from '../store/rootReducer';
 import { useHistory } from "react-router-dom";
@@ -23,7 +24,7 @@ const Login = (props) => {
   {
     event.preventDefault();
     // Make an axios call to the backend to attempt to login the user
-    axios.get("http://localhost:5000/user/login/" + email + "/password/" + password).then(res => {
+    axios.get("https://stockfolio-app-back.herokuapp.com/user/login/" + email + "/password/" + password).then(res => {
       if (res.data.success === true) { // Successful login
         // Change loggedIn backend State variable
         setLoginAlert(<AlertDimissable 

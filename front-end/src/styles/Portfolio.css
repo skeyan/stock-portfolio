@@ -1,15 +1,11 @@
-/* h3#portfolio-header {
-    font-family: avenir-black;
-    font-size: 30px;
-    color: #2fc477;
-} */
-
+/* Styling for the message that tells the user data updates every 15 minutes */
 .data-update {
     font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;
     color: gray;
 }
 
+/* Styles for the Portfolio page */
 .portfolio-container h1 {
     font-family: avenir-black;
     font-size: 25px;
@@ -28,6 +24,7 @@
     clear: both;
 }
 
+/* Styling for the div that contains the stock cards live-view */
 .column-big {
     float:left;
     min-width: 60%;
@@ -39,6 +36,7 @@
     min-height: 200px;
 }
 
+/* Styling that contains the purchase div */
 .column-small {
     float:left;
     padding-left: 30px;
@@ -48,6 +46,7 @@
     padding-bottom: 30px;
 }
 
+/* Styling for the stock cards */
 .stock-card-container {
     display: flex;
     align-items: center;
@@ -62,6 +61,7 @@
     width: 150px;
 }
 
+/* These classes are used to show if stocks are less, equal to, or greater than the open price */
 .red {
     color: red;
 }
@@ -74,6 +74,7 @@
     color: green
 }
 
+/* Styling for credit to IEX */
 a.attribution {
     font-size: 10px;
     color: lightgray;
@@ -92,7 +93,7 @@ form .purchase-form-titles {
 
 form .purchase-form-field {
     width: 350px;
-    font-family: avenir-light;
+    font-family: avenir-medium;
 }
 
 p.help {

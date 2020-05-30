@@ -1,3 +1,4 @@
+/* Styles for the message that shows up on the homepage */
 .homepage-message {
     font-family: avenir-medium;
     margin-left: 1rem;
@@ -14,6 +15,7 @@
     font-size: 16px;
 }
 
+/* Styles for the links on the homepage */
 a {
     color: #2fc477;
 }

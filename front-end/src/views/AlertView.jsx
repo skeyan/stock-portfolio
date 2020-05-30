@@ -3,6 +3,7 @@ import { Button, Alert } from "react-bootstrap";
 import { connect } from "react-redux";
 import { setError } from '../store/rootReducer';
 import '../styles/Portfolio.css';
+import '../styles/Fonts.css';
 
 class AlertDismissable extends Component {
     constructor(props, context) {

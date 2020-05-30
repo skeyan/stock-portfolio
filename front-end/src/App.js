@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Link, useHistory } from "react-router-dom";
 import { Redirect } from 'react-router';
 import Home from './containers/Home.js';
 import Navbar from './containers/Navbar.js';
@@ -13,17 +12,9 @@ import NotFound from './containers/NotFound.js';
 import { connect } from "react-redux";
 import { setLoggedIn, setCurrentUser, setNumTransactions, setCash, setStocksArray, setPrices, setChanges, setFinishedGettingPrices} from './store/rootReducer';
 import './styles/App.css';
+import './styles/Fonts.css';
 
 const App = (props) => {
-  // const history = useHistory();
-
-  // async function handleLogout() {    
-  //   // May need more auth action here?
-    
-  //   this.props.setLoggedIn(false);
-  //   history.push("/login");
-  // }
-
   return (
     /*
       * Uses a Router to switch between pages.

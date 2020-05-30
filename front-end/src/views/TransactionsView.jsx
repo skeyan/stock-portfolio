@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import '../styles/Transactions.css';
+import '../styles/Fonts.css';
 import { ListGroup, ListGroupItem, PageHeader} from "react-bootstrap";
 import Loading from '../components/Loading.js';
-import "../styles/Transactions.css";
 
 const TransactionsView = props => {
     // Render conditionally depending on

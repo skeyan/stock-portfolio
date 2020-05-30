@@ -1,23 +1,28 @@
+/* Styles for the Transactions page */
 .transactions-container {
     padding-left: 50px;
     width: 650px;
 }
 
+/* The title of the Transactions page */
 .transactions-container h1 {
     font-family: avenir-black;
     font-size: 25px;
 }
 
+/* The message on the Transactions page that tells the user to login, purchase, etc. */
 .transactions-container h3 {
     font-family: avenir-medium;
     font-size: 18px;
 }
 
+/* Styling for each transaction */
 .transactions-container li {
     font-family: avenir-medium;
     font-size: 16px;
 }
 
+/* Styling for the message that tells the user transactions are ordered recent (top) -> oldest (bot) */
 .description {
     font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;

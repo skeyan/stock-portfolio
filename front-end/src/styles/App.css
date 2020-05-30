@@ -5,7 +5,6 @@
   border-bottom: 5px solid #2fc477;
   margin: 0px;
   padding: 10px;
-  /* height: 50px; */
   font-family: avenir-black;
 }
 
@@ -24,16 +23,14 @@
   list-style-type: none;
 }
 
+/* Styling for the links in the navbar specifically */
 .App-Header-Links li {
   display: inline;
   padding-left: 10px;
   padding-right: 10px;
 }
 
-/* .App-Header-Links li#active {
-  font-weight: 200;
-} */
-
+/* Every link in the navbar gets a right border except the last one */
 .App-Header-Links li:not(:last-child) { 
   border-right: 1px solid #e3e3e3;
 }
@@ -47,6 +44,7 @@ li#logoutNav:hover {
   text-decoration: underline;
 }
 
+/* Make the footer stick to the bottom */
 .test {
   display: flex;
   flex-direction: column;

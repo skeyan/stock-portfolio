@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/Portfolio.css';
+import '../styles/Fonts.css';
 import Purchase from '../components/Purchase';
 import LiveStocksView from '../views/LiveStocksView';
 import { Link } from 'react-router-dom';
@@ -10,17 +11,6 @@ import { setCash, setError, getStockPrices, getCurrentPrice, setFinishedGettingP
 import Loader from 'react-loader-spinner';
 
 class Portfolio extends Component {
-    constructor()
-    {
-        super();
-
-        // Default state values go below
-        this.state = {
-            // Default values for the app
-            cash: 5000 
-        }
-    }
-
     render() {
         let windowVar;
         if (this.props.errorMessage !== null && this.props.errorMessage !== "")

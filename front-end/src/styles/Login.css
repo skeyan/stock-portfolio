@@ -1,11 +1,12 @@
 @media all and (min-width: 480px) {
+    /* Styles for the login component */
     .Login {
         font-family: avenir-black;
-        /* padding: 60px 0; */
         display: flex;
         color: #293B59;
     }
 
+    /* Style for the Login input fields */
     .Login form {
         color: #293B59;
         margin: 0 auto;
@@ -14,15 +15,13 @@
     }
 
     .form-input {
-        font-family: avenir-light;
+        font-family: avenir-medium;
         width: 400px;
     }
 
     .no-account {
         font-family: avenir-medium;
     }
-
-    
 
     .login-parent {
         text-align: center;
@@ -44,6 +43,7 @@
 
 }
 
+/* Make sure the alerts on the login page show up left-aligned */
 .login-alert {
     text-align: left;
 }
