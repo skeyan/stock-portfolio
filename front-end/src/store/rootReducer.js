@@ -225,7 +225,7 @@ export const getStockPrices = (symbol, quantity) => {
                     currentPriceOfSymbol = parseFloat(response.data.previousClose); 
                 }
             }
-            console.log("CURRENT PRICE OF SYMBOL:" , currentPriceOfSymbol)
+            // console.log("CURRENT PRICE OF SYMBOL:" , currentPriceOfSymbol)
            
             // Calculate the theoretical future cash if the transaction went through
             let recalculatedCash = parseFloat(getState().cash - currentPriceOfSymbol * quantity).toFixed(2);
