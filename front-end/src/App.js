@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Link, useHistory } from "react-router-dom";
 import { Redirect } from 'react-router';
 import Home from './containers/Home.js';
 import Navbar from './containers/Navbar.js';

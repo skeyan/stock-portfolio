@@ -11,11 +11,6 @@ import { setCash, setError, getStockPrices, getCurrentPrice, setFinishedGettingP
 import Loader from 'react-loader-spinner';
 
 class Portfolio extends Component {
-    constructor()
-    {
-        super();
-    }
-
     render() {
         let windowVar;
         if (this.props.errorMessage !== null && this.props.errorMessage !== "")
