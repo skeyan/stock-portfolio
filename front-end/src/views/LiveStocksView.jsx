@@ -15,7 +15,7 @@ class LiveStocksView extends Component {
 
     componentDidMount() {
         // Refresh stock values every 15 minutes (900,000 milliseconds)
-        // this.timerId = setInterval(() => this.getData(), 900000);
+        this.timerId = setInterval(() => this.getData(), 900000);
     }
 
     componentWillUnmount() {
