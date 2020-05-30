@@ -16,6 +16,7 @@ const LoginView = props => {
                         <FormControl
                         autoFocus
                         type="email"
+                        placeholder="Enter your email"
                         value={props.email}
                         onChange={e => props.setEmail(e.target.value)}
                         className="form-input"
@@ -25,6 +26,7 @@ const LoginView = props => {
                         <ControlLabel>Password</ControlLabel>
                         <FormControl
                         value={props.password}
+                        placeholder="Enter your password"
                         onChange={e => props.setPassword(e.target.value)}
                         type="password"
                         className="form-input"

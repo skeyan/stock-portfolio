@@ -13,7 +13,7 @@ import NotFound from './containers/NotFound.js';
 import { connect } from "react-redux";
 import { setLoggedIn, setCurrentUser, setNumTransactions, setCash, setStocksArray, setPrices, setChanges, setFinishedGettingPrices} from './store/rootReducer';
 import './styles/App.css';
-import '../styles/Fonts.css';
+import './styles/Fonts.css';
 
 const App = (props) => {
   return (
