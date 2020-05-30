@@ -106,7 +106,7 @@ export function setFinishedGettingPrices(finishedGettingPrices) {
 // The thunk gets the number of transactions of current user with a backend axios call
 export const getNumTransactions = () => {
     return async (dispatch, getState) => {
-        const response = await axios.get("https://stockfolio-back-end.herokuapp.com/user/email/" + getState().currentUser + "/number");
+        const response = await axios.get("https://stockfolio-app-back.herokuapp.com/user/email/" + getState().currentUser + "/number");
         if (response.data.success) {
             dispatch(setNumTransactions(response.data.data))
         }
@@ -116,7 +116,7 @@ export const getNumTransactions = () => {
 // The thunk gets the amount of cash the user has with a backend axios call
 export const getCash = () => {
     return async (dispatch, getState) => {
-        const response = await axios.get("https://stockfolio-back-end.herokuapp.com/user/email/" + getState().currentUser + "/cash");
+        const response = await axios.get("https://stockfolio-app-back.herokuapp.com/user/email/" + getState().currentUser + "/cash");
         if (response.data.success) {
             dispatch(setCash(response.data.data))
         }
@@ -126,7 +126,7 @@ export const getCash = () => {
 // The thunk gets the user's stocks with a backend axios call
 export const getStocks = () => {
     return async (dispatch, getState) => {
-        const response = await axios.get("https://stockfolio-back-end.herokuapp.com/stock/email/" + getState().currentUser + "/all");
+        const response = await axios.get("https://stockfolio-app-back.herokuapp.com/stock/email/" + getState().currentUser + "/all");
         if (response.data.success) {
             if (response.data.data.length <= 0) {
                 dispatch(setFinishedGettingPrices(true));
@@ -242,7 +242,7 @@ export const getStockPrices = (symbol, quantity) => {
                     cashBalance: recalculatedCash
                 }
                 // Update the user's cash balance in the backend
-                await axios.post("https://stockfolio-back-end.herokuapp.com/user/balance/update", cashUpdate);
+                await axios.post("https://stockfolio-app-back.herokuapp.com/user/balance/update", cashUpdate);
 
                 // Updating Stocks: ------------------------------
                 const stockUpdate = {
@@ -269,11 +269,11 @@ export const getStockPrices = (symbol, quantity) => {
                 dispatch(getCurrentPrice(myStocks)); // Update the user's current stocks' prices in the frontend
 
                 // Update the relevant stock in the backend.
-                await axios.post("https://stockfolio-back-end.herokuapp.com/stock/update", stockUpdate);
+                await axios.post("https://stockfolio-app-back.herokuapp.com/stock/update", stockUpdate);
 
                 // Updating Transactions: ------------------------------
                 // Retrieve the user's amount of transactions by 1
-                const response = await axios.get("https://stockfolio-back-end.herokuapp.com/user/email/" + getState().currentUser + "/number");
+                const response = await axios.get("https://stockfolio-app-back.herokuapp.com/user/email/" + getState().currentUser + "/number");
                 let newNumTransactions = 1;
                 if(response.data.success) {
                     console.log(response);
@@ -295,14 +295,14 @@ export const getStockPrices = (symbol, quantity) => {
                     totalCost: currentPriceOfSymbol * quantity
                 }
                 // Add a new transaction in the backend.
-                await axios.post("https://stockfolio-back-end.herokuapp.com/transaction/new", transactionUpdate);
+                await axios.post("https://stockfolio-app-back.herokuapp.com/transaction/new", transactionUpdate);
                 
                 const numTransactionsUpdate = {
                     email: getState().currentUser,
                     totalTransactions: newNumTransactions
                 }
                 // Update the user's number of transactions in the backend.
-                await axios.post("https://stockfolio-back-end.herokuapp.com/user/transactions/update", numTransactionsUpdate);
+                await axios.post("https://stockfolio-app-back.herokuapp.com/user/transactions/update", numTransactionsUpdate);
             }
             else { 
                 // Otherwise, there's not enough cash so don't let the purchase go through and alert the user

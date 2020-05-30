@@ -28,7 +28,7 @@ export default function Register() {
         }
 
         // Make an axios call to the backend to attempt to register the user
-        axios.post("https://stockfolio-back-end.herokuapp.com/user/register", data).then(res => {  
+        axios.post("https://stockfolio-app-back.herokuapp.com/user/register", data).then(res => {  
             // Successful POST request
             // console.log("REGISTRATION RESPONSE:", res);
             if (res.data.success === true) // Successful registration

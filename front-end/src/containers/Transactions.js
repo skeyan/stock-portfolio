@@ -21,7 +21,7 @@ class Transactions extends Component {
     getTransactions = () => {        
         // Axios call to backend
         trackPromise(
-        axios.get("https://stockfolio-back-end.herokuapp.com/transaction/email/" + this.props.currentUser)
+        axios.get("https://stockfolio-app-back.herokuapp.com/transaction/email/" + this.props.currentUser)
         .then((res => {
             let myTransactions = res.data.data;
             

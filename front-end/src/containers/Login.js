@@ -24,7 +24,7 @@ const Login = (props) => {
   {
     event.preventDefault();
     // Make an axios call to the backend to attempt to login the user
-    axios.get("https://stockfolio-back-end.herokuapp.com/user/login/" + email + "/password/" + password).then(res => {
+    axios.get("https://stockfolio-app-back.herokuapp.com/user/login/" + email + "/password/" + password).then(res => {
       if (res.data.success === true) { // Successful login
         // Change loggedIn backend State variable
         setLoginAlert(<AlertDimissable 
