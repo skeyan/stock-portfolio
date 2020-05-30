@@ -1,7 +1,6 @@
 .transactions-container {
     padding-left: 50px;
     width: 650px;
-    color: #293B59;
 }
 
 .transactions-container h1 {
@@ -17,4 +16,10 @@
 .transactions-container li {
     font-family: avenir-medium;
     font-size: 16px;
+}
+
+.description {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: gray;
 }

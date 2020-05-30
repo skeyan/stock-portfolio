@@ -4,7 +4,7 @@ import LoginView from '../views/LoginView';
 import AlertDimissable from '../views/AlertView';
 import '../styles/Login.css';
 import { connect } from "react-redux";
-import { setLoggedIn, setCurrentUser, getNumTransactions } from '../store/rootReducer';
+import { setLoggedIn, setCurrentUser, getNumTransactions, getCash, getStocks, getCurrentPrice } from '../store/rootReducer';
 import { useHistory } from "react-router-dom";
 
 const Login = (props) => {
@@ -37,7 +37,9 @@ const Login = (props) => {
         />);
         props.setLoggedIn(true); // set status on frontend
         props.setCurrentUser(email); // set current user on frontend
-        props.getNumTransactions();
+        props.getNumTransactions(); // get and set current user's total num transactions on frontend
+        props.getCash(); // get and set current user's amount of cash they have to buy stocks on frontend
+        props.getStocks(); // get (and set) current user's stocks list on frontend
         history.push("/"); // Redirect to homepage
       }
       else { // Unsuccessful login
@@ -86,7 +88,7 @@ const Login = (props) => {
 // prop_var_name: state.var_name_in_state
 function mapStateToProps(state) {
   return {
-    loggedIn: state.loggedIn
+    loggedIn: state.loggedIn,
   }
 }
 
@@ -96,7 +98,10 @@ const mapDispatchToProps = dispatch => {
   return {
     setLoggedIn: (loggedIn) => dispatch(setLoggedIn(loggedIn)),
     setCurrentUser: (currentUser) => dispatch(setCurrentUser(currentUser)),
-    getNumTransactions: (numTransactions) => dispatch(getNumTransactions(numTransactions))
+    getNumTransactions: () => dispatch(getNumTransactions()),
+    getCash: () => dispatch(getCash()),
+    getStocks: () => dispatch(getStocks()),
+    getCurrentPrice: (symbol) => dispatch(getCurrentPrice(symbol))
   }
 };
 

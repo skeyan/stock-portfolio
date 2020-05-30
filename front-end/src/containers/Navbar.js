@@ -10,11 +10,21 @@ const Navbar = (props) => {
     if (props.loggedIn) {
         logLink = <li onClick={logoutUser} id="logoutNav">Logout</li>
     }
+    let regLink;
+    if (!props.loggedIn) {
+        regLink = <li><Link to="register">Register</Link></li>
+    }
 
     // Tell frontend we're logged out
     function logoutUser(){
+        // Reset frontend values 
         props.setCurrentUser("");
         props.setNumTransactions(-1);
+        props.setCash(5000);
+        props.setStocksArray([]);
+        props.setChanges(new Map());
+        props.setPrices(new Map());
+        props.setFinishedGettingPrices(false);
         props.setLoggedIn(false); 
         history.push("/"); // Redirect to homepage wherever the user is
     }
@@ -23,7 +33,7 @@ const Navbar = (props) => {
     return (
         <div className="App-Header">
             <div className="App-Title">
-                <img src="/bank.png" alt="bank symbol" width="50px"/>
+                <img src="/bank.svg" alt="bank symbol" width="50px"/>
                 <br />
                 Stockfolio
             </div>
@@ -32,7 +42,7 @@ const Navbar = (props) => {
                 <li><Link to="/portfolio">Portfolio</Link></li>
                 <li><Link to="/transactions">Transactions</Link></li>
                 { logLink }
-                <li><Link to="/register">Register</Link></li>
+                { regLink }
             </ul>
         </div>
     );

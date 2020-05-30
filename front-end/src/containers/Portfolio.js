@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import '../styles/Portfolio.css';
-import PurchaseView from '../views/PurchaseView';
+import Purchase from '../components/Purchase';
+import LiveStocksView from '../views/LiveStocksView';
+import { Link } from 'react-router-dom';
 import AlertDimissable from '../views/AlertView';
+import { PageHeader} from "react-bootstrap";
 import { connect } from "react-redux";
-import { setCash, setError, getStockPrices } from '../store/rootReducer';
+import { setCash, setError, getStockPrices, getCurrentPrice, setFinishedGettingPrices } from '../store/rootReducer';
+import Loader from 'react-loader-spinner';
 
 class Portfolio extends Component {
     constructor()
@@ -13,16 +17,8 @@ class Portfolio extends Component {
         // Default state values go below
         this.state = {
             // Default values for the app
-            cash: 5000
+            cash: 5000 
         }
-    }
-
-    // Debug only - causes refresh everytime the page loads (the call is made and reset each time)
-    componentDidMount() {
-        // Set the initial cash value to $5000 (debugging purposes)
-        // this.props.setCash(5000);
-        // this.props.setStock(new Set());
-        // this.props.getStockPrices("IBM", 1);
     }
 
     render() {
@@ -47,22 +43,39 @@ class Portfolio extends Component {
                                     setLoginAlert="n/a"
                                     validity="false" 
                                     message="Oh snap! The purchase didn't go through."
-                                    errorMessage={this.props.errorMessage}/>
-                                    
-                                    
+                                    errorMessage={this.props.errorMessage}/>                   
             }
         }
-
         return ( 
             <div className="portfolio-container">
-                <h3 id="portfolio-header">| Portfolio ($CASH_W_STOCKS)</h3>
-                <div className="column">
-                    <h2>Live Stocks Go Here</h2>
+                <PageHeader>
+                    Portfolio
+                    <p className="data-update">Data updates every 15 minutes.</p>
+                </PageHeader>
+                <div className="column-big" >
+                    {/* LiveStocksView is the view where the stock cards are displayed */}
+                    { this.props.finishedGettingPrices ? (
+                        <LiveStocksView 
+                            loggedIn={this.props.loggedIn} 
+                            stocksArray={this.props.stocksArray} 
+                            currentPrices={this.props.currentPrices}
+                            currentChanges={this.props.currentChanges}
+                            getCurrentPrice={this.props.getCurrentPrice}
+                            setFinishedGettingPrices={this.props.setFinishedGettingPrices}
+                        />
+                    ) : !this.props.loggedIn ? (
+                        <h4>Please <Link to="/login">log in</Link> to view your stocks.</h4>
+                    ) : (
+                        <center>      
+                            <Loader type="ThreeDots" color="#2fc477" height="100" width="150" />
+                        </center>
+                    )
+                    }
                 </div>
-                <div className="column">
+                <div className="column-small">
                     { windowVar }
-                    {/* PurchaseView is the component where the user can purchase stocks. */}
-                    <PurchaseView cash={this.props.cash} />
+                    {/* Purchase is the component where the user can purchase stocks. */}
+                    <Purchase loggedIn={this.props.loggedIn} cash={this.props.cash} />
                 </div>
             </div>
         );
@@ -73,9 +86,13 @@ class Portfolio extends Component {
 // prop_var_name: state.var_name_in_state
 function mapStateToProps(state) {
     return {
-      // Set the props variable "cash" to be the value of the "cash" variable in the Store
       cash: state.cash,
-      errorMessage: state.error
+      errorMessage: state.error,
+      stocksArray: state.stocksArray,
+      loggedIn: state.loggedIn,
+      currentPrices: state.currentPrices,
+      currentChanges: state.currentChanges,
+      finishedGettingPrices: state.finishedGettingPrices
     }
   }
 
@@ -86,7 +103,9 @@ const mapDispatchToProps = dispatch => {
       // Set the props function "setCash" dispatch the Store function "setCash" 
       setCash: (cash) => dispatch(setCash(cash)),
       getStockPrices: (symbol, quantity) => dispatch(getStockPrices(symbol, quantity)),
-      setError: (error) => dispatch(setError(error))
+      setError: (error) => dispatch(setError(error)),
+      getCurrentPrice: (symbolArr) => dispatch(getCurrentPrice(symbolArr)),
+      setFinishedGettingPrices: (finishedGettingPrices) => dispatch(setFinishedGettingPrices(finishedGettingPrices))
     }
   };
 

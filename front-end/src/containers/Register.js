@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import RegisterView from '../views/RegisterView';
 import AlertDimissable from '../views/AlertView'; 
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default function Register() {
@@ -22,7 +23,8 @@ export default function Register() {
             name:name, 
             email:email, 
             password:password,
-            cashBalance: 5000
+            cashBalance: 5000,
+            totalTransactions: 0
         }
 
         // Make an axios call to the backend to attempt to register the user
@@ -36,9 +38,12 @@ export default function Register() {
                                         setLoginAlert="n/a"
                                         validity="true" 
                                         message={res.data.message} 
-                                        message2=""
+                                        message2={<Link to="/login">Login here.</Link>}
                                         alertClass="flexible-container"
                                     />);
+                setName("");
+                setPassword("");
+                setEmail("");
             }   
             else // Unsuccessful registration
             {

@@ -40,4 +40,4 @@ app.use('/stock', stock);
 // This app starts a server and listens on port 5000 for connections.
 // The app responds with “Hello World!” for requests to the root URL (/) or route. 
 app.get('/', (req, res) => res.send('Hello World!'))
-app.listen(port, () => console.log(`App listening at http://localhost:${port}`))
+app.listen(process.env.PORT || port, () => console.log(`App listening at http://localhost:${port}`))

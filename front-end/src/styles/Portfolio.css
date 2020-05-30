@@ -1,13 +1,25 @@
-h3#portfolio-header {
+/* h3#portfolio-header {
     font-family: avenir-black;
     font-size: 30px;
     color: #2fc477;
+} */
+
+.data-update {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: gray;
+}
+
+.portfolio-container h1 {
+    font-family: avenir-black;
+    font-size: 25px;
 }
 
 .portfolio-container {
     padding-left: 50px;
     font-family: avenir-medium;
     display: inline;
+    padding-bottom: 15px;
 } 
 
 .portfolio-container:after {
@@ -16,9 +28,55 @@ h3#portfolio-header {
     clear: both;
 }
 
-.column {
+.column-big {
     float:left;
-    width: 50%;
+    min-width: 60%;
+    width: 60%;
+}
+
+.column-big h2 {
+    font-size: 18px;
+    min-height: 200px;
+}
+
+.column-small {
+    float:left;
+    padding-left: 30px;
+    width: 40%;
+    min-height: 200px;
+    border-left: 1px solid lightgray;
+    padding-bottom: 30px;
+}
+
+.stock-card-container {
+    display: flex;
+    align-items: center;
+    float: left;
+}
+
+.stock-card {
+    margin: 15px;
+    padding: 5px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    width: 150px;
+}
+
+.red {
+    color: red;
+}
+
+.grey {
+    color: grey;
+}
+
+.green {
+    color: green
+}
+
+a.attribution {
+    font-size: 10px;
+    color: lightgray;
 }
 
 /* Purchase Form Styling --------------------------------------- */

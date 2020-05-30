@@ -23,6 +23,22 @@ class Transactions extends Component {
         axios.get("http://localhost:5000/transaction/email/" + this.props.currentUser)
         .then((res => {
             let myTransactions = res.data.data;
+            
+            // Sort transactions so they're displayed with most recent transactions on top/first
+            myTransactions.sort((a, b) => {
+                let aParsed = Date.parse(a.time);
+                let bParsed = Date.parse(b.time);
+                // console.log(aParsed, bParsed);
+                if (aParsed > bParsed) {
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
+            })
+
+            // console.log(myTransactions);
+
             if (myTransactions.length > 0) {
                 this.setState({
                     transactionsArray: myTransactions
@@ -31,7 +47,8 @@ class Transactions extends Component {
         })).catch((err) => { // failed call
             console.log(err)
         })
-        )}
+        )
+    }
 
     render() {
         // Retrieve transactions

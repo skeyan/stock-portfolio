@@ -11,7 +11,7 @@ import Register from './containers/Register.js';
 import Transactions from "./containers/Transactions.js";
 import NotFound from './containers/NotFound.js';
 import { connect } from "react-redux";
-import { setLoggedIn, setCurrentUser, setNumTransactions } from './store/rootReducer';
+import { setLoggedIn, setCurrentUser, setNumTransactions, setCash, setStocksArray, setPrices, setChanges, setFinishedGettingPrices} from './store/rootReducer';
 import './styles/App.css';
 
 const App = (props) => {
@@ -31,7 +31,17 @@ const App = (props) => {
     <div>
       <div className="test">
       <Router>
-        <Navbar loggedIn={props.loggedIn} setLoggedIn={props.setLoggedIn} setCurrentUser={props.setCurrentUser} setNumTransactions={props.setNumTransactions}/>
+        <Navbar 
+                loggedIn={props.loggedIn} 
+                setStocksArray={props.setStocksArray} 
+                setLoggedIn={props.setLoggedIn} 
+                setCurrentUser={props.setCurrentUser} 
+                setNumTransactions={props.setNumTransactions} 
+                setCash={props.setCash}
+                setPrices={props.setPrices}
+                setChanges={props.setChanges}
+                setFinishedGettingPrices={props.setFinishedGettingPrices}
+        />
           <Switch>
               <Route exact path="/">
                 <Home loggedIn={props.loggedIn} />
@@ -74,7 +84,12 @@ const mapDispatchToProps = dispatch => {
   return {
     setLoggedIn: (loggedIn) => dispatch(setLoggedIn(loggedIn)),
     setCurrentUser: (currentUser) => dispatch(setCurrentUser(currentUser)),
-    setNumTransactions: (numTransactions) => dispatch(setNumTransactions(numTransactions))
+    setNumTransactions: (numTransactions) => dispatch(setNumTransactions(numTransactions)),
+    setCash: (cash) => dispatch(setCash(cash)),
+    setStocksArray: (stocksArray) => dispatch(setStocksArray(stocksArray)),
+    setPrices: (currentPrices) => dispatch(setPrices(currentPrices)),
+    setChanges: (currentChanges) => dispatch(setChanges(currentChanges)),
+    setFinishedGettingPrices: (finishedGettingPrices) => dispatch(setFinishedGettingPrices(finishedGettingPrices))
   }
 };
 
