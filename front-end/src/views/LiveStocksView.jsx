@@ -12,52 +12,6 @@ class LiveStocksView extends Component {
     constructor()
     {
         super();
-
-        this.state = {
-            stockPrices: new Map(),
-            stockChanges: new Map()
-        }
-    }
-
-    // Make a GET axios call to AlphaVantage to retrieve current stock prices
-    getCurrentStockPrices = (symbol) => {
-        console.log(process.env.IEX_KEY)
-        let url = "https://cloud.iexapis.com/stable/stock/" + symbol + "/quote?token=pk_1980e71d365b44aabc473f0f44812173";
-
-        trackPromise(
-        axios.get(url)
-        .then((response => {
-            console.log(response);
-            let currentPriceOfSymbol = parseFloat(response.data.latestPrice);
-            let openPrice = parseFloat(response.data.open);
-            let currentStatus = "grey";
-
-            if (openPrice - currentPriceOfSymbol < 0) { // less than
-                currentStatus = "red"
-            }
-            else if (openPrice - currentPriceOfSymbol > 0) {
-                currentStatus = "green"
-            }
-            else {
-                currentStatus = "grey"
-            }
-
-            let updatedMap = this.state.stockPrices;
-            updatedMap.set(symbol, currentPriceOfSymbol);
-
-            let updatedChanges = this.state.stockChanges;
-            updatedChanges.set(symbol, currentStatus);
-
-            if (currentPriceOfSymbol) {
-                this.setState({
-                    stockPrices: updatedMap,
-                    stockChanges: updatedChanges
-                })
-            }
-        })).catch((err) => { // failed call
-            console.log(err)
-        })
-        )
     }
 
     render() {

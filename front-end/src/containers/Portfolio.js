@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../styles/Portfolio.css';
 import Purchase from '../components/Purchase';
 import LiveStocksView from '../views/LiveStocksView';
+import { Link } from 'react-router-dom';
 import AlertDimissable from '../views/AlertView';
 import { PageHeader} from "react-bootstrap";
 import { connect } from "react-redux";
@@ -45,7 +46,6 @@ class Portfolio extends Component {
                                     errorMessage={this.props.errorMessage}/>                   
             }
         }
-        console.log(this.props.currentPrices)
         return ( 
             <div className="portfolio-container">
                 <PageHeader>Portfolio</PageHeader>
@@ -59,7 +59,7 @@ class Portfolio extends Component {
                             currentChanges={this.props.currentChanges}
                         />
                     ) : !this.props.loggedIn ? (
-                        <p>Log in please.</p>
+                        <h4>Please <Link to="/login">log in</Link> to view your stocks.</h4>
                     ) : (
                         <center>      
                             <Loader type="ThreeDots" color="#2fc477" height="100" width="150" />

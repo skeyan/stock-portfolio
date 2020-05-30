@@ -19,7 +19,7 @@ const TransactionsView = props => {
             { props.numTransactions > 0 ? (
                 props.transactionsArray.map((transaction, i) => (
                     <ListGroupItem key={i}>
-                        <b>{transaction.time.toString().substring(0, 10)}</b> - BUY ({transaction.tickerSymbol.toUpperCase()}) - {transaction.quantity} {transaction.quantity > 1 ? "Shares" : "Share"} @ ${transaction.totalCost}
+                        <b>{transaction.time.toString().substring(0, 10)}</b> - BUY ({transaction.tickerSymbol.toUpperCase()}) - {transaction.quantity} {transaction.quantity > 1 ? "Shares" : "Share"} @ ${parseFloat(transaction.totalCost).toFixed(2)}
                     </ListGroupItem>
                 ))
             ) : props.loggedIn ? (

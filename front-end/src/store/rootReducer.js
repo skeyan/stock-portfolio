@@ -19,9 +19,9 @@ const initState = {
     loggedIn: false, // frontend logged-in status
     currentUser: "", // email of current user, empty if not logged in
     currentNumTransactions: -1, // num transactions of current user, -1 if not logged in
-    currentPrices: new Map(),
-    currentChanges: new Map(),
-    finishedGettingPrices: false
+    currentPrices: new Map(), // stockName:currentPrice map 
+    currentChanges: new Map(), // stockName:change map. Grey if neutral, red if less than open price, green if higher
+    finishedGettingPrices: false // True if the API call to get prices has finished and false otherwise
 }
 
 // Actions ----------------------------------------------------------------------------
@@ -126,110 +126,130 @@ export const getCash = () => {
 export const getStocks = () => {
     return async (dispatch, getState) => {
         const response = await axios.get("http://localhost:5000/stock/email/" + getState().currentUser + "/all");
-        console.log(response.data.data)
         if (response.data.success) {
-            console.log(response.data.data)
-            dispatch(setStocksArray(response.data.data));
-            dispatch(getCurrentPrice(response.data.data))
+            if (response.data.data.length <= 0) {
+                dispatch(setFinishedGettingPrices(true));
+            }
+            else {
+                dispatch(setStocksArray(response.data.data));
+                dispatch(getCurrentPrice(response.data.data));
+            }
         }
     }
 }
 
-// The thunk gets the current prices of the stocks passed in with an API call
+// The thunk gets the current (and open) prices of the stocks passed in with an API call
+// Purpose: To update the stocks in the Portfolio page when needed
 export const getCurrentPrice = (symbolArr) => {
     return async (dispatch, getState) => {
         for(let i = 0; i < symbolArr.length; i++) {
             let currentSymbol = symbolArr[i].tickerSymbol;
-            let url = "https://cloud.iexapis.com/stable/stock/" + currentSymbol + "/quote?token=pk_1980e71d365b44aabc473f0f44812173";
-            const response = await axios.get(url);
+            let urlQuote = "https://cloud.iexapis.com/stable/stock/" + currentSymbol + "/quote?token=pk_1980e71d365b44aabc473f0f44812173";
+
+            // Make an API call in order to get the cur
+            const response = await axios.get(urlQuote); 
             if (response) {
-                let currentPriceOfSymbol = parseFloat(parseFloat(response.data.latestPrice).toFixed(2)).toFixed(2);
-                let openPrice = parseFloat(parseFloat(response.data.open).toFixed(2)).toFixed(2);
+                let currentPriceOfSymbol = parseFloat(response.data.latestPrice).toFixed(2);
+
+                let openPrice = parseFloat(parseFloat(response.data.previousClose).toFixed(2)).toFixed(2);
+                // Only use the open price if the API value for it is not null
+                if (response.data.open) { openPrice = parseFloat(parseFloat(response.data.open).toFixed(2)).toFixed(2); } 
+
                 let currentStatus = "grey";
-
-                console.log(currentPriceOfSymbol, openPrice)
-
-                if (openPrice - currentPriceOfSymbol < 0) { // less than
+                if (currentPriceOfSymbol - openPrice < 0) { // less than open -> red
                     currentStatus = "red"
                 }
-                else if (openPrice - currentPriceOfSymbol > 0) {
+                else if (currentPriceOfSymbol - openPrice > 0) { // greater than open -> green
                     currentStatus = "green"
                 }
-                else {
+                else { // same as open/neutral -> green
                     currentStatus = "grey"
+                }
+
+                if (!response.data.isUSMarketOpen) { 
+                    if (response.data.open) {
+                        currentPriceOfSymbol = parseFloat(response.data.open).toFixed(2);
+                    }
+                    else {
+                        currentPriceOfSymbol = parseFloat(response.data.previousClose); 
+                    }
                 }
 
                 let updatedMap = getState().currentPrices;
                 updatedMap.set(currentSymbol, currentPriceOfSymbol);
 
-                console.log("NEW MAP: ", updatedMap);
-
                 let updatedChanges = getState().currentChanges;
                 updatedChanges.set(currentSymbol, currentStatus);
 
-                dispatch(setPrices(updatedMap));
-                dispatch(setChanges(updatedChanges));
+                dispatch(setPrices(updatedMap)); // Update stock prices in front end
+                dispatch(setChanges(updatedChanges)); // Update comparative change of stocks (red, green, neutral) in front end
             }
         }
-        console.log("here")
-        dispatch(setFinishedGettingPrices(true))
+        // Tell the front end we're finished retrieving prices, in order to load the stock cards
+        dispatch(setFinishedGettingPrices(true));
     }
 }
 
-/*
-    * The thunk makes an axios call to Alpha Vantage
-    * to get the global quote for the symbol passed in.
-    * Its purpose is to retrieve prices and make the transaction, if possible,
-    * or otherwise create a relevant alert.
-*/
+// The thunk makes an axios call to an API to get the global quote for the symbol passed in.
+// Purpose: To retrieve the latest price and make the transaction, if possible, or otherwise create a relevant alert.
 export const getStockPrices = (symbol, quantity) => {
     return async (dispatch, getState) => {
         // Form the URL with which to make the call
-        let url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + symbol + "&apikey=" + process.env.ALPHA_VANTAGE_KEY;
+        let url = "https://cloud.iexapis.com/stable/stock/" + symbol + "/quote?token=pk_1980e71d365b44aabc473f0f44812173";
 
         // Make the asynchronous axios call to get the current price of the stock in question
         const response = await axios.get(url);
         
         // If the response from the call is not an error message, 
         // then log a warning to the user and don't do anything else.
-        // This likely means that the symbol entered by the user was invalid.
-        if(!response.data["Global Quote"]) {
+        // This means that the symbol entered by the user was invalid, or the limit of messages was reached for the API key.
+        if(!response.data) {
             const currentError = "Invalid ticker symbol entered."
             dispatch(setError(currentError));
+            dispatch(setFinishedGettingPrices(true));
         }
 
-        // Otherwise, if the response was successful, change the stock price
-        // according to quantity and real-time current price of the stock.
+        // Otherwise, if the response was successful, change the stock price According to quantity and the current price of the stock.
         // Also, recalculate the cash the user has on-hand and add the stock to the user's stocks.
         else {
-            let currentPriceOfSymbol = parseFloat(response.data["Global Quote"]["05. price"]);
+            // If the market is closed, use the last closing price or the last open price (if available) as the price point.
+            // Open price cannot always be used because it may be 'null' depending on IEX.
+            // Otherwise, use the current latest price as the price point.
+            let currentPriceOfSymbol = parseFloat(response.data.latestPrice).toFixed(2);
+            
+            if (!response.data.isUSMarketOpen) { 
+                if (response.data.open) {
+                    currentPriceOfSymbol = parseFloat(response.data.open).toFixed(2);
+                }
+                else {
+                    currentPriceOfSymbol = parseFloat(response.data.previousClose); 
+                }
+            }
+            console.log("CURRENT PRICE OF SYMBOL:" , currentPriceOfSymbol)
+           
+            // Calculate the theoretical future cash if the transaction went through
             let recalculatedCash = parseFloat(getState().cash - currentPriceOfSymbol * quantity).toFixed(2);
-
+            
             // Handle cash calculation
             if (recalculatedCash >= 0) { // Add to the set of stocks only if the user has enough money to purchase them
-                // CASH UPDATING
+                dispatch(setError("success"));
+
+                // Updating Cash: ------------------------------
                 dispatch(setCash(recalculatedCash)); // Update the user's cash balance in the front-end
-                // also update cash in backend 
                 const cashUpdate = {
                     email: getState().currentUser,
                     cashBalance: recalculatedCash
                 }
-                await axios.post("http://localhost:5000/user/balance/update", cashUpdate).then(
-                    dispatch(setError("success"))
-                ).catch((err) => {
-                    dispatch(setError("Failed to update cash balance."))
-                 }
-                );
+                // Update the user's cash balance in the backend
+                await axios.post("http://localhost:5000/user/balance/update", cashUpdate);
 
-                // STOCK UPDATING
+                // Updating Stocks: ------------------------------
                 const stockUpdate = {
                     email: getState().currentUser,
                     tickerSymbol: symbol,
                     quantity: parseFloat(quantity)
                 }
-                // update frontend stocks
                 let myStocks = getState().stocksArray;
-                // console.log(symbol, myStocks)
                 let alreadyInArray = false;
                 let index = -1;
                 for(let i = 0; i < myStocks.length; i++) {
@@ -239,25 +259,19 @@ export const getStockPrices = (symbol, quantity) => {
                         break;
                     }
                 }
-                
-
-                if (alreadyInArray === false) { // user doesn't have stock yet
+                if (alreadyInArray === false) { // User doesn't have stock yet -> add to array
                     myStocks.push(stockUpdate);
-                } else { // user has stock already
+                } else { // User has stock already -> update corresponding value in array
                     myStocks[index].quantity += parseFloat(quantity);
                 }
-                dispatch(setStocksArray(myStocks))
-                dispatch(getCurrentPrice(myStocks))
+                dispatch(setStocksArray(myStocks)); // Update the user's current stocks in the frontend 
+                dispatch(getCurrentPrice(myStocks)); // Update the user's current stocks' prices in the frontend
 
-                // also update backend with the stock
-                await axios.post("http://localhost:5000/stock/update", stockUpdate).then(
-                    dispatch(setError("success"))
-                ).catch((err) => {
-                    dispatch(setError("Failed to update user's stocks."))
-                    }
-                );
+                // Update the relevant stock in the backend.
+                await axios.post("http://localhost:5000/stock/update", stockUpdate);
 
-                // update frontend transactions
+                // Updating Transactions: ------------------------------
+                // Retrieve the user's amount of transactions by 1
                 const response = await axios.get("http://localhost:5000/user/email/" + getState().currentUser + "/number");
                 let newNumTransactions = 1;
                 if(response.data.success) {
@@ -270,33 +284,28 @@ export const getStockPrices = (symbol, quantity) => {
                 else {
                     newNumTransactions = 1;
                 }
+                // Update the number of transactions in the frontend.
                 dispatch(setNumTransactions(newNumTransactions));
-                // update backend transactions
+
                 const transactionUpdate = {
                     email: getState().currentUser,
                     tickerSymbol: symbol,
                     quantity: quantity,
                     totalCost: currentPriceOfSymbol * quantity
                 }
-                await axios.post("http://localhost:5000/transaction/new", transactionUpdate).then(
-                    dispatch(setError("success"))
-                ).catch((err) => {
-                    dispatch(setError("Failed to update user's transactions."))
-                }
-                );
+                // Add a new transaction in the backend.
+                await axios.post("http://localhost:5000/transaction/new", transactionUpdate);
+                
                 const numTransactionsUpdate = {
                     email: getState().currentUser,
                     totalTransactions: newNumTransactions
                 }
-                await axios.post("http://localhost:5000/user/transactions/update", numTransactionsUpdate).then(
-                    dispatch(setError("success"))
-                ).catch((err) => {
-                    dispatch(setError("Failed to update user's total number of transactions."))
-                })
+                // Update the user's number of transactions in the backend.
+                await axios.post("http://localhost:5000/user/transactions/update", numTransactionsUpdate);
             }
             else { 
                 // Otherwise, there's not enough cash so don't let the purchase go through and alert the user
-                dispatch(setError("Not enough cash for purchase.")); // Alert the user of the failure
+                dispatch(setError("Not enough cash for purchase.")); 
             }
         }
     }
