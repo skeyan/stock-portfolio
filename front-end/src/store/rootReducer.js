@@ -199,115 +199,134 @@ export const getStockPrices = (symbol, quantity) => {
         let url = "https://cloud.iexapis.com/stable/stock/" + symbol + "/quote?token=pk_1980e71d365b44aabc473f0f44812173";
 
         // Make the asynchronous axios call to get the current price of the stock in question
-        const response = await axios.get(url);
+        let response;
+
+        await axios.get(url).then((r) => {
+            response = r;
+        }).catch((err) => { // 404 error handling -> set error
+            if (err) {
+                console.log("here1")
+                const currentError = "Invalid ticker symbol entered."
+                dispatch(setError(currentError));
+                dispatch(setFinishedGettingPrices(true));
+            } 
+        })
         
         // If the response from the call is not an error message, 
         // then log a warning to the user and don't do anything else.
         // This means that the symbol entered by the user was invalid, or the limit of messages was reached for the API key.
-        if(!response.data) {
-            const currentError = "Invalid ticker symbol entered."
-            dispatch(setError(currentError));
-            dispatch(setFinishedGettingPrices(true));
-        }
-
-        // Otherwise, if the response was successful, change the stock price According to quantity and the current price of the stock.
-        // Also, recalculate the cash the user has on-hand and add the stock to the user's stocks.
-        else {
-            // If the market is closed, use the last closing price or the last open price (if available) as the price point.
-            // Open price cannot always be used because it may be 'null' depending on IEX.
-            // Otherwise, use the current latest price as the price point.
-            let currentPriceOfSymbol = parseFloat(response.data.latestPrice).toFixed(2);
-            
-            if (!response.data.isUSMarketOpen) { 
-                if (response.data.open) {
-                    currentPriceOfSymbol = parseFloat(response.data.open).toFixed(2);
-                }
-                else {
-                    currentPriceOfSymbol = parseFloat(response.data.previousClose); 
-                }
+        if (response) { // Our call worked -> deal with the stock data
+            if(!response.data) { // If no data was returned, the symbol doesn't work -> set error
+                const currentError = "Invalid ticker symbol entered."
+                dispatch(setError(currentError));
+                dispatch(setFinishedGettingPrices(true));
             }
-            // console.log("CURRENT PRICE OF SYMBOL:" , currentPriceOfSymbol)
-           
-            // Calculate the theoretical future cash if the transaction went through
-            let recalculatedCash = parseFloat(getState().cash - currentPriceOfSymbol * quantity).toFixed(2);
-            
-            // Handle cash calculation
-            if (recalculatedCash >= 0) { // Add to the set of stocks only if the user has enough money to purchase them
-                dispatch(setError("success"));
 
-                // Updating Cash: ------------------------------
-                dispatch(setCash(recalculatedCash)); // Update the user's cash balance in the front-end
-                const cashUpdate = {
-                    email: getState().currentUser,
-                    cashBalance: recalculatedCash
-                }
-                // Update the user's cash balance in the backend
-                await axios.post("https://stockfolio-app-back.herokuapp.com/user/balance/update", cashUpdate);
-
-                // Updating Stocks: ------------------------------
-                const stockUpdate = {
-                    email: getState().currentUser,
-                    tickerSymbol: symbol,
-                    quantity: parseFloat(quantity)
-                }
-                let myStocks = getState().stocksArray;
-                let alreadyInArray = false;
-                let index = -1;
-                for(let i = 0; i < myStocks.length; i++) {
-                    if (myStocks[i].tickerSymbol === symbol) {
-                        alreadyInArray = true; // If the stock is in array, set to true
-                        index = i;
-                        break;
+            // Otherwise, if the response was successful, change the stock price According to quantity and the current price of the stock.
+            // Also, recalculate the cash the user has on-hand and add the stock to the user's stocks.
+            else { // Data was returned! Store it properly.
+                // If the market is closed, use the last closing price or the last open price (if available) as the price point.
+                // Open price cannot always be used because it may be 'null' depending on IEX.
+                // Otherwise, use the current latest price as the price point.
+                let currentPriceOfSymbol = parseFloat(response.data.latestPrice).toFixed(2);
+                
+                if (!response.data.isUSMarketOpen) { 
+                    if (response.data.open) {
+                        currentPriceOfSymbol = parseFloat(response.data.open).toFixed(2);
+                    }
+                    else {
+                        currentPriceOfSymbol = parseFloat(response.data.previousClose); 
                     }
                 }
-                if (alreadyInArray === false) { // User doesn't have stock yet -> add to array
-                    myStocks.push(stockUpdate);
-                } else { // User has stock already -> update corresponding value in array
-                    myStocks[index].quantity += parseFloat(quantity);
-                }
-                dispatch(setStocksArray(myStocks)); // Update the user's current stocks in the frontend 
-                dispatch(getCurrentPrice(myStocks)); // Update the user's current stocks' prices in the frontend
-
-                // Update the relevant stock in the backend.
-                await axios.post("https://stockfolio-app-back.herokuapp.com/stock/update", stockUpdate);
-
-                // Updating Transactions: ------------------------------
-                // Retrieve the user's amount of transactions by 1
-                const response = await axios.get("https://stockfolio-app-back.herokuapp.com/user/email/" + getState().currentUser + "/number");
-                let newNumTransactions = 1;
-                if(response.data.success) {
-                    console.log(response);
-                    newNumTransactions = response.data.data + 1;
-                }
-                else if(getState.currentNumTransactions) {
-                    newNumTransactions = getState().currentNumTransactions + 1;
-                } 
-                else {
-                    newNumTransactions = 1;
-                }
-                // Update the number of transactions in the frontend.
-                dispatch(setNumTransactions(newNumTransactions));
-
-                const transactionUpdate = {
-                    email: getState().currentUser,
-                    tickerSymbol: symbol,
-                    quantity: quantity,
-                    totalCost: currentPriceOfSymbol * quantity
-                }
-                // Add a new transaction in the backend.
-                await axios.post("https://stockfolio-app-back.herokuapp.com/transaction/new", transactionUpdate);
+                // console.log("CURRENT PRICE OF SYMBOL:" , currentPriceOfSymbol)
+            
+                // Calculate the theoretical future cash if the transaction went through
+                let recalculatedCash = parseFloat(getState().cash - currentPriceOfSymbol * quantity).toFixed(2);
                 
-                const numTransactionsUpdate = {
-                    email: getState().currentUser,
-                    totalTransactions: newNumTransactions
+                // Handle cash calculation
+                if (recalculatedCash >= 0) { // Add to the set of stocks only if the user has enough money to purchase them
+                    dispatch(setError("success"));
+
+                    // Updating Cash: ------------------------------
+                    dispatch(setCash(recalculatedCash)); // Update the user's cash balance in the front-end
+                    const cashUpdate = {
+                        email: getState().currentUser,
+                        cashBalance: recalculatedCash
+                    }
+                    // Update the user's cash balance in the backend
+                    await axios.post("https://stockfolio-app-back.herokuapp.com/user/balance/update", cashUpdate);
+
+                    // Updating Stocks: ------------------------------
+                    let upperSymbol = symbol.toUpperCase();
+                    const stockUpdate = {
+                        email: getState().currentUser,
+                        tickerSymbol: upperSymbol,
+                        quantity: parseFloat(quantity)
+                    }
+                    let myStocks = getState().stocksArray;
+                    let alreadyInArray = false;
+                    let index = -1;
+                    for(let i = 0; i < myStocks.length; i++) {
+                        if (myStocks[i].tickerSymbol.toUpperCase() === upperSymbol) {
+                            alreadyInArray = true; // If the stock is in array, set to true
+                            index = i;
+                            break;
+                        }
+                    }
+                    if (alreadyInArray === false) { // User doesn't have stock yet -> add to array
+                        myStocks.push(stockUpdate);
+                    } else { // User has stock already -> update corresponding value in array
+                        myStocks[index].quantity += parseFloat(quantity);
+                    }
+                    dispatch(setStocksArray(myStocks)); // Update the user's current stocks in the frontend 
+                    dispatch(getCurrentPrice(myStocks)); // Update the user's current stocks' prices in the frontend
+
+                    // Update the relevant stock in the backend.
+                    await axios.post("https://stockfolio-app-back.herokuapp.com/stock/update", stockUpdate);
+
+                    // Updating Transactions: ------------------------------
+                    // Retrieve the user's amount of transactions by 1
+                    const response = await axios.get("https://stockfolio-app-back.herokuapp.com/user/email/" + getState().currentUser + "/number");
+                    let newNumTransactions = 1;
+                    if(response.data.success) {
+                        console.log(response);
+                        newNumTransactions = response.data.data + 1;
+                    }
+                    else if(getState.currentNumTransactions) {
+                        newNumTransactions = getState().currentNumTransactions + 1;
+                    } 
+                    else {
+                        newNumTransactions = 1;
+                    }
+                    // Update the number of transactions in the frontend.
+                    dispatch(setNumTransactions(newNumTransactions));
+
+                    const transactionUpdate = {
+                        email: getState().currentUser,
+                        tickerSymbol: upperSymbol,
+                        quantity: quantity,
+                        totalCost: currentPriceOfSymbol * quantity
+                    }
+                    // Add a new transaction in the backend.
+                    await axios.post("https://stockfolio-app-back.herokuapp.com/transaction/new", transactionUpdate);
+                    
+                    const numTransactionsUpdate = {
+                        email: getState().currentUser,
+                        totalTransactions: newNumTransactions
+                    }
+                    // Update the user's number of transactions in the backend.
+                    await axios.post("https://stockfolio-app-back.herokuapp.com/user/transactions/update", numTransactionsUpdate);
                 }
-                // Update the user's number of transactions in the backend.
-                await axios.post("https://stockfolio-app-back.herokuapp.com/user/transactions/update", numTransactionsUpdate);
+                else { 
+                    // Otherwise, there's not enough cash so don't let the purchase go through and alert the user
+                    dispatch(setError("Not enough cash for purchase.")); 
+                    dispatch(setFinishedGettingPrices(true));
+                }
             }
-            else { 
-                // Otherwise, there's not enough cash so don't let the purchase go through and alert the user
-                dispatch(setError("Not enough cash for purchase.")); 
-            }
+        }
+        else {
+            dispatch(setError("Invalid ticker symbol.")); // Bad endpoint catch-all
+            dispatch(setFinishedGettingPrices(true));
         }
     }
 }
