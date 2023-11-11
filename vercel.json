@@ -1,5 +1,5 @@
 {
-    "version": 1,
+    "version": 2,
     "name": "stock-portfolio-backend",
     "builds": [
       { "src": "index.js", "use": "@vercel/node" }
