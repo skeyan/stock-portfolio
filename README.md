@@ -30,7 +30,7 @@ Formerly deployed with Heroku. Following its decommission of free tiers, this ha
 - Log out and log back in at any time
 
 ## Running Locally
-**Important Note:** Due to the necessity of env configs, the application will not function by default.
+**Important Note:** Due to the necessity of env configs, the application's API calls will not function until they are properly configured. These env files are not committed to protect confidential keys.
 Please reach out to me if you require env configurations. The site can currently be tested here on [Netlify](https://stockfolio-frontend.netlify.app/).
 
 Front-end:
