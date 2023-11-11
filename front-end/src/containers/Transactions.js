@@ -18,18 +18,18 @@ class Transactions extends Component {
 
     // Make a GET request to the backend's Transaction route,
     // and retrieve all of the current user's transactions
-    getTransactions = () => {        
+    getTransactions = () => {
         // Axios call to backend
+        const url = `${process.env.REACT_APP_BASE_URL}/transaction/email/` + this.props.currentUser;
         trackPromise(
-        axios.get("https://stockfolio-app-back.herokuapp.com/transaction/email/" + this.props.currentUser)
+            axios.get(url)
         .then((res => {
             let myTransactions = res.data.data;
-            
+
             // Sort transactions so they're displayed with most recent transactions on top/first
             myTransactions.sort((a, b) => {
                 let aParsed = Date.parse(a.time);
                 let bParsed = Date.parse(b.time);
-                // console.log(aParsed, bParsed);
                 if (aParsed > bParsed) {
                     return -1;
                 }
@@ -38,8 +38,6 @@ class Transactions extends Component {
                 }
             })
 
-            // console.log(myTransactions);
-
             if (myTransactions.length > 0) {
                 this.setState({
                     transactionsArray: myTransactions
@@ -47,6 +45,7 @@ class Transactions extends Component {
             }
         })).catch((err) => { // failed call
             console.log(err)
+            throw err;
         })
         )
     }
@@ -57,10 +56,10 @@ class Transactions extends Component {
             this.getTransactions();
         }
         return (
-            <TransactionsView 
-                            loggedIn={this.props.loggedIn} 
-                            numTransactions={this.props.numTransactions} 
-                            transactionsArray={this.state.transactionsArray} 
+            <TransactionsView
+                loggedIn={this.props.loggedIn}
+                numTransactions={this.props.numTransactions}
+                transactionsArray={this.state.transactionsArray}
             />
         );
     }

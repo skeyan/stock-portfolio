@@ -22,12 +22,12 @@ const App = (props) => {
     <div>
       <div className="test">
       <Router>
-        <Navbar 
-                loggedIn={props.loggedIn} 
-                setStocksArray={props.setStocksArray} 
-                setLoggedIn={props.setLoggedIn} 
-                setCurrentUser={props.setCurrentUser} 
-                setNumTransactions={props.setNumTransactions} 
+        <Navbar
+                loggedIn={props.loggedIn}
+                setStocksArray={props.setStocksArray}
+                setLoggedIn={props.setLoggedIn}
+                setCurrentUser={props.setCurrentUser}
+                setNumTransactions={props.setNumTransactions}
                 setCash={props.setCash}
                 setPrices={props.setPrices}
                 setChanges={props.setChanges}

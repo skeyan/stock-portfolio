@@ -22,7 +22,7 @@ class LiveStocksView extends Component {
     componentWillUnmount() {
         /*
           stop getData() from continuing to run even
-          after unmounting this component (when we change a page). 
+          after unmounting this component (when we change a page).
         */
         clearTimeout(this.timerId);
     }
@@ -43,9 +43,9 @@ class LiveStocksView extends Component {
                     this.props.stocksArray.map((stock, i) => (
                         <div className="stock-card-container">
                             { this.props.currentPrices.get(stock.tickerSymbol) ? ( // Have the stock price ready to go -> display card
-                                <StockCard 
-                                key={stock.tickerSymbol} 
-                                colorClass={this.props.currentChanges.get(stock.tickerSymbol)} 
+                                <StockCard
+                                key={i}
+                                colorClass={this.props.currentChanges.get(stock.tickerSymbol)}
                                 tickerSymbol={stock.tickerSymbol.toUpperCase()}
                                 quantity={stock.quantity}
                                 price={this.props.currentPrices.get(stock.tickerSymbol)}
@@ -57,7 +57,7 @@ class LiveStocksView extends Component {
 
                         </div>
                     )
-                    ) 
+                    )
                 ) : !this.props.stocksArray.length > 0 ? (  // No stocks --> message to buy stocks
                     <h4>Purchase a stock to view its stats.</h4>
                 ) : (
