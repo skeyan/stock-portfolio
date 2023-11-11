@@ -14,7 +14,7 @@ const Login = (props) => {
   const [loginAlert, setLoginAlert] = useState(null);
   const history = useHistory();
 
-  function validateForm() 
+  function validateForm()
   {
     return email.length > 0 && password.length > 0;
   }
@@ -24,15 +24,15 @@ const Login = (props) => {
   {
     event.preventDefault();
     // Make an axios call to the backend to attempt to login the user
-    axios.get("https://stockfolio-app-back.herokuapp.com/user/login/" + email + "/password/" + password).then(res => {
+    axios.get(`${process.env.REACT_APP_BASE_URL}/user/login/` + email + "/password/" + password).then(res => {
       if (res.data.success === true) { // Successful login
         // Change loggedIn backend State variable
-        setLoginAlert(<AlertDimissable 
-          setLoginAlert={setLoginAlert} 
+        setLoginAlert(<AlertDimissable
+          setLoginAlert={setLoginAlert}
           setRegistrationAlert="n/a"
           className="login-alert"
-          validity="true" 
-          message={res.data.message} 
+          validity="true"
+          message={res.data.message}
           message2="Hooray! Now you can view and buy stocks."
           alertClass="flexible-container"
         />);
@@ -44,11 +44,11 @@ const Login = (props) => {
         history.push("/"); // Redirect to homepage
       }
       else { // Unsuccessful login
-        setLoginAlert(<AlertDimissable 
-          setLoginAlert={setLoginAlert} 
+        setLoginAlert(<AlertDimissable
+          setLoginAlert={setLoginAlert}
           className="login-alert"
           setRegistrationAlert="n/a"
-          validity="false" 
+          validity="false"
           message="Unable to login."
           errorMessage={res.data.message}
           alertClass="flexible-container"
@@ -56,11 +56,11 @@ const Login = (props) => {
       }
     }).catch(err => {
       // Unsuccessful GET request
-      setLoginAlert(<AlertDimissable 
+      setLoginAlert(<AlertDimissable
         className="login-alert"
         setLoginAlert={setLoginAlert}
-        setRegistrationAlert="n/a" 
-        validity="false" 
+        setRegistrationAlert="n/a"
+        validity="false"
         message="Unable to login."
         errorMessage="Bad endpoint."
         alertClass="flexible-container"
@@ -72,8 +72,8 @@ const Login = (props) => {
     <div className="login-parent">
       <div className="login-container">
         <h2>| Login</h2>
-        <LoginView 
-            setEmail={setEmail} 
+        <LoginView
+            setEmail={setEmail}
             setPassword={setPassword}
             email={email} password={password}
             validateForm={validateForm}

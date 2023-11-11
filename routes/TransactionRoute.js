@@ -43,7 +43,6 @@ router.post("/new", function (req, res) {
             })
         }
         else {
-            // console.log(transaction)
             res.send({
                 success: true,
                 message: "Successfully completed transaction."
