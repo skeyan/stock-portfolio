@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {getStockPricesMock, getCurrentPriceResponseMock} from './mocks/response';
 
 // Constants will be used to define cases in the rootReducer
 const SET_CASH = "SET_CASH";
@@ -154,14 +155,7 @@ export const getCurrentPrice = (symbolArr) => {
             // Make an API call in order to get the current price
             // const response = await axios.get(urlQuote);
 
-            const response = {
-                data: {
-                    latestPrice: 450,
-                    open: true,
-                    previousClose: 300,
-                    isUSMarketOpen: true,
-                }
-            }
+            const response = getCurrentPriceResponseMock;
 
             if (response) {
                 let currentPriceOfSymbol = parseFloat(response.data.latestPrice).toFixed(2);
@@ -226,13 +220,7 @@ export const getStockPrices = (symbol, quantity) => {
         //     }
         // })
 
-        let response = {
-            data: {
-                open: true,
-                isUSMarketOpen: true,
-                latestPrice: 450,
-            }
-        }
+        let response = getStockPricesMock;
 
         // If the response from the call is not an error message,
         // then log a warning to the user and don't do anything else.
