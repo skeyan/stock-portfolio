@@ -6,6 +6,7 @@ A simple full-stack app where a user can login, buy, and manage stocks.
 <div align="center">  
   Contact: <a href="https://www.linkedin.com/in/sk-evayan/" target="_blank">LinkedIn</a>
 </div>
+
 ---
 
 ## Built With
