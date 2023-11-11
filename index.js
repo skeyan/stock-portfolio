@@ -38,7 +38,7 @@ app.use('/user', user);
 app.use('/transaction', transaction);
 app.use('/stock', stock);
 
-// This app starts a server and listens on port 3000 for connections.
+// This app starts a server and listens on port 3500 for connections.
 // The app responds with “Hello World!” for requests to the root URL (/) or route.
 app.get('/', (req, res) => res.send('Hello World!'))
-app.listen(process.env.PORT || port, () => console.log(`App listening at http://localhost:${process.env.BACKEND_PORT}`))
+app.listen(process.env.BACKEND_PORT || 3500, () => console.log(`App listening at http://localhost:${process.env.BACKEND_PORT}`))
