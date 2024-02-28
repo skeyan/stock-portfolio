@@ -14,13 +14,6 @@ A simple full-stack app where a user can login, buy, and manage stocks.
 * Express, MongoDB
 * CSS
 
-### Deployment Infra
-Formerly deployed with Heroku. Following its decommission of free tiers, this has since been updated in 2023 to be deployed with:
-* Netlify for the front-end React app
-* Vercel for the back-end Express server
-
-**Important Note:** Due to the usage of free tiers, there is a only certain limit of API calls per month. 
-
 ## User Flow
 - Register for an account on the **Register page**.   
 - Then, log in with your credentials on the **Login page**.  
@@ -30,7 +23,6 @@ Formerly deployed with Heroku. Following its decommission of free tiers, this ha
 
 ## Running Locally
 **Important Note:** Due to the necessity of env configs, the application's API calls will not function until they are properly configured. These env files are not committed to protect confidential keys.
-Please reach out to me if you require env configurations. The site can currently be tested here on [Netlify](https://stockfolio-frontend.netlify.app/).
 
 Front-end:
 - Run `npm start` while in the root directory of the front-end app, ie. (stock-portfolio/front-end). It should run on https://localhost:3000.
