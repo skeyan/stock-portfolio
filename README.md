@@ -4,8 +4,6 @@
 A simple full-stack app where a user can login, buy, and manage stocks.
 
 <div align="center">  
-  <a href="https://stockfolio-frontend.netlify.app/" target="_blank">Link to Deployed Site</a>
-  
   Contact: <a href="https://www.linkedin.com/in/sk-evayan/" target="_blank">LinkedIn</a>
 </div>
 
